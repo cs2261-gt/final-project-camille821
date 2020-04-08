@@ -1,0 +1,42 @@
+//ESCAPISM GAME TODOS
+
+1. make the state BGs
+2. get the basic state machine to work (Start, game pause, win, lose)
+3. make game sprites (steven, Enemies, bubbles, stars, bubbled sprites, lives)
+4. get steven sprite to show up on screen
+5. get user input to work on moving steven
+6. get steven anisprites to work
+7. get enemies, stars, and lives on screen
+8. get enemy mechanics to work (movement, collision, bubbling and bubbling collision)
+9. get star mechanics to work (collision and bubbling)
+10. get lives mechanics to work
+- get cheat mechanic to work
+- get winning condition to work
+
+
+- add star locations to state machine
+- get basic sound stuff working
+
+
+- impplement XL BG
+- create and implement collision map
+- make it so the VOFF is constantly moving
+- XL BG lose condition
+
+EXTRA
+-extra lives?
+- make extra Splashscreens (w/ textual info too...check notes for help)
+- add animated sprites to spritesheet
+- add extra screens to state machine
+- create animated loops on screen
+- add sounds for everything else
+
+
+
+
+-Options:
+
+bubble and unbubble same object 
+
+-collision logic with bubbles that
+
