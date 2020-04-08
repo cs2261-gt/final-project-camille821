@@ -20,34 +20,36 @@ goToStart:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, lr}
+	mov	r2, #67108864
+	mov	r4, #0
 	mov	r3, #256
-	mov	r1, #67108864
-	push	{r4, lr}
-	mov	r2, #83886080
-	ldr	r4, .L4
-	strh	r3, [r1]	@ movhi
-	mov	r0, #3
+	strh	r4, [r2, #16]	@ movhi
+	ldr	r5, .L4
+	strh	r3, [r2]	@ movhi
+	strh	r4, [r2, #18]	@ movhi
 	ldr	r1, .L4+4
+	mov	r2, #83886080
+	mov	r0, #3
 	mov	lr, pc
-	bx	r4
+	bx	r5
 	mov	r3, #736
 	mov	r2, #100663296
 	ldr	r1, .L4+8
 	mov	r0, #3
 	mov	lr, pc
-	bx	r4
+	bx	r5
 	mov	r3, #1024
 	ldr	r2, .L4+12
 	ldr	r1, .L4+16
 	mov	r0, #3
 	mov	lr, pc
-	bx	r4
-	mov	r3, #0
-	ldr	r1, .L4+20
-	ldr	r2, .L4+24
-	str	r3, [r1]
-	str	r3, [r2]
-	pop	{r4, lr}
+	bx	r5
+	ldr	r2, .L4+20
+	ldr	r3, .L4+24
+	str	r4, [r2]
+	str	r4, [r3]
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L5:
 	.align	2
@@ -87,64 +89,72 @@ goToGame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	r3, #67108864
-	ldrh	r2, [r3]
-	ldr	r1, .L9
-	orr	r2, r2, #4096
+	ldr	r2, .L9
+	ldr	r1, .L9+4
+	ldrh	r2, [r2]
 	push	{r4, lr}
-	mov	r0, #3
-	ldr	r4, .L9+4
 	strh	r1, [r3, #8]	@ movhi
-	strh	r2, [r3]	@ movhi
 	ldr	r1, .L9+8
+	strh	r2, [r3, #16]	@ movhi
+	ldrh	r2, [r3]
+	ldrh	r1, [r1]
+	orr	r2, r2, #4096
+	ldr	r4, .L9+12
+	strh	r1, [r3, #18]	@ movhi
+	strh	r2, [r3]	@ movhi
+	ldr	r1, .L9+16
 	mov	r3, #256
 	mov	r2, #83886080
-	mov	lr, pc
-	bx	r4
-	ldr	r3, .L9+12
-	mov	r2, #100663296
-	ldr	r1, .L9+16
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r3, #2048
-	ldr	r2, .L9+20
+	ldr	r3, .L9+20
+	mov	r2, #100663296
 	ldr	r1, .L9+24
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r3, #256
+	mov	r3, #2048
 	ldr	r2, .L9+28
 	ldr	r1, .L9+32
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
+	mov	r3, #256
 	ldr	r2, .L9+36
 	ldr	r1, .L9+40
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	ldr	r2, .L9+44
+	ldr	r1, .L9+48
 	mov	r0, #3
 	mov	r3, #16384
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L9+44
+	ldr	r3, .L9+52
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L9+48
+	ldr	r3, .L9+56
 	mov	lr, pc
 	bx	r3
 	mov	r3, #512
 	mov	r2, #117440512
-	ldr	r1, .L9+52
+	ldr	r1, .L9+60
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #1
-	ldr	r3, .L9+56
+	ldr	r3, .L9+64
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
 .L10:
 	.align	2
 .L9:
+	.word	hOff
 	.word	-26240
+	.word	vOff
 	.word	DMANow
 	.word	gameSplash1Pal
 	.word	21888
@@ -222,14 +232,10 @@ pause:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r3, #67108864
-	mov	r2, #0
+	ldr	r3, .L27
 	push	{r4, lr}
-	ldr	r1, .L27
-	strh	r2, [r3, #16]	@ movhi
-	strh	r2, [r3, #18]	@ movhi
 	mov	lr, pc
-	bx	r1
+	bx	r3
 	ldr	r3, .L27+4
 	ldrh	r3, [r3]
 	tst	r3, #8
@@ -472,12 +478,8 @@ start:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r3, #67108864
-	mov	r2, #0
 	push	{r4, r5, r6, lr}
 	ldr	r4, .L63
-	strh	r2, [r3, #16]	@ movhi
-	strh	r2, [r3, #18]	@ movhi
 	ldr	r3, [r4]
 	ldr	r5, .L63+4
 	add	r3, r3, #1

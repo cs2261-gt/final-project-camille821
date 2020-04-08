@@ -1537,6 +1537,8 @@ void initialize() {
 void goToStart() {
 
 
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
 
 
     (*(unsigned short *)0x4000000) = 0 | (1<<8);
@@ -1559,8 +1561,7 @@ void goToStart() {
 
 void start() {
 
-    (*(volatile unsigned short *)0x04000010) = 0;
-    (*(volatile unsigned short *)0x04000012) = 0;
+
 
     seed++;
 
@@ -1588,6 +1589,9 @@ void goToGame() {
 
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((25)<<8) | ((0)<<2) | (2<<14);
+
+    (*(volatile unsigned short *)0x04000010) = hOff;
+    (*(volatile unsigned short *)0x04000012) = vOff;
 
 
 
@@ -1671,8 +1675,7 @@ void goToPause() {
 
 void pause() {
 
-    (*(volatile unsigned short *)0x04000010) = 0;
-    (*(volatile unsigned short *)0x04000012) = 0;
+
 
 
     waitForVBlank();

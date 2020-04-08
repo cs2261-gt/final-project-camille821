@@ -114,7 +114,9 @@ void initialize() {
 void goToStart() {
 
 
-
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+    
     // hacky, but basically disables sprites for this state
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     
@@ -136,8 +138,7 @@ void goToStart() {
 // Runs every frame of the start state
 void start() {
 
-    REG_BG0HOFF = 0;
-    REG_BG0VOFF = 0;
+
     
     seed++;
 
@@ -165,6 +166,9 @@ void goToGame() {
 
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(25) | BG_CHARBLOCK(0) | BG_SIZE_TALL;
+
+    REG_BG0HOFF = hOff;
+    REG_BG0VOFF = vOff;
 
 
 
@@ -248,8 +252,7 @@ void goToPause() {
 // Runs every frame of the pause state
 void pause() {
 
-    REG_BG0HOFF = 0;
-    REG_BG0VOFF = 0;
+
     
     // Lock the framerate to 60 fps
     waitForVBlank();
