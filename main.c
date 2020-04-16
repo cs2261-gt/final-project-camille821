@@ -74,6 +74,7 @@ int lose;
 
 
 extern OBJ_ATTR shadowOAM[128];
+extern ANISPRITE *stars[NUMSTARS];
 
 
 // Button Variables
@@ -208,8 +209,8 @@ void goToGame() {
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(25) | BG_CHARBLOCK(0) | BG_SIZE_TALL;
 
-    REG_BG0HOFF = hOff;
-    REG_BG0VOFF = vOff;
+    // REG_BG0HOFF = hOff;
+    // REG_BG0VOFF = vOff;
 
 
 
@@ -248,8 +249,10 @@ void goToGame() {
 // Runs every frame of the game state
 void game() {
 
-    REG_BG0HOFF = hOff;
-    REG_BG0VOFF = vOff;
+
+
+    // REG_BG0HOFF = hOff;
+    // REG_BG0VOFF = vOff;
 
     updateGame();
     waitForVBlank();
@@ -262,10 +265,30 @@ void game() {
   
     if (BUTTON_PRESSED(BUTTON_SELECT)) {        
         //UNCOMMENT FOR SOUND
-        stopSound();
+        pauseSound();
 
         //TODO: add in help song
         goToHelpState();
+    }
+
+
+
+    if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
+        goToWinState();     
+    }
+
+
+    if (stars[1]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[1]->worldRow, stars[1]->worldCol, stars[1]->height, stars[1]->width)) {
+        goToZooState();      
+    }
+
+    if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
+        goToJdbState();
+    }
+
+
+    if (stars[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[3]->worldRow, stars[3]->worldCol, stars[3]->height, stars[3]->width)) {
+        goToGardenState();      
     }
 
 }
@@ -417,6 +440,7 @@ void helpState() {
     waitForVBlank();
 
     if (BUTTON_PRESSED(BUTTON_START)) {
+        unpauseSound();
         goToGame();
     }
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
@@ -482,6 +506,13 @@ void goToMIState() {
 
 void goToZooState() {
 
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
 
 
     // hacky, but basically disables sprites for this state
@@ -495,21 +526,6 @@ void goToZooState() {
 
     //Load your tile map into the screenblock that your background is using
     DMANow(3, zooMap, &SCREENBLOCK[20], zooMapLen/2);
-
-
-    // REG_BG0HOFF = 0;
-    // REG_BG0VOFF = 0;
-
-
-    
-    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
-
-    REG_BG0HOFF = 0;
-    REG_BG0VOFF = 0;
-
-
-
-
 
     state = PAUSE;
 

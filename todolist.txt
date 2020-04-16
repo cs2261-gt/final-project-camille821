@@ -14,12 +14,14 @@
 - get winning condition to work
 - add star locations to state machine
 - get basic sound stuff working
-
-- finish implementing core sounds for the game (bubbling, pause, help, win, lose)
 - create and implement collision map
 
 
--when going back to do sound, uncomment this //UNCOMMENT FOR SOUND
+- update spritesheet
+- finish implementing core sounds for the game (bubbling, pause, help, win, lose)
+-extras until BG is finished 
+
+
 - impplement XL BG
 - make it so the VOFF is constantly moving
 - XL BG lose condition

@@ -1788,45 +1788,24 @@ starCollisions:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, lr}
-	ldr	r4, .L355
-	ldr	r5, .L355+4
-	ldr	r7, .L355+8
+	ldr	r4, .L327
+	ldr	r5, .L327+4
+	ldr	r7, .L327+8
 	sub	sp, sp, #20
 	add	r6, r4, #16
 .L317:
 	ldr	r2, [r4], #4
 	ldr	r3, [r2, #12]
 	cmp	r3, #0
-	beq	.L347
+	beq	.L323
 .L312:
-	cmp	r6, r4
+	cmp	r4, r6
 	bne	.L317
-	ldr	r4, .L355+12
-	ldr	r2, [r4, #24]
-	ldr	r3, [r2, #12]
-	cmp	r3, #0
-	beq	.L348
-.L319:
-	ldr	r2, [r4, #28]
-	ldr	r3, [r2, #12]
-	cmp	r3, #0
-	beq	.L349
-.L322:
-	ldr	r2, [r4, #32]
-	ldr	r3, [r2, #12]
-	cmp	r3, #0
-	beq	.L350
-.L325:
-	ldr	r2, [r4, #36]
-	ldr	r3, [r2, #12]
-	cmp	r3, #0
-	beq	.L351
-.L310:
 	add	sp, sp, #20
 	@ sp needed
 	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L347:
+.L323:
 	ldr	r3, [r2, #64]
 	str	r3, [sp, #12]
 	ldr	r3, [r2, #68]
@@ -1835,9 +1814,9 @@ starCollisions:
 	str	r3, [sp, #4]
 	ldr	ip, [r2, #36]
 	add	r0, r5, #36
+	ldm	r0, {r0, r1}
 	ldr	r3, [r5, #64]
 	ldr	r2, [r5, #68]
-	ldm	r0, {r0, r1}
 	str	ip, [sp]
 	mov	lr, pc
 	bx	r7
@@ -1845,137 +1824,37 @@ starCollisions:
 	beq	.L312
 	ldr	r3, [r5, #76]
 	cmp	r3, #1
-	beq	.L352
+	beq	.L324
 	cmp	r3, #2
-	beq	.L353
+	beq	.L325
 	cmp	r3, #3
-	beq	.L354
+	beq	.L326
 	cmp	r3, #0
 	ldreq	r3, [r5, #44]
 	subeq	r3, r3, #10
 	streq	r3, [r5, #44]
 	b	.L312
-.L352:
+.L324:
 	ldr	r3, [r5, #48]
 	add	r3, r3, #10
 	str	r3, [r5, #48]
 	b	.L312
-.L351:
-	ldr	r3, [r2, #64]
-	str	r3, [sp, #12]
-	ldr	r3, [r2, #68]
-	str	r3, [sp, #8]
-	ldr	r3, [r2, #48]
-	str	r3, [sp, #4]
-	ldr	r0, .L355+4
-	ldr	ip, [r2, #44]
-	ldr	r3, [r0, #64]
-	ldr	r2, [r0, #68]
-	add	r0, r0, #44
-	ldm	r0, {r0, r1}
-	ldr	r4, .L355+8
-	str	ip, [sp]
-	mov	lr, pc
-	bx	r4
-	cmp	r0, #0
-	beq	.L310
-	ldr	r3, .L355+16
-	mov	lr, pc
-	bx	r3
-	add	sp, sp, #20
-	@ sp needed
-	pop	{r4, r5, r6, r7, lr}
-	bx	lr
-.L350:
-	ldr	r3, [r2, #64]
-	str	r3, [sp, #12]
-	ldr	r3, [r2, #68]
-	str	r3, [sp, #8]
-	ldr	r3, [r2, #48]
-	str	r3, [sp, #4]
-	ldr	r0, .L355+4
-	ldr	ip, [r2, #44]
-	ldr	r3, [r0, #64]
-	ldr	r2, [r0, #68]
-	add	r0, r0, #44
-	ldm	r0, {r0, r1}
-	ldr	r5, .L355+8
-	str	ip, [sp]
-	mov	lr, pc
-	bx	r5
-	cmp	r0, #0
-	beq	.L325
-	ldr	r3, .L355+20
-	mov	lr, pc
-	bx	r3
-	b	.L325
-.L349:
-	ldr	r3, [r2, #64]
-	str	r3, [sp, #12]
-	ldr	r3, [r2, #68]
-	str	r3, [sp, #8]
-	ldr	r3, [r2, #48]
-	str	r3, [sp, #4]
-	ldr	r0, .L355+4
-	ldr	ip, [r2, #44]
-	ldr	r3, [r0, #64]
-	ldr	r2, [r0, #68]
-	add	r0, r0, #44
-	ldm	r0, {r0, r1}
-	ldr	r5, .L355+8
-	str	ip, [sp]
-	mov	lr, pc
-	bx	r5
-	cmp	r0, #0
-	beq	.L322
-	ldr	r3, .L355+24
-	mov	lr, pc
-	bx	r3
-	b	.L322
-.L348:
-	ldr	r3, [r2, #64]
-	str	r3, [sp, #12]
-	ldr	r3, [r2, #68]
-	str	r3, [sp, #8]
-	ldr	r3, [r2, #48]
-	str	r3, [sp, #4]
-	ldr	r0, .L355+4
-	ldr	ip, [r2, #44]
-	ldr	r3, [r0, #64]
-	ldr	r2, [r0, #68]
-	add	r0, r0, #44
-	ldm	r0, {r0, r1}
-	ldr	r5, .L355+8
-	str	ip, [sp]
-	mov	lr, pc
-	bx	r5
-	cmp	r0, #0
-	beq	.L319
-	ldr	r3, .L355+28
-	mov	lr, pc
-	bx	r3
-	b	.L319
-.L354:
+.L326:
 	ldr	r3, [r5, #44]
 	add	r3, r3, #10
 	str	r3, [r5, #44]
 	b	.L312
-.L353:
+.L325:
 	ldr	r3, [r5, #48]
 	sub	r3, r3, #10
 	str	r3, [r5, #48]
 	b	.L312
-.L356:
+.L328:
 	.align	2
-.L355:
+.L327:
 	.word	.LANCHOR0+24
 	.word	steven
 	.word	collision
-	.word	.LANCHOR0
-	.word	goToGardenState
-	.word	goToJdbState
-	.word	goToZooState
-	.word	goToWinState
 	.size	starCollisions, .-starCollisions
 	.align	2
 	.global	updateSteven
@@ -1990,37 +1869,37 @@ updateSteven:
 	push	{r4, lr}
 	bl	enemyCollisions
 	bl	starCollisions
-	ldr	r3, .L376
+	ldr	r3, .L348
 	ldrh	r3, [r3]
 	tst	r3, #1
-	beq	.L371
-	ldr	r3, .L376+4
+	beq	.L343
+	ldr	r3, .L348+4
 	ldrh	r3, [r3]
 	tst	r3, #1
-	ldr	r4, .L376+8
-	bne	.L358
+	ldr	r4, .L348+8
+	bne	.L330
 	ldr	r3, [r4, #76]
 	cmp	r3, #1
-	beq	.L372
+	beq	.L344
 	cmp	r3, #2
-	beq	.L373
+	beq	.L345
 	cmp	r3, #3
-	beq	.L374
+	beq	.L346
 	cmp	r3, #0
-	bne	.L358
-	ldr	r0, .L376+12
+	bne	.L330
+	ldr	r0, .L348+12
 	mov	r2, r0
-.L363:
+.L335:
 	ldr	r1, [r2, #52]
 	cmp	r1, #0
-	beq	.L375
+	beq	.L347
 	add	r3, r3, #1
 	cmp	r3, #5
 	add	r2, r2, #104
-	bne	.L363
-.L358:
-	ldr	r2, .L376+16
-	ldr	r3, .L376+20
+	bne	.L335
+.L330:
+	ldr	r2, .L348+16
+	ldr	r3, .L348+20
 	ldr	r0, [r2]
 	ldr	r1, [r3]
 	ldr	r2, [r4, #44]
@@ -2031,19 +1910,19 @@ updateSteven:
 	str	r3, [r4, #40]
 	pop	{r4, lr}
 	bx	lr
-.L371:
-	ldr	r4, .L376+8
-	b	.L358
-.L372:
+.L343:
+	ldr	r4, .L348+8
+	b	.L330
+.L344:
 	bl	throwLeft
-	b	.L358
-.L373:
+	b	.L330
+.L345:
 	bl	throwRight
-	b	.L358
-.L374:
+	b	.L330
+.L346:
 	bl	throwUp
-	b	.L358
-.L375:
+	b	.L330
+.L347:
 	mov	ip, #1
 	mov	lr, #4
 	add	r2, r3, r3, lsl ip
@@ -2058,10 +1937,10 @@ updateSteven:
 	str	r0, [r3, #36]
 	str	r2, [r3, #40]
 	str	ip, [r3, #52]
-	b	.L358
-.L377:
+	b	.L330
+.L349:
 	.align	2
-.L376:
+.L348:
 	.word	oldButtons
 	.word	buttons
 	.word	steven
@@ -2083,28 +1962,28 @@ bubbling:
 	mov	r5, r0
 	mov	r10, #0
 	mov	r9, #1
-	ldr	r4, .L396
-	ldr	r8, .L396+4
+	ldr	r4, .L368
+	ldr	r8, .L368+4
 	sub	sp, sp, #16
 	add	r7, r4, #520
-.L384:
+.L356:
 	ldr	r3, [r4, #52]
 	cmp	r3, #0
-	beq	.L380
+	beq	.L352
 	ldr	r6, [r5, #12]
 	cmp	r6, #0
-	beq	.L393
+	beq	.L365
 	cmp	r6, #1
-	beq	.L394
-.L380:
+	beq	.L366
+.L352:
 	add	r4, r4, #104
 	cmp	r4, r7
-	bne	.L384
+	bne	.L356
 	add	sp, sp, #16
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
-.L393:
+.L365:
 	add	ip, r4, #64
 	ldm	ip, {ip, lr}
 	add	r2, r5, #64
@@ -2119,14 +1998,14 @@ bubbling:
 	mov	lr, pc
 	bx	r8
 	cmp	r0, #0
-	bne	.L395
+	bne	.L367
 	ldr	r3, [r4, #52]
 	cmp	r3, #0
-	beq	.L380
+	beq	.L352
 	ldr	r6, [r5, #12]
 	cmp	r6, #1
-	bne	.L380
-.L394:
+	bne	.L352
+.L366:
 	add	ip, r4, #64
 	ldm	ip, {ip, lr}
 	add	r2, r5, #64
@@ -2144,15 +2023,15 @@ bubbling:
 	strne	r10, [r5, #12]
 	strne	r10, [r4, #52]
 	strne	r6, [r4, #100]
-	b	.L380
-.L395:
+	b	.L352
+.L367:
 	str	r9, [r5, #12]
 	str	r6, [r4, #52]
 	str	r9, [r4, #100]
-	b	.L380
-.L397:
+	b	.L352
+.L369:
 	.align	2
-.L396:
+.L368:
 	.word	bubbles
 	.word	collision
 	.size	bubbling, .-bubbling
@@ -2167,12 +2046,12 @@ updateEnemies:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, lr}
-	ldr	r8, .L402
-	ldr	r7, .L402+4
+	ldr	r8, .L374
+	ldr	r7, .L374+4
 	ldr	r1, [r8, #28]
 	mov	r0, r8
 	mov	r2, #20
-	ldr	r6, .L402+8
+	ldr	r6, .L374+8
 	bl	hoverDN
 	ldr	r1, [r7, #28]
 	mov	r0, r7
@@ -2182,17 +2061,17 @@ updateEnemies:
 	mov	r0, r6
 	mov	r2, #40
 	bl	hoverH
-	ldr	r4, .L402+12
+	ldr	r4, .L374+12
 	add	r5, r4, #24
-.L399:
+.L371:
 	ldr	r0, [r4, #4]!
 	bl	bubbling
 	cmp	r4, r5
-	bne	.L399
-	ldr	r3, .L402+16
+	bne	.L371
+	ldr	r3, .L374+16
 	ldr	r1, [r3]
 	ldr	r3, [r8, #44]
-	ldr	r2, .L402+20
+	ldr	r2, .L374+20
 	sub	r3, r3, r1
 	ldr	r0, [r2]
 	str	r3, [r8, #36]
@@ -2213,9 +2092,9 @@ updateEnemies:
 	str	r3, [r6, #40]
 	pop	{r4, r5, r6, r7, r8, lr}
 	bx	lr
-.L403:
+.L375:
 	.align	2
-.L402:
+.L374:
 	.word	yDiamond
 	.word	bDiamond
 	.word	wDiamond
@@ -2234,29 +2113,29 @@ updateStars:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	ldr	r4, .L408
+	ldr	r4, .L380
 	add	r5, r4, #16
-.L405:
+.L377:
 	ldr	r0, [r4], #4
 	bl	bubbling
 	cmp	r4, r5
-	bne	.L405
-	ldr	lr, .L408+4
-	ldr	r0, .L408+8
+	bne	.L377
+	ldr	lr, .L380+4
+	ldr	r0, .L380+8
 	ldr	r4, [lr, #44]
 	ldr	r0, [r0]
-	ldr	r1, .L408+12
+	ldr	r1, .L380+12
 	sub	r4, r4, r0
 	ldr	r1, [r1]
 	str	r4, [lr, #36]
 	ldr	r4, [lr, #48]
-	ldr	ip, .L408+16
+	ldr	ip, .L380+16
 	sub	r4, r4, r1
 	str	r4, [lr, #40]
 	add	r4, ip, #44
 	ldm	r4, {r4, lr}
-	ldr	r2, .L408+20
-	ldr	r3, .L408+24
+	ldr	r2, .L380+20
+	ldr	r3, .L380+24
 	sub	r4, r4, r0
 	sub	lr, lr, r1
 	str	r4, [ip, #36]
@@ -2275,9 +2154,9 @@ updateStars:
 	str	r1, [r3, #40]
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L409:
+.L381:
 	.align	2
-.L408:
+.L380:
 	.word	.LANCHOR0+24
 	.word	zoo
 	.word	vOff
@@ -2297,7 +2176,7 @@ updateGame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}
-	ldr	r4, .L412
+	ldr	r4, .L384
 	bl	animateSteven
 	bl	updateSteven
 	bl	updateEnemies
@@ -2314,9 +2193,9 @@ updateGame:
 	add	r0, r4, #416
 	pop	{r4, lr}
 	b	updateBubble
-.L413:
+.L385:
 	.align	2
-.L412:
+.L384:
 	.word	bubbles
 	.size	updateGame, .-updateGame
 	.comm	shadowOAM,1024,4

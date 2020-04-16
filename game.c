@@ -979,49 +979,6 @@ void starCollisions() {
 
 	}
 
-
-	if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
-		goToWinState();
-		//goToJdbState();
-		//goToMIState();
-		//goToZooState();
-		//goToGardenState();
-		
-	}
-
-
-	if (stars[1]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[1]->worldRow, stars[1]->worldCol, stars[1]->height, stars[1]->width)) {
-		//goToWinState();
-		//goToJdbState();
-		//goToMIState();
-		goToZooState();
-		//vOff = 0;
-		//goToGardenState();
-		
-	}
-
-	if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
-		//goToWinState();
-		goToJdbState();
-		//goToMIState();
-		//goToZooState();
-		//goToGardenState();
-		
-	}
-
-
-	if (stars[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[3]->worldRow, stars[3]->worldCol, stars[3]->height, stars[3]->width)) {
-		//goToWinState();
-		//goToJdbState();
-		//goToMIState();
-		//goToZooState();
-		goToGardenState();
-		
-	}
-
-
-	//NUMSTARS] = {&earth, &zoo, &jungleBase, &garden};
-
 }
 
 
