@@ -71,6 +71,8 @@ typedef struct {
     int numID;
     int initScreenRow;
     int initScreenCol;
+    int initWorldRow;
+    int initWorldCol;
     int screenRow;
     int screenCol;
     int worldRow;
@@ -89,10 +91,10 @@ typedef struct {
     int tileCol;
     int hide;
 } ANISPRITE;
-# 218 "myLib.h"
+# 220 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 229 "myLib.h"
+# 231 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -101,8 +103,22 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 269 "myLib.h"
+# 271 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
+# 312 "myLib.h"
+typedef void (*ihp)(void);
+# 367 "myLib.h"
+typedef struct{
+    const signed char* data;
+    int length;
+    int frequency;
+    int isPlaying;
+    int loops;
+    int duration;
+    int priority;
+    int vBlankCount;
+} SOUND;
+
 
 
 

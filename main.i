@@ -1294,6 +1294,20 @@ typedef volatile struct {
 extern DMA *dma;
 # 271 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
+# 312 "myLib.h"
+typedef void (*ihp)(void);
+# 367 "myLib.h"
+typedef struct{
+    const signed char* data;
+    int length;
+    int frequency;
+    int isPlaying;
+    int loops;
+    int duration;
+    int priority;
+    int vBlankCount;
+} SOUND;
+
 
 
 
@@ -1430,6 +1444,47 @@ extern const unsigned short helpMap[1024];
 extern const unsigned short helpPal[256];
 # 15 "main.c" 2
 
+# 1 "jdb.h" 1
+# 22 "jdb.h"
+extern const unsigned short jdbTiles[15648];
+
+
+extern const unsigned short jdbMap[1024];
+
+
+extern const unsigned short jdbPal[256];
+# 17 "main.c" 2
+# 1 "mIsland.h" 1
+# 22 "mIsland.h"
+extern const unsigned short mIslandTiles[17600];
+
+
+extern const unsigned short mIslandMap[1024];
+
+
+extern const unsigned short mIslandPal[256];
+# 18 "main.c" 2
+# 1 "zoo.h" 1
+# 22 "zoo.h"
+extern const unsigned short zooTiles[14272];
+
+
+extern const unsigned short zooMap[1024];
+
+
+extern const unsigned short zooPal[256];
+# 19 "main.c" 2
+# 1 "garden.h" 1
+# 22 "garden.h"
+extern const unsigned short gardenTiles[12928];
+
+
+extern const unsigned short gardenMap[1024];
+
+
+extern const unsigned short gardenPal[256];
+# 20 "main.c" 2
+
 
 
 # 1 "spritesheet1.h" 1
@@ -1438,7 +1493,39 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 19 "main.c" 2
+# 24 "main.c" 2
+# 1 "sound.h" 1
+SOUND soundA;
+SOUND soundB;
+
+
+
+void setupSounds();
+void playSoundA(const signed char* sound, int length, int loops);
+void playSoundB(const signed char* sound, int length, int loops);
+
+void setupInterrupts();
+void interruptHandler();
+
+void pauseSound();
+void unpauseSound();
+void stopSound();
+# 25 "main.c" 2
+
+# 1 "spacedOutBeats.h" 1
+
+
+
+
+extern const signed char spacedOutBeats[1177056];
+# 27 "main.c" 2
+# 1 "gameSong.h" 1
+
+
+
+
+extern const signed char gameSong[903052];
+# 28 "main.c" 2
 
 
 
@@ -1457,6 +1544,11 @@ void goToLoseState();
 void loseState();
 void helpState();
 void goToHelpState();
+void goToJdbState();
+void goToMIState();
+void goToZooState();
+void goToGardenState();
+
 
 
 enum {START, GAME, PAUSE, WIN, LOSE, HELP};
@@ -1529,6 +1621,9 @@ void initialize() {
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
+    setupInterrupts();
+    setupSounds();
+
 
     goToStart();
 }
@@ -1552,6 +1647,10 @@ void goToStart() {
 
     DMANow(3, startMap, &((screenblock *)0x6000000)[20], 2048/2);
 
+
+
+    playSoundA(spacedOutBeats, 1177056, 1);
+
     state = START;
 
 
@@ -1574,6 +1673,8 @@ void start() {
         srand(seed);
 
         goToGame();
+        stopSound();
+        playSoundA(gameSong, 903052, 1);
         initGame();
     }
 
@@ -1760,7 +1861,8 @@ void loseState() {
 
 void goToHelpState() {
 
-
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
 
 
 
@@ -1782,9 +1884,6 @@ void goToHelpState() {
 
 void helpState() {
 
-    (*(volatile unsigned short *)0x04000010) = 0;
-    (*(volatile unsigned short *)0x04000012) = 0;
-
 
     waitForVBlank();
 
@@ -1794,4 +1893,110 @@ void helpState() {
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
         goToStart();
     }
+}
+
+
+
+
+void goToJdbState() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+    DMANow(3, jdbPal, ((unsigned short *)0x5000000), 256);
+
+
+    DMANow(3, jdbTiles,& ((charblock *)0x6000000)[0], 31296/2);
+
+
+    DMANow(3, jdbMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PAUSE;
+
+}
+
+
+
+void goToMIState() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+    DMANow(3, mIslandPal, ((unsigned short *)0x5000000), 256);
+
+
+    DMANow(3, mIslandTiles,& ((charblock *)0x6000000)[0], 35200/2);
+
+
+    DMANow(3, mIslandMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PAUSE;
+
+}
+
+
+void goToZooState() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+    DMANow(3, zooPal, ((unsigned short *)0x5000000), 256);
+
+
+    DMANow(3, zooTiles,& ((charblock *)0x6000000)[0], 28544/2);
+
+
+    DMANow(3, zooMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PAUSE;
+
+}
+
+
+void goToGardenState() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+    DMANow(3, gardenPal, ((unsigned short *)0x5000000), 256);
+
+
+    DMANow(3, gardenTiles,& ((charblock *)0x6000000)[0], 25856/2);
+
+
+    DMANow(3, gardenMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PAUSE;
 }

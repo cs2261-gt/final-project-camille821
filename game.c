@@ -4,6 +4,7 @@
 //#include "text.h"
 
 #include "spritesheet1.h"
+#include "sound.h"
 
 
 
@@ -912,9 +913,30 @@ void starCollisions() {
 	}
 
 
-	if (stars[0]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, stars[0]->screenRow, stars[0]->screenCol, stars[0]->height, stars[0]->width)) {
+	if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
 		goToWinState();
-		vOff = 0;
+		//goToJdbState();
+		//goToMIState();
+		//goToZooState();
+		//goToGardenState();
+
+			if (steven.aniState == SPRITELEFT) {
+				steven.worldCol += 10;
+			
+			} else
+			
+			if (steven.aniState == SPRITERIGHT) {
+				steven.worldCol -= 10;
+			} else
+			
+			if (steven.aniState == SPRITEBACK) {
+				steven.worldRow += 10;
+			} else
+			
+			if (steven.aniState == SPRITEFRONT) {
+				steven.worldRow -= 10;
+			}
+		
 
 	}
 

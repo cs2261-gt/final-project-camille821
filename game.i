@@ -901,6 +901,20 @@ typedef volatile struct {
 extern DMA *dma;
 # 271 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
+# 312 "myLib.h"
+typedef void (*ihp)(void);
+# 367 "myLib.h"
+typedef struct{
+    const signed char* data;
+    int length;
+    int frequency;
+    int isPlaying;
+    int loops;
+    int duration;
+    int priority;
+    int vBlankCount;
+} SOUND;
+
 
 
 
@@ -981,7 +995,24 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 extern const unsigned short spritesheet1Pal[256];
 # 7 "game.c" 2
-# 15 "game.c"
+# 1 "sound.h" 1
+SOUND soundA;
+SOUND soundB;
+
+
+
+void setupSounds();
+void playSoundA(const signed char* sound, int length, int loops);
+void playSoundB(const signed char* sound, int length, int loops);
+
+void setupInterrupts();
+void interruptHandler();
+
+void pauseSound();
+void unpauseSound();
+void stopSound();
+# 8 "game.c" 2
+# 16 "game.c"
 ANISPRITE steven;
 int livesLeft;
 int hOff;
@@ -1050,7 +1081,7 @@ void updateGame() {
 
  for (int i = 0; i < 5; i++)
   updateBubble(&bubbles[i]);
-# 92 "game.c"
+# 93 "game.c"
 }
 
 
@@ -1509,7 +1540,7 @@ void initEnemies() {
 
 
  for (int i = 0; i < 6; i++) {
-# 558 "game.c"
+# 559 "game.c"
   enemies[i]->width = 16;
   enemies[i]->height = 16;
   enemies[i]->tileRow = 8;
@@ -1867,9 +1898,30 @@ void starCollisions() {
  }
 
 
- if (stars[0]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, stars[0]->screenRow, stars[0]->screenCol, stars[0]->height, stars[0]->width)) {
+ if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
   goToWinState();
-  vOff = 0;
+
+
+
+
+
+   if (steven.aniState == SPRITELEFT) {
+    steven.worldCol += 10;
+
+   } else
+
+   if (steven.aniState == SPRITERIGHT) {
+    steven.worldCol -= 10;
+   } else
+
+   if (steven.aniState == SPRITEBACK) {
+    steven.worldRow += 10;
+   } else
+
+   if (steven.aniState == SPRITEFRONT) {
+    steven.worldRow -= 10;
+   }
+
 
  }
 

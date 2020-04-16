@@ -12,10 +12,19 @@
 #include "win.h"
 #include "lose.h"
 #include "help.h"
+//star BG's
+#include "jdb.h"
+#include "mIsland.h"
+#include "zoo.h"
+#include "garden.h"
 
 
 
 #include "spritesheet1.h"
+#include "sound.h"
+
+#include "spacedOutBeats.h"
+#include "gameSong.h"
 
 
 // Prototypes
@@ -34,6 +43,11 @@ void goToLoseState();
 void loseState();
 void helpState();
 void goToHelpState();
+void goToJdbState();
+void goToMIState();
+void goToZooState();
+void goToGardenState();
+
 
 // States
 enum {START, GAME, PAUSE, WIN, LOSE, HELP};
@@ -106,6 +120,9 @@ void initialize() {
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
+    setupInterrupts();
+    setupSounds();
+
     // Set up the first state
     goToStart();
 }
@@ -129,6 +146,10 @@ void goToStart() {
     //Load your tile map into the screenblock that your background is using
     DMANow(3, startMap, &SCREENBLOCK[20], startMapLen/2);
 
+
+    //play intro music
+    playSoundA(spacedOutBeats, SPACEDOUTBEATSLEN, 1);
+
     state = START;
 
     // Begin the seed randomization
@@ -151,6 +172,8 @@ void start() {
         srand(seed);
 
         goToGame();
+        stopSound();
+        playSoundA(gameSong, GAMESONGLEN, 1);
         initGame();
     }
 
@@ -216,9 +239,13 @@ void game() {
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) 
+        pauseSound();
         goToPause();
   
     if (BUTTON_PRESSED(BUTTON_SELECT)) {        
+        stopSound();
+
+        //TODO: add in help song
         goToHelpState();
     }
 
@@ -337,7 +364,8 @@ void loseState() {
 
 void goToHelpState() {
     
-    
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;   
 
 
     // hacky, but basically disables sprites for this state
@@ -359,9 +387,6 @@ void goToHelpState() {
 
 void helpState() {
 
-    REG_BG0HOFF = 0;
-    REG_BG0VOFF = 0;
-
     // Lock the framerate to 60 fps
     waitForVBlank();
 
@@ -372,6 +397,114 @@ void helpState() {
         goToStart();
     }
 }
+
+//======================================STAR STATES===================================================================
+
+
+void goToJdbState() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+    
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+    //Load the palette for your tiles
+    DMANow(3, jdbPal, PALETTE, 256);
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, jdbTiles,& CHARBLOCK[0], jdbTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, jdbMap, &SCREENBLOCK[20], jdbMapLen/2);
+
+    state = PAUSE;
+
+}
+
+
+
+void goToMIState() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+    
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+    //Load the palette for your tiles
+    DMANow(3, mIslandPal, PALETTE, 256);
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, mIslandTiles,& CHARBLOCK[0], mIslandTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, mIslandMap, &SCREENBLOCK[20], mIslandMapLen/2);
+
+    state = PAUSE;
+
+}
+
+
+void goToZooState() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+    
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+    //Load the palette for your tiles
+    DMANow(3, zooPal, PALETTE, 256);
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, zooTiles,& CHARBLOCK[0], zooTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, zooMap, &SCREENBLOCK[20], zooMapLen/2);
+
+    state = PAUSE;
+
+}
+
+
+void goToGardenState() {
+    
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+    
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+    //Load the palette for your tiles
+    DMANow(3, gardenPal, PALETTE, 256);
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, gardenTiles,& CHARBLOCK[0], gardenTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, gardenMap, &SCREENBLOCK[20], gardenMapLen/2);
+
+    state = PAUSE;
+}
+
+
 
 
 

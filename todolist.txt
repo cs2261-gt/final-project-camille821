@@ -12,14 +12,14 @@
 10. get lives mechanics to work
 - get cheat mechanic to work
 - get winning condition to work
-
-
 - add star locations to state machine
 - get basic sound stuff working
 
+- finish implementing core sounds for the game (bubbling, pause, help, win, lose)
+- create and implement collision map
+
 
 - impplement XL BG
-- create and implement collision map
 - make it so the VOFF is constantly moving
 - XL BG lose condition
 
