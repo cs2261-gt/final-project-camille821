@@ -48,6 +48,14 @@ void goToMIState();
 void goToZooState();
 void goToGardenState();
 
+//M3 Progress: I have the game playable to where the win state can be reached and have started adding sound
+//I have all or the core game mechanics implemented in my code 
+//Whats left to be done is the inplementation of the XL background and (hopefully) an autoscrolling screen
+// Some extra things I want to add is more sounds and some
+//extra cut scenes in my state machine
+
+
+//TODO: add more stars!!!
 
 // States
 enum {START, GAME, PAUSE, WIN, LOSE, HELP};
