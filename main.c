@@ -1,5 +1,8 @@
 //M3 Progress: I have the game playable to where the win state can be reached and have started adding sound
-//I have all or the core game mechanics implemented in my code 
+//I have all or the core game mechanics implemented in my code and have put in the collission map
+//currently have a bug with the state screen not ully showing when player collides with star
+//another bug is my player getting stuck outside my colmap from resetting its position after star/enemy collision
+//(I did that as an attempt to avoid play from autmatically losing once/ continuously collidiong with stars/enemies)
 //Whats left to be done is the inplementation of the XL background and (hopefully) an autoscrolling screen
 // Some extra things I want to add is more sounds and some
 //extra cut scenes in my state machine
@@ -29,6 +32,7 @@
 
 
 #include "spritesheet1.h"
+//UNCOMMENT FOR SOUND
 #include "sound.h"
 
 #include "spacedOutBeats.h"
@@ -132,6 +136,7 @@ void initialize() {
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
+    //UNCOMMENT FOR SOUND
     setupInterrupts();
     setupSounds();
 
@@ -160,6 +165,7 @@ void goToStart() {
 
 
     //play intro music
+    //UMCOMMENT: for sound
     playSoundA(spacedOutBeats, SPACEDOUTBEATSLEN, 1);
 
     state = START;
@@ -182,7 +188,7 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         // Seed the random generator
         srand(seed);
-
+        //UNCOMMENT FOR SOUND
         goToGame();
         stopSound();
         playSoundA(gameSong, GAMESONGLEN, 1);
@@ -251,10 +257,11 @@ void game() {
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) 
-        pauseSound();
+        
         goToPause();
   
     if (BUTTON_PRESSED(BUTTON_SELECT)) {        
+        //UNCOMMENT FOR SOUND
         stopSound();
 
         //TODO: add in help song
@@ -265,6 +272,9 @@ void game() {
 
 // Sets up the pause state
 void goToPause() {
+
+
+    
 
     REG_BG0HOFF = 0;
     REG_BG0VOFF = 0;
@@ -290,17 +300,21 @@ void goToPause() {
 
 // Runs every frame of the pause state
 void pause() {
-
-
+    //UNCOMMENT FOR SOUND
+    pauseSound();
     
     // Lock the framerate to 60 fps
     waitForVBlank();
 
     // State transitions
-    if (BUTTON_PRESSED(BUTTON_START))
-        goToGame();
-    else if (BUTTON_PRESSED(BUTTON_SELECT))
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        //UNCOMMENT FOR SOUND
+        unpauseSound();
+        goToGame();  
+    
+    } else if (BUTTON_PRESSED(BUTTON_SELECT)) { 
         goToStart();
+    }
 }
 
 // Sets up the daria state
@@ -468,11 +482,6 @@ void goToMIState() {
 
 void goToZooState() {
 
-    REG_BG0HOFF = 0;
-    REG_BG0VOFF = 0;
-    
-    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
-
 
 
     // hacky, but basically disables sprites for this state
@@ -486,6 +495,21 @@ void goToZooState() {
 
     //Load your tile map into the screenblock that your background is using
     DMANow(3, zooMap, &SCREENBLOCK[20], zooMapLen/2);
+
+
+    // REG_BG0HOFF = 0;
+    // REG_BG0VOFF = 0;
+
+
+    
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+
+
 
     state = PAUSE;
 

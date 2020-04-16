@@ -2,6 +2,7 @@
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "main.c"
+# 12 "main.c"
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 1 3
 # 10 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/machine/ieeefp.h" 1 3
@@ -795,7 +796,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 333 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 
-# 2 "main.c" 2
+# 13 "main.c" 2
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 1 3
 # 36 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/lib/gcc/arm-none-eabi/7.1.0/include/stddef.h" 1 3 4
@@ -1188,7 +1189,7 @@ static __inline__ int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
 }
 # 767 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 
-# 3 "main.c" 2
+# 14 "main.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1313,7 +1314,7 @@ typedef struct{
 
 
 int collision(int rowA, int colA, int heightA, int widthA, int rowB, int colB, int heightB, int widthB);
-# 4 "main.c" 2
+# 15 "main.c" 2
 # 1 "game.h" 1
 # 14 "game.h"
 extern ANISPRITE steven;
@@ -1378,7 +1379,7 @@ void throwRight();
 void throwUp();
 void throwDown();
 void bubbling(ANISPRITE * a);
-# 5 "main.c" 2
+# 16 "main.c" 2
 
 
 
@@ -1391,7 +1392,7 @@ extern const unsigned short startMap[1024];
 
 
 extern const unsigned short startPal[256];
-# 9 "main.c" 2
+# 20 "main.c" 2
 
 # 1 "gameSplash1.h" 1
 # 22 "gameSplash1.h"
@@ -1402,7 +1403,7 @@ extern const unsigned short gameSplash1Map[2048];
 
 
 extern const unsigned short gameSplash1Pal[256];
-# 11 "main.c" 2
+# 22 "main.c" 2
 # 1 "pause.h" 1
 # 22 "pause.h"
 extern const unsigned short pauseTiles[512];
@@ -1412,7 +1413,7 @@ extern const unsigned short pauseMap[1024];
 
 
 extern const unsigned short pausePal[256];
-# 12 "main.c" 2
+# 23 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
 extern const unsigned short winTiles[1568];
@@ -1422,7 +1423,7 @@ extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 13 "main.c" 2
+# 24 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
 extern const unsigned short loseTiles[3040];
@@ -1432,7 +1433,7 @@ extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 14 "main.c" 2
+# 25 "main.c" 2
 # 1 "help.h" 1
 # 22 "help.h"
 extern const unsigned short helpTiles[832];
@@ -1442,7 +1443,7 @@ extern const unsigned short helpMap[1024];
 
 
 extern const unsigned short helpPal[256];
-# 15 "main.c" 2
+# 26 "main.c" 2
 
 # 1 "jdb.h" 1
 # 22 "jdb.h"
@@ -1453,7 +1454,7 @@ extern const unsigned short jdbMap[1024];
 
 
 extern const unsigned short jdbPal[256];
-# 17 "main.c" 2
+# 28 "main.c" 2
 # 1 "mIsland.h" 1
 # 22 "mIsland.h"
 extern const unsigned short mIslandTiles[17600];
@@ -1463,7 +1464,7 @@ extern const unsigned short mIslandMap[1024];
 
 
 extern const unsigned short mIslandPal[256];
-# 18 "main.c" 2
+# 29 "main.c" 2
 # 1 "zoo.h" 1
 # 22 "zoo.h"
 extern const unsigned short zooTiles[14272];
@@ -1473,7 +1474,7 @@ extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 19 "main.c" 2
+# 30 "main.c" 2
 # 1 "garden.h" 1
 # 22 "garden.h"
 extern const unsigned short gardenTiles[12928];
@@ -1483,7 +1484,7 @@ extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 20 "main.c" 2
+# 31 "main.c" 2
 
 
 
@@ -1493,7 +1494,8 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 24 "main.c" 2
+# 35 "main.c" 2
+
 # 1 "sound.h" 1
 SOUND soundA;
 SOUND soundB;
@@ -1510,7 +1512,7 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 25 "main.c" 2
+# 37 "main.c" 2
 
 # 1 "spacedOutBeats.h" 1
 
@@ -1518,14 +1520,14 @@ void stopSound();
 
 
 extern const signed char spacedOutBeats[1177056];
-# 27 "main.c" 2
+# 39 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 28 "main.c" 2
+# 40 "main.c" 2
 
 
 
@@ -1548,6 +1550,10 @@ void goToJdbState();
 void goToMIState();
 void goToZooState();
 void goToGardenState();
+
+
+
+
 
 
 
@@ -1621,6 +1627,7 @@ void initialize() {
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
+
     setupInterrupts();
     setupSounds();
 
@@ -1646,6 +1653,7 @@ void goToStart() {
 
 
     DMANow(3, startMap, &((screenblock *)0x6000000)[20], 2048/2);
+
 
 
 
@@ -1740,9 +1748,14 @@ void game() {
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+
         goToPause();
 
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+
+        stopSound();
+
+
         goToHelpState();
     }
 
@@ -1750,6 +1763,9 @@ void game() {
 
 
 void goToPause() {
+
+
+
 
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
@@ -1776,16 +1792,20 @@ void goToPause() {
 
 void pause() {
 
-
+    pauseSound();
 
 
     waitForVBlank();
 
 
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+
+        unpauseSound();
         goToGame();
-    else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2)))))
+
+    } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
         goToStart();
+    }
 }
 
 
@@ -1953,11 +1973,6 @@ void goToMIState() {
 
 void goToZooState() {
 
-    (*(volatile unsigned short *)0x04000010) = 0;
-    (*(volatile unsigned short *)0x04000012) = 0;
-
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
-
 
 
 
@@ -1971,6 +1986,21 @@ void goToZooState() {
 
 
     DMANow(3, zooMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+
+
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+
 
     state = PAUSE;
 

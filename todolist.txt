@@ -19,6 +19,7 @@
 - create and implement collision map
 
 
+-when going back to do sound, uncomment this //UNCOMMENT FOR SOUND
 - impplement XL BG
 - make it so the VOFF is constantly moving
 - XL BG lose condition
@@ -34,9 +35,4 @@ EXTRA
 
 
 
--Options:
-
-bubble and unbubble same object 
-
--collision logic with bubbles that
 

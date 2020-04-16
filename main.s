@@ -253,22 +253,25 @@ pause:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L30
 	push	{r4, lr}
+	ldr	r3, .L30
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L30+4
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L30+8
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L19
-	ldr	r2, .L30+8
+	ldr	r2, .L30+12
 	ldrh	r2, [r2]
 	tst	r2, #8
 	beq	.L28
 .L19:
 	tst	r3, #4
 	beq	.L18
-	ldr	r3, .L30+8
+	ldr	r3, .L30+12
 	ldrh	r3, [r3]
 	tst	r3, #4
 	beq	.L29
@@ -279,14 +282,19 @@ pause:
 	pop	{r4, lr}
 	b	goToStart
 .L28:
+	ldr	r3, .L30+16
+	mov	lr, pc
+	bx	r3
 	pop	{r4, lr}
 	b	goToGame
 .L31:
 	.align	2
 .L30:
+	.word	pauseSound
 	.word	waitForVBlank
 	.word	oldButtons
 	.word	buttons
+	.word	unpauseSound
 	.size	pause, .-pause
 	.align	2
 	.global	goToWinState
@@ -611,6 +619,9 @@ game:
 	pop	{r4, lr}
 	bx	lr
 .L79:
+	ldr	r3, .L80+28
+	mov	lr, pc
+	bx	r3
 	pop	{r4, lr}
 	b	goToHelpState
 .L78:
@@ -627,6 +638,7 @@ game:
 	.word	waitForVBlank
 	.word	drawGame
 	.word	buttons
+	.word	stopSound
 	.size	game, .-game
 	.align	2
 	.global	helpState
@@ -878,37 +890,37 @@ goToZooState:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #67108864
-	mov	r1, #0
+	push	{r4, r5, r6, lr}
 	mov	r3, #256
-	mov	r0, #5248
-	push	{r4, lr}
-	strh	r1, [r2, #16]	@ movhi
-	ldr	r4, .L120
-	strh	r1, [r2, #18]	@ movhi
-	strh	r3, [r2]	@ movhi
-	strh	r0, [r2, #8]	@ movhi
-	ldr	r1, .L120+4
+	mov	r4, #67108864
+	ldr	r5, .L120
+	strh	r3, [r4]	@ movhi
 	mov	r2, #83886080
+	ldr	r1, .L120+4
 	mov	r0, #3
 	mov	lr, pc
-	bx	r4
+	bx	r5
 	mov	r3, #14272
 	mov	r2, #100663296
 	ldr	r1, .L120+8
 	mov	r0, #3
 	mov	lr, pc
-	bx	r4
+	bx	r5
 	mov	r3, #1024
 	ldr	r2, .L120+12
 	ldr	r1, .L120+16
 	mov	r0, #3
 	mov	lr, pc
-	bx	r4
-	mov	r2, #2
-	ldr	r3, .L120+20
-	pop	{r4, lr}
-	str	r2, [r3]
+	bx	r5
+	mov	r3, #0
+	mov	r0, #5248
+	mov	r1, #2
+	ldr	r2, .L120+20
+	strh	r0, [r4, #8]	@ movhi
+	strh	r3, [r4, #16]	@ movhi
+	strh	r3, [r4, #18]	@ movhi
+	str	r1, [r2]
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L121:
 	.align	2

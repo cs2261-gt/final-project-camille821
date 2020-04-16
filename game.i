@@ -1012,7 +1012,11 @@ void pauseSound();
 void unpauseSound();
 void stopSound();
 # 8 "game.c" 2
-# 16 "game.c"
+# 1 "colmap1.h" 1
+# 20 "colmap1.h"
+extern const unsigned short colmap1Bitmap[131072];
+# 9 "game.c" 2
+# 17 "game.c"
 ANISPRITE steven;
 int livesLeft;
 int hOff;
@@ -1081,7 +1085,7 @@ void updateGame() {
 
  for (int i = 0; i < 5; i++)
   updateBubble(&bubbles[i]);
-# 93 "game.c"
+# 94 "game.c"
 }
 
 
@@ -1410,37 +1414,65 @@ void animateSteven() {
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && steven.worldRow >= 10) {
 
 
-  steven.worldRow -= steven.rdel;
+
   steven.aniState = SPRITEBACK;
 
   if (vOff > 0) {
    vOff--;
   }
 
+  if(steven.worldRow > 0 && colmap1Bitmap[((steven.worldRow - 1)*(256)+(steven.worldCol))] &&
+                colmap1Bitmap[((steven.worldRow - 1)*(256)+(steven.worldCol + steven.width - 1))]) {
+   steven.worldRow -= steven.rdel;
+  }
+
 
 
  }
+
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
 
-  steven.worldRow += steven.rdel;
+
   steven.aniState = SPRITEFRONT;
 
   if (vOff < 512) {
    vOff++;
   }
 
+  if(steven.worldRow + steven.height < 512 &&
+                colmap1Bitmap[((steven.worldRow + steven.height)*(256)+(steven.worldCol))] &&
+                colmap1Bitmap[((steven.worldRow + steven.height)*(256)+(steven.worldCol + steven.width - 1))]){
 
+   steven.worldRow += steven.rdel;
+
+  }
  }
+
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
 
-  steven.worldCol -= steven.cdel;
+
   steven.aniState = SPRITELEFT;
+
+  if(steven.worldCol > 0 && colmap1Bitmap[((steven.worldRow)*(256)+(steven.worldCol - 1))]
+                && colmap1Bitmap[((steven.worldRow + steven.height - 1)*(256)+(steven.worldCol - 1))]) {
+
+
+   steven.worldCol -= steven.cdel;
+  }
 
  }
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
 
-  steven.worldCol += steven.cdel;
+
   steven.aniState = SPRITERIGHT;
+
+  if( steven.worldCol + steven.width < 256
+   && colmap1Bitmap[((steven.worldRow)*(256)+(steven.worldCol + steven.width))]
+   && colmap1Bitmap[((steven.worldRow + steven.height - 1)*(256)+(steven.worldCol + steven.width))]) {
+
+
+   steven.worldCol += steven.cdel;
+  }
 
  }
 
@@ -1540,7 +1572,7 @@ void initEnemies() {
 
 
  for (int i = 0; i < 6; i++) {
-# 559 "game.c"
+# 588 "game.c"
   enemies[i]->width = 16;
   enemies[i]->height = 16;
   enemies[i]->tileRow = 8;
@@ -1639,6 +1671,41 @@ void initStars() {
  earth.screenCol = earth.worldCol - hOff;
  earth.active = 1;
  earth.hide = 0;
+ earth.cheatR = 9;
+ earth.cheatC = 3;
+
+
+
+ zoo.worldRow = 355;
+ zoo.worldCol = 110;
+ zoo.screenRow = zoo.worldRow - vOff;
+ zoo.screenCol = zoo.worldCol - hOff;
+ zoo.active = 1;
+ zoo.hide = 0;
+ zoo.cheatR = 10;
+ zoo.cheatC = 4;
+
+ garden.worldRow = 240;
+ garden.worldCol = 100;
+ garden.screenRow = garden.worldRow - vOff;
+ garden.screenCol = garden.worldCol - hOff;
+ garden.active = 1;
+ garden.hide = 0;
+ garden.cheatR = 10;
+ garden.cheatC = 3;
+
+
+ jungleBase.worldRow = 110;
+ jungleBase.worldCol = 120;
+ jungleBase.screenRow = jungleBase.worldRow - vOff;
+ jungleBase.screenCol = jungleBase.worldCol - hOff;
+ jungleBase.active = 1;
+ jungleBase.hide = 0;
+ jungleBase.cheatR = 10;
+ jungleBase.cheatC = 2;
+
+
+
 
 
  for (int i = 0; i < 4; i++) {
@@ -1655,8 +1722,6 @@ void initStars() {
   stars[i]->rdel = 1;
   stars[i]->cdel = 1;
   stars[i]->bubbled = 0;
-  stars[i]->cheatR = 9;
-  stars[i]->cheatC = 3;
  }
 
 
@@ -1669,8 +1734,19 @@ void updateStars() {
    bubbling(stars[i]);
  }
 
+ zoo.screenRow = zoo.worldRow - vOff;
+ zoo.screenCol = zoo.worldCol - hOff;
+
  earth.screenRow = earth.worldRow - vOff;
  earth.screenCol = earth.worldCol - hOff;
+
+
+ jungleBase.screenRow = jungleBase.worldRow - vOff;
+ jungleBase.screenCol = jungleBase.worldCol - hOff;
+
+
+ garden.screenRow = garden.worldRow - vOff;
+ garden.screenCol = garden.worldCol - hOff;
 
 }
 
@@ -1678,7 +1754,7 @@ void updateStars() {
 
 void drawStars() {
 
- for (int i = 0; i < 1; i++) {
+ for (int i = 0; i < 4; i++) {
   if (stars[i]->hide || stars[i]->screenRow < 0 || stars[i]->screenRow > 160) {
          shadowOAM[4+i].attr0 |= (2<<8);
      } else {
@@ -1867,43 +1943,9 @@ void enemyCollisions() {
 }
 void starCollisions() {
 
- for (int i = 1 ; i < 4; i++) {
+ for (int i = 0 ; i < 4; i++) {
 
   if (stars[i]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, stars[i]->screenRow, stars[i]->screenCol, stars[i]->height, stars[i]->width)) {
-
-
-   goToPause();
-
-
-
-
-   if (steven.aniState == SPRITELEFT) {
-    steven.screenCol += 10;
-
-   } else
-
-   if (steven.aniState == SPRITERIGHT) {
-    steven.screenCol -= 10;
-   } else
-
-   if (steven.aniState == SPRITEBACK) {
-    steven.screenRow += 10;
-   } else
-
-   if (steven.aniState == SPRITEFRONT) {
-    steven.screenRow -= 10;
-   }
-  }
-
- }
-
-
- if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
-  goToWinState();
-
-
-
-
 
    if (steven.aniState == SPRITELEFT) {
     steven.worldCol += 10;
@@ -1921,9 +1963,52 @@ void starCollisions() {
    if (steven.aniState == SPRITEFRONT) {
     steven.worldRow -= 10;
    }
+  }
+
+ }
+
+
+ if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
+  goToWinState();
+
+
+
 
 
  }
+
+
+ if (stars[1]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[1]->worldRow, stars[1]->worldCol, stars[1]->height, stars[1]->width)) {
+
+
+
+  goToZooState();
+
+
+
+ }
+
+ if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
+
+  goToJdbState();
+
+
+
+
+ }
+
+
+ if (stars[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[3]->worldRow, stars[3]->worldCol, stars[3]->height, stars[3]->width)) {
+
+
+
+
+  goToGardenState();
+
+ }
+
+
+
 
 }
 
