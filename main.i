@@ -1200,9 +1200,9 @@ static __inline__ int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
-# 71 "myLib.h"
+# 72 "myLib.h"
 extern unsigned short *videoBuffer;
-# 92 "myLib.h"
+# 93 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -1244,7 +1244,7 @@ typedef struct {
 
 
 extern OBJ_ATTR shadowOAM[];
-# 163 "myLib.h"
+# 164 "myLib.h"
 void hideSprites();
 
 
@@ -1281,10 +1281,10 @@ typedef struct {
     int tileCol;
     int hide;
 } ANISPRITE;
-# 220 "myLib.h"
+# 221 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 231 "myLib.h"
+# 232 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -1293,11 +1293,11 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 271 "myLib.h"
+# 272 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 312 "myLib.h"
+# 313 "myLib.h"
 typedef void (*ihp)(void);
-# 367 "myLib.h"
+# 368 "myLib.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -1445,16 +1445,28 @@ extern const unsigned short helpMap[1024];
 extern const unsigned short helpPal[256];
 # 26 "main.c" 2
 
-# 1 "jdb.h" 1
-# 22 "jdb.h"
-extern const unsigned short jdbTiles[15648];
+# 1 "jungle.h" 1
+# 22 "jungle.h"
+extern const unsigned short jungleTiles[6624];
 
 
-extern const unsigned short jdbMap[1024];
+extern const unsigned short jungleMap[1024];
 
 
-extern const unsigned short jdbPal[256];
+extern const unsigned short junglePal[256];
 # 28 "main.c" 2
+# 1 "jungle2.h" 1
+# 22 "jungle2.h"
+extern const unsigned short jungle2Tiles[3168];
+
+
+extern const unsigned short jungle2Map[1024];
+
+
+extern const unsigned short jungle2Pal[256];
+# 29 "main.c" 2
+
+
 # 1 "mIsland.h" 1
 # 22 "mIsland.h"
 extern const unsigned short mIslandTiles[17600];
@@ -1464,17 +1476,31 @@ extern const unsigned short mIslandMap[1024];
 
 
 extern const unsigned short mIslandPal[256];
-# 29 "main.c" 2
+# 32 "main.c" 2
+
+
 # 1 "zoo.h" 1
 # 22 "zoo.h"
-extern const unsigned short zooTiles[14272];
+extern const unsigned short zooTiles[5184];
 
 
 extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 30 "main.c" 2
+# 35 "main.c" 2
+# 1 "zoo2.h" 1
+# 22 "zoo2.h"
+extern const unsigned short zoo2Tiles[3488];
+
+
+extern const unsigned short zoo2Map[1024];
+
+
+extern const unsigned short zoo2Pal[256];
+# 36 "main.c" 2
+
+
 # 1 "garden.h" 1
 # 22 "garden.h"
 extern const unsigned short gardenTiles[12928];
@@ -1484,7 +1510,7 @@ extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 31 "main.c" 2
+# 39 "main.c" 2
 
 
 
@@ -1494,7 +1520,8 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 35 "main.c" 2
+# 43 "main.c" 2
+
 
 # 1 "sound.h" 1
 SOUND soundA;
@@ -1512,7 +1539,7 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 37 "main.c" 2
+# 46 "main.c" 2
 
 # 1 "spacedOutBeats.h" 1
 
@@ -1520,14 +1547,14 @@ void stopSound();
 
 
 extern const signed char spacedOutBeats[1177056];
-# 39 "main.c" 2
+# 48 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 40 "main.c" 2
+# 49 "main.c" 2
 
 
 
@@ -1697,6 +1724,7 @@ void start() {
 void goToGame() {
 
 
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((25)<<8) | ((0)<<2) | (2<<14);
 
@@ -1947,24 +1975,35 @@ void goToJdbState() {
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
 
 
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+    DMANow(3, junglePal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, jdbPal, ((unsigned short *)0x5000000), 256);
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, jungleTiles,& ((charblock *)0x6000000)[1], 13248/2);
 
 
-    DMANow(3, jdbTiles,& ((charblock *)0x6000000)[0], 31296/2);
+    DMANow(3, jungleMap, &((screenblock *)0x6000000)[27], 2048/2);
 
 
-    DMANow(3, jdbMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, jungle2Tiles,& ((charblock *)0x6000000)[0], 6336/2);
+
+
+    DMANow(3, jungle2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
-
+# 519 "main.c"
 }
 
 
@@ -2002,21 +2041,32 @@ void goToZooState() {
 
 
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<9);
 
 
-
-
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
 
 
     DMANow(3, zooPal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, zooTiles,& ((charblock *)0x6000000)[0], 28544/2);
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, zooTiles,& ((charblock *)0x6000000)[1], 10368/2);
 
 
-    DMANow(3, zooMap, &((screenblock *)0x6000000)[20], 2048/2);
+    DMANow(3, zooMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, zoo2Tiles,& ((charblock *)0x6000000)[0], 6976/2);
+
+
+    DMANow(3, zoo2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
 

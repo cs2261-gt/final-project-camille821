@@ -8,21 +8,21 @@
 	.eabi_attribute 30, 2
 	.eabi_attribute 34, 0
 	.eabi_attribute 18, 4
-	.file	"zoo.c"
-	.global	zooPal
-	.global	zooMap
-	.global	zooTiles
+	.file	"zoo1.c"
+	.global	zoo1Pal
+	.global	zoo1Map
+	.global	zoo1Tiles
 	.section	.rodata
 	.align	2
-	.type	zooPal, %object
-	.size	zooPal, 512
-zooPal:
-	.short	0
+	.type	zoo1Pal, %object
+	.size	zoo1Pal, 512
+zoo1Pal:
+	.short	31
 	.short	10659
-	.short	0
+	.short	2
 	.short	12885
 	.short	30227
-	.short	31691
+	.short	31595
 	.short	17367
 	.short	29662
 	.short	8419
@@ -34,21 +34,6 @@ zooPal:
 	.short	30707
 	.short	18429
 	.short	0
-	.short	6371
-	.short	18153
-	.short	2083
-	.short	25582
-	.short	10580
-	.short	13240
-	.short	27385
-	.short	12710
-	.short	21290
-	.short	14887
-	.short	29690
-	.short	15898
-	.short	2123
-	.short	12715
-	.short	22412
 	.short	0
 	.short	0
 	.short	0
@@ -273,9 +258,24 @@ zooPal:
 	.short	0
 	.short	0
 	.short	0
-	.type	zooMap, %object
-	.size	zooMap, 2048
-zooMap:
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.type	zoo1Map, %object
+	.size	zoo1Map, 2048
+zoo1Map:
 	.short	1
 	.short	2
 	.short	3
@@ -587,16 +587,15 @@ zooMap:
 	.short	24
 	.short	24
 	.short	232
-	.short	2260
-	.short	24
 	.short	233
+	.short	24
 	.short	234
-	.short	21
-	.short	21
-	.short	21
-	.short	0
-	.short	0
 	.short	235
+	.short	21
+	.short	21
+	.short	21
+	.short	0
+	.short	0
 	.short	236
 	.short	237
 	.short	238
@@ -608,7 +607,7 @@ zooMap:
 	.short	244
 	.short	245
 	.short	246
-	.short	246
+	.short	247
 	.short	247
 	.short	248
 	.short	249
@@ -616,19 +615,19 @@ zooMap:
 	.short	251
 	.short	252
 	.short	253
-	.short	24
-	.short	24
-	.short	24
-	.short	24
 	.short	254
+	.short	24
+	.short	24
+	.short	24
+	.short	24
 	.short	255
 	.short	256
 	.short	257
 	.short	258
 	.short	259
-	.short	0
-	.short	0
 	.short	260
+	.short	0
+	.short	0
 	.short	261
 	.short	262
 	.short	263
@@ -650,78 +649,79 @@ zooMap:
 	.short	279
 	.short	280
 	.short	281
-	.short	24
 	.short	282
+	.short	24
 	.short	283
 	.short	284
 	.short	285
-	.short	24
-	.short	24
 	.short	286
-	.short	0
-	.short	0
+	.short	24
+	.short	24
 	.short	287
+	.short	0
+	.short	0
 	.short	288
 	.short	289
-	.short	289
+	.short	290
 	.short	290
 	.short	291
 	.short	292
 	.short	293
-	.short	2326
 	.short	294
+	.short	2327
 	.short	295
 	.short	296
-	.short	296
-	.short	296
+	.short	297
+	.short	297
 	.short	297
 	.short	298
 	.short	299
 	.short	300
 	.short	301
-	.short	2338
 	.short	302
+	.short	2339
 	.short	303
 	.short	304
 	.short	305
 	.short	306
 	.short	307
 	.short	308
-	.short	24
-	.short	24
-	.short	24
-	.short	0
-	.short	0
 	.short	309
+	.short	24
+	.short	24
+	.short	24
+	.short	0
+	.short	0
 	.short	310
 	.short	311
-	.short	311
-	.short	311
+	.short	312
+	.short	312
 	.short	312
 	.short	313
-	.short	313
-	.short	313
-	.short	313
-	.short	313
+	.short	314
+	.short	314
+	.short	314
+	.short	314
 	.short	314
 	.short	315
 	.short	316
 	.short	317
-	.short	317
-	.short	317
-	.short	317
-	.short	317
-	.short	317
-	.short	317
+	.short	318
+	.short	318
+	.short	318
+	.short	318
+	.short	318
+	.short	318
 	.short	318
 	.short	319
 	.short	320
 	.short	321
 	.short	322
 	.short	323
-	.short	320
-	.short	320
-	.short	320
+	.short	324
+	.short	321
+	.short	321
+	.short	321
 	.short	0
 	.short	0
 	.short	0
@@ -1300,9 +1300,9 @@ zooMap:
 	.short	0
 	.short	0
 	.short	0
-	.type	zooTiles, %object
-	.size	zooTiles, 10368
-zooTiles:
+	.type	zoo1Tiles, %object
+	.size	zoo1Tiles, 10400
+zoo1Tiles:
 	.short	0
 	.short	0
 	.short	0
@@ -2688,13 +2688,13 @@ zooTiles:
 	.short	8738
 	.short	8738
 	.short	8738
-	.short	-13118
+	.short	-15422
 	.short	8738
-	.short	-13118
+	.short	15410
 	.short	8738
-	.short	-13108
-	.short	-15838
-	.short	-13108
+	.short	13116
+	.short	12834
+	.short	13114
 	.short	8738
 	.short	-17647
 	.short	8738
@@ -2705,11 +2705,11 @@ zooTiles:
 	.short	-32487
 	.short	8748
 	.short	-26223
-	.short	8748
+	.short	8739
 	.short	-25134
-	.short	8908
+	.short	8899
 	.short	-25135
-	.short	-32052
+	.short	-32205
 	.short	-32487
 	.short	4379
 	.short	4369
@@ -2730,19 +2730,19 @@ zooTiles:
 	.short	4369
 	.short	-32495
 	.short	-28399
-	.short	-239
+	.short	-21231
 	.short	-28271
-	.short	-15
+	.short	-95
 	.short	6553
 	.short	-200
 	.short	-26219
-	.short	-197
+	.short	-1477
 	.short	-26215
 	.short	-3206
-	.short	-22830
-	.short	13226
-	.short	-20680
-	.short	-21846
+	.short	14034
+	.short	13219
+	.short	16184
+	.short	-21965
 	.short	-30584
 	.short	4488
 	.short	-19457
@@ -2752,11 +2752,11 @@ zooTiles:
 	.short	-1
 	.short	6287
 	.short	-1
-	.short	-32001
-	.short	-1
-	.short	-28673
-	.short	-13
-	.short	-1
+	.short	-32081
+	.short	-6
+	.short	-29953
+	.short	-93
+	.short	-20481
 	.short	-205
 	.short	-1
 	.short	-32495
@@ -3074,39 +3074,39 @@ zooTiles:
 	.short	-8739
 	.short	-17955
 	.short	-8739
-	.short	-13123
+	.short	13245
 	.short	-8746
-	.short	-13111
+	.short	13113
 	.short	28527
-	.short	-13114
+	.short	13110
 	.short	8738
-	.short	-13108
+	.short	13107
 	.short	-32223
-	.short	-13109
+	.short	13115
 	.short	-14197
-	.short	-17187
-	.short	-29493
-	.short	-13112
-	.short	-17204
-	.short	-13176
-	.short	-29492
-	.short	-13183
-	.short	-32308
-	.short	-13183
+	.short	-19491
+	.short	-31941
+	.short	-15416
+	.short	-19549
+	.short	13192
+	.short	-31949
+	.short	13185
+	.short	-32293
+	.short	31361
 	.short	-18835
-	.short	-13176
-	.short	8908
+	.short	31368
+	.short	8867
 	.short	6587
-	.short	-26420
+	.short	-26573
 	.short	-26351
 	.short	-9797
 	.short	6557
 	.short	-25672
 	.short	-21863
 	.short	-15432
-	.short	-21855
+	.short	-2143
 	.short	13192
-	.short	-21853
+	.short	-1293
 	.short	-13429
 	.short	-21853
 	.short	-12872
@@ -3128,13 +3128,13 @@ zooTiles:
 	.short	4483
 	.short	-21960
 	.short	14012
-	.short	15018
+	.short	15011
 	.short	26300
 	.short	-17757
 	.short	28626
 	.short	-19651
 	.short	25548
-	.short	-1178
+	.short	-21658
 	.short	27340
 	.short	-3146
 	.short	-9528
@@ -3145,7 +3145,7 @@ zooTiles:
 	.short	-31830
 	.short	-13
 	.short	-1
-	.short	-1
+	.short	-6
 	.short	-1
 	.short	-1
 	.short	-1
@@ -3153,13 +3153,13 @@ zooTiles:
 	.short	-1
 	.short	-1
 	.short	13311
-	.short	-1
+	.short	-81
 	.short	-30657
 	.short	-18293
 	.short	-17525
 	.short	-30584
 	.short	-8776
-	.short	8191
+	.short	8063
 	.short	-26215
 	.short	5119
 	.short	6553
@@ -3512,33 +3512,33 @@ zooTiles:
 	.short	-8739
 	.short	-8739
 	.short	-1
-	.short	-13105
+	.short	13119
 	.short	28671
-	.short	-13057
+	.short	13311
 	.short	-154
-	.short	-13249
+	.short	13119
 	.short	-8739
-	.short	-13251
+	.short	13117
 	.short	-25123
-	.short	-13253
+	.short	13115
 	.short	-8739
-	.short	-15557
+	.short	13115
 	.short	-8739
 	.short	15293
 	.short	-8739
 	.short	-8739
 	.short	5734
-	.short	-13176
+	.short	-21368
 	.short	-29901
-	.short	-13432
-	.short	13260
+	.short	-21624
+	.short	13251
 	.short	30683
-	.short	15564
-	.short	-14477
-	.short	-13108
-	.short	-12596
-	.short	-13108
-	.short	13260
+	.short	13107
+	.short	-6285
+	.short	13107
+	.short	-20941
+	.short	-23757
+	.short	13107
 	.short	13107
 	.short	13107
 	.short	-8739
@@ -3547,14 +3547,14 @@ zooTiles:
 	.short	-21846
 	.short	13080
 	.short	-21846
-	.short	15020
-	.short	13107
-	.short	-21844
-	.short	-31830
-	.short	-21844
 	.short	15018
-	.short	-21853
-	.short	-21846
+	.short	13107
+	.short	-21766
+	.short	-31830
+	.short	-21766
+	.short	16378
+	.short	-20573
+	.short	-1366
 	.short	-21965
 	.short	-21846
 	.short	-17207
@@ -3575,9 +3575,9 @@ zooTiles:
 	.short	30583
 	.short	30586
 	.short	-6281
-	.short	-21958
+	.short	13114
 	.short	-29638
-	.short	-21846
+	.short	-21853
 	.short	7610
 	.short	13256
 	.short	-29845
@@ -3590,7 +3590,7 @@ zooTiles:
 	.short	14910
 	.short	13107
 	.short	13219
-	.short	-21846
+	.short	15018
 	.short	-14200
 	.short	-8936
 	.short	-30584
@@ -3598,15 +3598,15 @@ zooTiles:
 	.short	6280
 	.short	-9285
 	.short	32435
-	.short	-3097
+	.short	-3209
 	.short	30634
 	.short	-3097
 	.short	30634
 	.short	27879
-	.short	-4381
-	.short	13246
-	.short	15018
-	.short	-21965
+	.short	-6173
+	.short	13242
+	.short	15011
+	.short	-23757
 	.short	-8739
 	.short	-8739
 	.short	-17475
@@ -3991,8 +3991,8 @@ zooTiles:
 	.short	26214
 	.short	26214
 	.short	26214
-	.short	-4373
-	.short	-8466
+	.short	-6165
+	.short	-9554
 	.short	26214
 	.short	26214
 	.short	26214
@@ -4023,8 +4023,8 @@ zooTiles:
 	.short	26214
 	.short	26214
 	.short	26214
-	.short	-21846
-	.short	-21846
+	.short	-23750
+	.short	13226
 	.short	13107
 	.short	13107
 	.short	26214
@@ -4680,36 +4680,36 @@ zooTiles:
 	.short	-21321
 	.short	-21846
 	.short	-21846
-	.short	-23382
+	.short	-22614
 	.short	-21846
-	.short	17578
+	.short	30634
 	.short	-21846
-	.short	21674
+	.short	30634
 	.short	-21846
-	.short	21834
+	.short	30586
 	.short	-21846
-	.short	21834
+	.short	30586
 	.short	-21846
-	.short	21834
+	.short	30586
 	.short	-21846
-	.short	21834
+	.short	30586
 	.short	-21846
-	.short	21844
-	.short	-21846
-	.short	-21846
+	.short	30583
 	.short	-21846
 	.short	-21846
-	.short	-21852
 	.short	-21846
-	.short	-21947
 	.short	-21846
-	.short	-21947
+	.short	-21849
 	.short	-21846
-	.short	-23467
+	.short	-21849
 	.short	-21846
-	.short	-23467
+	.short	-21849
 	.short	-21846
-	.short	-23467
+	.short	-21897
+	.short	-21846
+	.short	-21897
+	.short	-21846
+	.short	-21897
 	.short	-21846
 	.short	-21846
 	.short	-21846
@@ -5016,17 +5016,33 @@ zooTiles:
 	.short	-23769
 	.short	-21846
 	.short	-21846
-	.short	21844
+	.short	30583
 	.short	-21846
-	.short	21844
+	.short	30583
 	.short	-21846
-	.short	21844
+	.short	30583
 	.short	-21846
-	.short	21834
+	.short	30586
 	.short	-21846
-	.short	21834
+	.short	30586
 	.short	-21846
-	.short	17578
+	.short	30634
+	.short	-21846
+	.short	-21846
+	.short	-21846
+	.short	-21846
+	.short	-21897
+	.short	-21846
+	.short	-21897
+	.short	-21846
+	.short	-22665
+	.short	-21846
+	.short	-21897
+	.short	-21846
+	.short	-21897
+	.short	-21846
+	.short	-21849
+	.short	-21846
 	.short	-21846
 	.short	-21846
 	.short	-21846
@@ -5045,7 +5061,7 @@ zooTiles:
 	.short	-21931
 	.short	17499
 	.short	-21676
-	.short	17733
+	.short	17477
 	.short	-23228
 	.short	-29894
 	.short	8738
@@ -5388,17 +5404,17 @@ zooTiles:
 	.short	17476
 	.short	-23228
 	.short	17476
-	.short	-23227
+	.short	-23228
 	.short	17476
 	.short	-23228
 	.short	17476
 	.short	21572
 	.short	17476
 	.short	-19388
-	.short	17492
+	.short	17476
 	.short	21572
 	.short	17476
-	.short	21573
+	.short	21572
 	.short	-21846
 	.short	-14422
 	.short	-21846
@@ -5853,15 +5869,15 @@ zooTiles:
 	.short	21572
 	.short	17476
 	.short	17476
-	.short	17732
-	.short	17476
-	.short	17476
-	.short	17492
 	.short	17476
 	.short	17476
 	.short	17476
 	.short	17476
-	.short	17492
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17476
 	.short	17476
 	.short	-21845
 	.short	-21846
@@ -6206,7 +6222,7 @@ zooTiles:
 	.short	-19542
 	.short	17476
 	.short	21418
-	.short	21572
+	.short	17476
 	.short	21418
 	.short	17476
 	.short	19114
@@ -6214,18 +6230,18 @@ zooTiles:
 	.short	31402
 	.short	17476
 	.short	29866
-	.short	30551
+	.short	30583
 	.short	17476
 	.short	17476
 	.short	17476
 	.short	17476
 	.short	17476
-	.short	17477
-	.short	17476
-	.short	21572
 	.short	17476
 	.short	17476
-	.short	21572
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17476
 	.short	17476
 	.short	17476
 	.short	17476
@@ -6440,9 +6456,9 @@ zooTiles:
 	.short	0
 	.short	0
 	.short	31402
-	.short	22391
+	.short	30583
 	.short	19114
-	.short	30071
+	.short	30583
 	.short	15018
 	.short	30580
 	.short	-21846
@@ -6455,11 +6471,11 @@ zooTiles:
 	.short	-21846
 	.short	0
 	.short	0
-	.short	30549
-	.short	30039
-	.short	30071
-	.short	30551
-	.short	22389
+	.short	30583
+	.short	30583
+	.short	30583
+	.short	30583
+	.short	30583
 	.short	30583
 	.short	30583
 	.short	-23433
@@ -6471,7 +6487,7 @@ zooTiles:
 	.short	-21846
 	.short	0
 	.short	0
-	.short	-21899
+	.short	-21897
 	.short	-21846
 	.short	-21945
 	.short	-21846

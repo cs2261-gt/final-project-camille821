@@ -109,18 +109,18 @@ goToGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, lr}
 	mov	r3, #67108864
-	ldrh	r2, [r3]
-	ldr	r1, .L12
-	orr	r2, r2, #4096
-	push	{r4, lr}
-	mov	r0, #3
+	mov	r5, #256
+	mov	r1, #4352
+	ldr	r2, .L12
 	ldr	r4, .L12+4
-	strh	r1, [r3, #8]	@ movhi
-	strh	r2, [r3]	@ movhi
+	strh	r1, [r3]	@ movhi
+	strh	r2, [r3, #8]	@ movhi
 	ldr	r1, .L12+8
-	mov	r3, #256
+	mov	r3, r5
 	mov	r2, #83886080
+	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	ldr	r3, .L12+12
@@ -135,7 +135,7 @@ goToGame:
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r3, #256
+	mov	r3, r5
 	ldr	r2, .L12+28
 	ldr	r1, .L12+32
 	mov	r0, #3
@@ -161,7 +161,7 @@ goToGame:
 	bx	r4
 	mov	r2, #1
 	ldr	r3, .L12+56
-	pop	{r4, lr}
+	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
 .L13:
@@ -625,47 +625,67 @@ goToJdbState:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #67108864
-	mov	r1, #0
-	mov	r3, #256
-	mov	r0, #5248
-	push	{r4, lr}
-	strh	r1, [r2, #16]	@ movhi
+	push	{r4, r5, r6, lr}
+	mov	r2, #0
+	mov	r5, #67108864
+	mov	r3, #768
 	ldr	r4, .L84
-	strh	r1, [r2, #18]	@ movhi
-	strh	r3, [r2]	@ movhi
-	strh	r0, [r2, #8]	@ movhi
-	ldr	r1, .L84+4
+	strh	r2, [r5, #16]	@ movhi
+	strh	r3, [r5]	@ movhi
+	strh	r2, [r5, #18]	@ movhi
+	mov	r3, #256
 	mov	r2, #83886080
+	ldr	r1, .L84+4
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L84+8
-	mov	r2, #100663296
-	ldr	r1, .L84+12
+	ldr	r2, .L84+8
+	ldr	r3, .L84+12
+	strh	r2, [r5, #10]	@ movhi
+	ldr	r1, .L84+16
+	ldr	r2, .L84+20
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L84+16
-	ldr	r1, .L84+20
+	ldr	r2, .L84+24
+	ldr	r1, .L84+28
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r2, #5120
+	mov	r3, #3168
+	strh	r2, [r5, #8]	@ movhi
+	ldr	r1, .L84+32
+	mov	r2, #100663296
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	ldr	r2, .L84+36
+	ldr	r1, .L84+40
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #2
-	ldr	r3, .L84+24
-	pop	{r4, lr}
+	ldr	r3, .L84+44
+	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
 .L85:
 	.align	2
 .L84:
 	.word	DMANow
-	.word	jdbPal
-	.word	15648
-	.word	jdbTiles
+	.word	junglePal
+	.word	6916
+	.word	6624
+	.word	jungleTiles
+	.word	100679680
+	.word	100718592
+	.word	jungleMap
+	.word	jungle2Tiles
 	.word	100704256
-	.word	jdbMap
+	.word	jungle2Map
 	.word	state
 	.size	goToJdbState, .-goToJdbState
 	.align	2
@@ -731,36 +751,51 @@ goToZooState:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #67108864
-	mov	r1, #0
-	mov	r3, #256
-	mov	r0, #5248
-	push	{r4, lr}
-	strh	r1, [r2, #16]	@ movhi
+	push	{r4, r5, r6, lr}
+	mov	r2, #0
+	mov	r5, #67108864
+	mov	r3, #768
 	ldr	r4, .L92
-	strh	r1, [r2, #18]	@ movhi
-	strh	r3, [r2]	@ movhi
-	strh	r0, [r2, #8]	@ movhi
-	ldr	r1, .L92+4
+	strh	r2, [r5, #16]	@ movhi
+	strh	r3, [r5]	@ movhi
+	strh	r2, [r5, #18]	@ movhi
+	mov	r3, #256
 	mov	r2, #83886080
+	ldr	r1, .L92+4
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r3, #14272
-	mov	r2, #100663296
-	ldr	r1, .L92+8
+	ldr	r2, .L92+8
+	mov	r3, #5184
+	strh	r2, [r5, #10]	@ movhi
+	ldr	r1, .L92+12
+	ldr	r2, .L92+16
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L92+12
-	ldr	r1, .L92+16
+	ldr	r2, .L92+20
+	ldr	r1, .L92+24
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r2, #5120
+	mov	r3, #3488
+	strh	r2, [r5, #8]	@ movhi
+	ldr	r1, .L92+28
+	mov	r2, #100663296
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	ldr	r2, .L92+32
+	ldr	r1, .L92+36
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #2
-	ldr	r3, .L92+20
-	pop	{r4, lr}
+	ldr	r3, .L92+40
+	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
 .L93:
@@ -768,9 +803,14 @@ goToZooState:
 .L92:
 	.word	DMANow
 	.word	zooPal
+	.word	6916
 	.word	zooTiles
-	.word	100704256
+	.word	100679680
+	.word	100718592
 	.word	zooMap
+	.word	zoo2Tiles
+	.word	100704256
+	.word	zoo2Map
 	.word	state
 	.size	goToZooState, .-goToZooState
 	.align	2
