@@ -37,9 +37,10 @@ ANISPRITE earth;
 ANISPRITE zoo;
 ANISPRITE jungleBase;
 ANISPRITE garden;
+ANISPRITE island;
 
 //collection pool of stars that is represented by a pointer array of star addresses
-ANISPRITE *stars[NUMSTARS] = {&earth, &zoo, &jungleBase, &garden};
+ANISPRITE *stars[NUMSTARS] = {&earth, &zoo, &jungleBase, &garden, &island};
 
 //lives sprites
 ANISPRITE lives[LIVES];

@@ -28,7 +28,8 @@
 #include "jungle2.h"
 
 
-#include "mIsland.h"
+#include "island.h"
+#include "island2.h"
 
 
 #include "zoo.h"
@@ -36,6 +37,7 @@
 
 
 #include "garden.h"
+#include "garden2.h"
 
 
 
@@ -284,7 +286,8 @@ void game() {
 
 
     if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
-        goToWinState();     
+        //goToWinState();
+        goToMIState();     
     }
 
 
@@ -496,7 +499,41 @@ void goToJdbState() {
     state = PAUSE; 
     
 
+}
 
+
+
+void goToMIState() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE;
+
+    //Load the palette for your tiles
+    DMANow(3, islandPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG1CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, islandTiles,& CHARBLOCK[1], islandTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, islandMap, &SCREENBLOCK[27], islandMapLen/2);
+
+
+
+    //Top BG with text bubble
+    REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, island2Tiles,& CHARBLOCK[0], island2TilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, island2Map, &SCREENBLOCK[20], island2MapLen/2);
+
+    state = PAUSE;
 
 
     
@@ -506,42 +543,15 @@ void goToJdbState() {
     // REG_DISPCTL = MODE0 | BG0_ENABLE;
 
     // //Load the palette for your tiles
-    // DMANow(3, jdbPal, PALETTE, 256);
+    // DMANow(3, mIslandPal, PALETTE, 256);
 
     // //Load your tiles into the charblock that your background is using
-    // DMANow(3, jdbTiles,& CHARBLOCK[0], jdbTilesLen/2);
+    // DMANow(3, mIslandTiles,& CHARBLOCK[0], mIslandTilesLen/2);
 
     // //Load your tile map into the screenblock that your background is using
-    // DMANow(3, jdbMap, &SCREENBLOCK[20], jdbMapLen/2);
+    // DMANow(3, mIslandMap, &SCREENBLOCK[20], mIslandMapLen/2);
 
     // state = PAUSE;
-
-}
-
-
-
-void goToMIState() {
-
-    REG_BG0HOFF = 0;
-    REG_BG0VOFF = 0;
-    
-    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
-
-
-
-    // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
-
-    //Load the palette for your tiles
-    DMANow(3, mIslandPal, PALETTE, 256);
-
-    //Load your tiles into the charblock that your background is using
-    DMANow(3, mIslandTiles,& CHARBLOCK[0], mIslandTilesLen/2);
-
-    //Load your tile map into the screenblock that your background is using
-    DMANow(3, mIslandMap, &SCREENBLOCK[20], mIslandMapLen/2);
-
-    state = PAUSE;
 
 }
 
@@ -555,8 +565,6 @@ void goToZooState() {
    
     // hacky, but basically disables sprites for this state
     REG_DISPCTL = MODE0 | BG0_ENABLE | BG1_ENABLE;
-
-
 
     //Load the palette for your tiles
     DMANow(3, zooPal, PALETTE, 256);
@@ -589,24 +597,37 @@ void goToGardenState() {
     
     REG_BG0HOFF = 0;
     REG_BG0VOFF = 0;
-    
-    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
-
 
 
     // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE;
+
+
 
     //Load the palette for your tiles
     DMANow(3, gardenPal, PALETTE, 256);
 
+    //Back BG
+     REG_BG1CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
     //Load your tiles into the charblock that your background is using
-    DMANow(3, gardenTiles,& CHARBLOCK[0], gardenTilesLen/2);
+    DMANow(3, gardenTiles,& CHARBLOCK[1], gardenTilesLen/2);
 
     //Load your tile map into the screenblock that your background is using
-    DMANow(3, gardenMap, &SCREENBLOCK[20], gardenMapLen/2);
+    DMANow(3, gardenMap, &SCREENBLOCK[27], gardenMapLen/2);
 
-    state = PAUSE;
+
+
+    // //Top BG with text bubble
+    REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, garden2Tiles,& CHARBLOCK[0], garden2TilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, garden2Map, &SCREENBLOCK[20], garden2MapLen/2);
+
+    state = PAUSE; 
+
 }
 
 

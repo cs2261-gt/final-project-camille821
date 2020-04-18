@@ -698,47 +698,67 @@ goToMIState:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #67108864
-	mov	r1, #0
-	mov	r3, #256
-	mov	r0, #5248
-	push	{r4, lr}
-	strh	r1, [r2, #16]	@ movhi
+	push	{r4, r5, r6, lr}
+	mov	r2, #0
+	mov	r5, #67108864
+	mov	r3, #768
 	ldr	r4, .L88
-	strh	r1, [r2, #18]	@ movhi
-	strh	r3, [r2]	@ movhi
-	strh	r0, [r2, #8]	@ movhi
-	ldr	r1, .L88+4
+	strh	r2, [r5, #16]	@ movhi
+	strh	r3, [r5]	@ movhi
+	strh	r2, [r5, #18]	@ movhi
+	mov	r3, #256
 	mov	r2, #83886080
+	ldr	r1, .L88+4
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L88+8
-	mov	r2, #100663296
-	ldr	r1, .L88+12
+	ldr	r2, .L88+8
+	ldr	r3, .L88+12
+	strh	r2, [r5, #10]	@ movhi
+	ldr	r1, .L88+16
+	ldr	r2, .L88+20
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L88+16
-	ldr	r1, .L88+20
+	ldr	r2, .L88+24
+	ldr	r1, .L88+28
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r2, #5120
+	mov	r3, #3840
+	strh	r2, [r5, #8]	@ movhi
+	ldr	r1, .L88+32
+	mov	r2, #100663296
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	ldr	r2, .L88+36
+	ldr	r1, .L88+40
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #2
-	ldr	r3, .L88+24
-	pop	{r4, lr}
+	ldr	r3, .L88+44
+	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
 .L89:
 	.align	2
 .L88:
 	.word	DMANow
-	.word	mIslandPal
-	.word	17600
-	.word	mIslandTiles
+	.word	islandPal
+	.word	6916
+	.word	7056
+	.word	islandTiles
+	.word	100679680
+	.word	100718592
+	.word	islandMap
+	.word	island2Tiles
 	.word	100704256
-	.word	mIslandMap
+	.word	island2Map
 	.word	state
 	.size	goToMIState, .-goToMIState
 	.align	2
@@ -780,7 +800,7 @@ goToZooState:
 	mov	lr, pc
 	bx	r4
 	mov	r2, #5120
-	mov	r3, #3488
+	mov	r3, #3472
 	strh	r2, [r5, #8]	@ movhi
 	ldr	r1, .L92+28
 	mov	r2, #100663296
@@ -823,36 +843,51 @@ goToGardenState:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #67108864
-	mov	r1, #0
-	mov	r3, #256
-	mov	r0, #5248
-	push	{r4, lr}
-	strh	r1, [r2, #16]	@ movhi
+	push	{r4, r5, r6, lr}
+	mov	r2, #0
+	mov	r5, #67108864
+	mov	r3, #768
 	ldr	r4, .L96
-	strh	r1, [r2, #18]	@ movhi
-	strh	r3, [r2]	@ movhi
-	strh	r0, [r2, #8]	@ movhi
-	ldr	r1, .L96+4
+	strh	r2, [r5, #16]	@ movhi
+	strh	r3, [r5]	@ movhi
+	strh	r2, [r5, #18]	@ movhi
+	mov	r3, #256
 	mov	r2, #83886080
+	ldr	r1, .L96+4
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r3, #12928
-	mov	r2, #100663296
-	ldr	r1, .L96+8
+	ldr	r2, .L96+8
+	ldr	r3, .L96+12
+	strh	r2, [r5, #10]	@ movhi
+	ldr	r1, .L96+16
+	ldr	r2, .L96+20
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L96+12
-	ldr	r1, .L96+16
+	ldr	r2, .L96+24
+	ldr	r1, .L96+28
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r2, #5120
+	mov	r3, #3424
+	strh	r2, [r5, #8]	@ movhi
+	ldr	r1, .L96+32
+	mov	r2, #100663296
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	ldr	r2, .L96+36
+	ldr	r1, .L96+40
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #2
-	ldr	r3, .L96+20
-	pop	{r4, lr}
+	ldr	r3, .L96+44
+	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
 .L97:
@@ -860,9 +895,15 @@ goToGardenState:
 .L96:
 	.word	DMANow
 	.word	gardenPal
+	.word	6916
+	.word	6448
 	.word	gardenTiles
-	.word	100704256
+	.word	100679680
+	.word	100718592
 	.word	gardenMap
+	.word	garden2Tiles
+	.word	100704256
+	.word	garden2Map
 	.word	state
 	.size	goToGardenState, .-goToGardenState
 	.align	2
@@ -1011,7 +1052,7 @@ game:
 	bx	r5
 	cmp	r0, #0
 	beq	.L102
-	bl	goToWinState
+	bl	goToMIState
 	b	.L102
 .L133:
 	ldr	r3, .L138+32

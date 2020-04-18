@@ -34,21 +34,21 @@ zooPal:
 	.short	30707
 	.short	18429
 	.short	0
-	.short	6371
-	.short	18153
-	.short	2083
-	.short	25582
-	.short	10580
-	.short	13240
-	.short	27385
 	.short	12710
 	.short	21290
+	.short	10560
+	.short	27385
+	.short	18153
+	.short	6371
+	.short	25582
+	.short	13240
 	.short	14887
+	.short	2123
 	.short	29690
 	.short	15898
-	.short	2123
-	.short	12715
+	.short	7408
 	.short	22412
+	.short	2083
 	.short	0
 	.short	0
 	.short	0
@@ -1595,7 +1595,7 @@ zooTiles:
 	.short	4488
 	.short	-30584
 	.short	4376
-	.short	-30687
+	.short	-32735
 	.short	-30696
 	.short	-30531
 	.short	-30686

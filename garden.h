@@ -3,13 +3,13 @@
 
 //======================================================================
 //
-//	garden, 256x256@8, 
+//	garden, 256x256@4, 
 //	+ palette 256 entries, not compressed
-//	+ 404 tiles (t|f|p reduced) not compressed
-//	+ regular map (flat), not compressed, 32x32 
-//	Total size: 512 + 25856 + 2048 = 28416
+//	+ 403 tiles (t|f|p reduced) not compressed
+//	+ regular map (in SBBs), not compressed, 32x32 
+//	Total size: 512 + 12896 + 2048 = 15456
 //
-//	Time-stamp: 2020-04-14, 01:26:37
+//	Time-stamp: 2020-04-17, 19:02:06
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_GARDEN_H
 #define GRIT_GARDEN_H
 
-#define gardenTilesLen 25856
-extern const unsigned short gardenTiles[12928];
+#define gardenTilesLen 12896
+extern const unsigned short gardenTiles[6448];
 
 #define gardenMapLen 2048
 extern const unsigned short gardenMap[1024];

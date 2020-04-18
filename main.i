@@ -1467,16 +1467,26 @@ extern const unsigned short jungle2Pal[256];
 # 29 "main.c" 2
 
 
-# 1 "mIsland.h" 1
-# 22 "mIsland.h"
-extern const unsigned short mIslandTiles[17600];
+# 1 "island.h" 1
+# 22 "island.h"
+extern const unsigned short islandTiles[7056];
 
 
-extern const unsigned short mIslandMap[1024];
+extern const unsigned short islandMap[1024];
 
 
-extern const unsigned short mIslandPal[256];
+extern const unsigned short islandPal[256];
 # 32 "main.c" 2
+# 1 "island2.h" 1
+# 22 "island2.h"
+extern const unsigned short island2Tiles[3840];
+
+
+extern const unsigned short island2Map[1024];
+
+
+extern const unsigned short island2Pal[256];
+# 33 "main.c" 2
 
 
 # 1 "zoo.h" 1
@@ -1488,29 +1498,39 @@ extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 35 "main.c" 2
+# 36 "main.c" 2
 # 1 "zoo2.h" 1
 # 22 "zoo2.h"
-extern const unsigned short zoo2Tiles[3488];
+extern const unsigned short zoo2Tiles[3472];
 
 
 extern const unsigned short zoo2Map[1024];
 
 
 extern const unsigned short zoo2Pal[256];
-# 36 "main.c" 2
+# 37 "main.c" 2
 
 
 # 1 "garden.h" 1
 # 22 "garden.h"
-extern const unsigned short gardenTiles[12928];
+extern const unsigned short gardenTiles[6448];
 
 
 extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 39 "main.c" 2
+# 40 "main.c" 2
+# 1 "garden2.h" 1
+# 22 "garden2.h"
+extern const unsigned short garden2Tiles[3424];
+
+
+extern const unsigned short garden2Map[1024];
+
+
+extern const unsigned short garden2Pal[256];
+# 41 "main.c" 2
 
 
 
@@ -1520,7 +1540,7 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 43 "main.c" 2
+# 45 "main.c" 2
 
 
 # 1 "sound.h" 1
@@ -1539,7 +1559,7 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 46 "main.c" 2
+# 48 "main.c" 2
 
 # 1 "spacedOutBeats.h" 1
 
@@ -1547,14 +1567,14 @@ void stopSound();
 
 
 extern const signed char spacedOutBeats[1177056];
-# 48 "main.c" 2
+# 50 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 49 "main.c" 2
+# 51 "main.c" 2
 
 
 
@@ -1793,7 +1813,8 @@ void game() {
 
 
     if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
-        goToWinState();
+
+        goToMIState();
     }
 
 
@@ -2003,7 +2024,8 @@ void goToJdbState() {
     DMANow(3, jungle2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
-# 519 "main.c"
+
+
 }
 
 
@@ -2013,24 +2035,33 @@ void goToMIState() {
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
+
+
+    DMANow(3, islandPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, islandTiles,& ((charblock *)0x6000000)[1], 14112/2);
+
+
+    DMANow(3, islandMap, &((screenblock *)0x6000000)[27], 2048/2);
 
 
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
 
-    DMANow(3, mIslandPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, island2Tiles,& ((charblock *)0x6000000)[0], 7680/2);
 
 
-    DMANow(3, mIslandTiles,& ((charblock *)0x6000000)[0], 35200/2);
-
-
-    DMANow(3, mIslandMap, &((screenblock *)0x6000000)[20], 2048/2);
+    DMANow(3, island2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
-
+# 556 "main.c"
 }
 
 
@@ -2043,8 +2074,6 @@ void goToZooState() {
 
 
     (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<9);
-
-
 
 
     DMANow(3, zooPal, ((unsigned short *)0x5000000), 256);
@@ -2063,7 +2092,7 @@ void goToZooState() {
     (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
 
-    DMANow(3, zoo2Tiles,& ((charblock *)0x6000000)[0], 6976/2);
+    DMANow(3, zoo2Tiles,& ((charblock *)0x6000000)[0], 6944/2);
 
 
     DMANow(3, zoo2Map, &((screenblock *)0x6000000)[20], 2048/2);
@@ -2078,21 +2107,34 @@ void goToGardenState() {
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
 
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
 
 
     DMANow(3, gardenPal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, gardenTiles,& ((charblock *)0x6000000)[0], 25856/2);
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, gardenTiles,& ((charblock *)0x6000000)[1], 12896/2);
 
 
-    DMANow(3, gardenMap, &((screenblock *)0x6000000)[20], 2048/2);
+    DMANow(3, gardenMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, garden2Tiles,& ((charblock *)0x6000000)[0], 6848/2);
+
+
+    DMANow(3, garden2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
+
 }
