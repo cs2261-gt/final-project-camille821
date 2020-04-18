@@ -1040,9 +1040,10 @@ ANISPRITE earth;
 ANISPRITE zoo;
 ANISPRITE jungleBase;
 ANISPRITE garden;
+ANISPRITE island;
 
 
-ANISPRITE *stars[4] = {&earth, &zoo, &jungleBase, &garden};
+ANISPRITE *stars[5] = {&earth, &zoo, &jungleBase, &garden, &island};
 
 
 ANISPRITE lives[3];
@@ -1085,7 +1086,7 @@ void updateGame() {
 
  for (int i = 0; i < 5; i++)
   updateBubble(&bubbles[i]);
-# 94 "game.c"
+# 95 "game.c"
 }
 
 
@@ -1302,11 +1303,11 @@ void drawBubble() {
     for (int i = 0; i < 5; i++) {
 
      if (bubbles[i].hide) {
-         shadowOAM[14 + i].attr0 |= (2<<8);
+         shadowOAM[15 + i].attr0 |= (2<<8);
      } else {
-         shadowOAM[14 + i].attr0 = (0xFF & bubbles[i].screenRow) | (0<<14);
-         shadowOAM[14 + i].attr1 = (0x1FF & bubbles[i].screenCol) | (0<<14);
-         shadowOAM[14 + i].attr2 = ((0)<<12) | ((bubbles[i].tileRow)*32+(bubbles[i].tileCol));
+         shadowOAM[15 + i].attr0 = (0xFF & bubbles[i].screenRow) | (0<<14);
+         shadowOAM[15 + i].attr1 = (0x1FF & bubbles[i].screenCol) | (0<<14);
+         shadowOAM[15 + i].attr2 = ((0)<<12) | ((bubbles[i].tileRow)*32+(bubbles[i].tileCol));
      }
 
 
@@ -1572,7 +1573,7 @@ void initEnemies() {
 
 
  for (int i = 0; i < 6; i++) {
-# 588 "game.c"
+# 589 "game.c"
   enemies[i]->width = 16;
   enemies[i]->height = 16;
   enemies[i]->tileRow = 8;
@@ -1634,19 +1635,19 @@ void drawEnemies() {
 
  for (int i = 0; i < 3; i++) {
   if (enemies[i]->hide || enemies[i]->screenRow < 0 || enemies[i]->screenRow > 160) {
-         shadowOAM[8+i].attr0 |= (2<<8);
+         shadowOAM[9+i].attr0 |= (2<<8);
      } else {
 
       if (enemies[i]->bubbled == 0 && enemies[i]->screenRow >= 0 && enemies[i]->screenRow <= 160) {
-          shadowOAM[8+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
-          shadowOAM[8+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
-          shadowOAM[8+i].attr2 = ((enemies[i]->tileRow)*32+(enemies[i]->tileCol));
+          shadowOAM[9+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
+          shadowOAM[9+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
+          shadowOAM[9+i].attr2 = ((enemies[i]->tileRow)*32+(enemies[i]->tileCol));
      } else {
 
       if (enemies[i]->bubbled == 1) {
-           shadowOAM[8+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
-           shadowOAM[8+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
-           shadowOAM[8+i].attr2 = ((enemies[i]->tileRow+2)*32+(enemies[i]->tileCol));
+           shadowOAM[9+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
+           shadowOAM[9+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
+           shadowOAM[9+i].attr2 = ((enemies[i]->tileRow+2)*32+(enemies[i]->tileCol));
 
       }
 
@@ -1696,7 +1697,7 @@ void initStars() {
 
 
  jungleBase.worldRow = 110;
- jungleBase.worldCol = 120;
+ jungleBase.worldCol = 125;
  jungleBase.screenRow = jungleBase.worldRow - vOff;
  jungleBase.screenCol = jungleBase.worldCol - hOff;
  jungleBase.active = 1;
@@ -1704,11 +1705,20 @@ void initStars() {
  jungleBase.cheatR = 10;
  jungleBase.cheatC = 2;
 
+ island.worldRow = 95;
+ island.worldCol = 105;
+ island.screenRow = island.worldRow - vOff;
+ island.screenCol = island.worldCol - hOff;
+ island.active = 1;
+ island.hide = 0;
+ island.cheatR = 10;
+ island.cheatC = 2;
 
 
 
 
- for (int i = 0; i < 4; i++) {
+
+ for (int i = 0; i < 5; i++) {
 
 
 
@@ -1730,7 +1740,7 @@ void initStars() {
 void updateStars() {
 
 
- for (int i = 0; i < 4; i++) {
+ for (int i = 0; i < 5; i++) {
    bubbling(stars[i]);
  }
 
@@ -1748,13 +1758,16 @@ void updateStars() {
  garden.screenRow = garden.worldRow - vOff;
  garden.screenCol = garden.worldCol - hOff;
 
+ island.screenRow = island.worldRow - vOff;
+ island.screenCol = island.worldCol - hOff;
+
 }
 
 
 
 void drawStars() {
 
- for (int i = 0; i < 4; i++) {
+ for (int i = 0; i < 5; i++) {
   if (stars[i]->hide || stars[i]->screenRow < 0 || stars[i]->screenRow > 160) {
          shadowOAM[4+i].attr0 |= (2<<8);
      } else {
@@ -1943,7 +1956,7 @@ void enemyCollisions() {
 }
 void starCollisions() {
 
- for (int i = 0 ; i < 4; i++) {
+ for (int i = 0 ; i < 5; i++) {
 
   if (stars[i]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, stars[i]->screenRow, stars[i]->screenCol, stars[i]->height, stars[i]->width)) {
 

@@ -308,11 +308,11 @@ void drawBubble() {
     for (int i = 0; i < BUBBLECOUNT; i++) {
 
 	    if (bubbles[i].hide) {
-	        shadowOAM[14 + i].attr0 |= ATTR0_HIDE;
+	        shadowOAM[15 + i].attr0 |= ATTR0_HIDE;
 	    } else {
-	        shadowOAM[14 + i].attr0 = (ROWMASK & bubbles[i].screenRow) | ATTR0_SQUARE;
-	        shadowOAM[14 + i].attr1 = (COLMASK & bubbles[i].screenCol) | ATTR1_TINY;
-	        shadowOAM[14 + i].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(bubbles[i].tileCol,bubbles[i].tileRow);
+	        shadowOAM[15 + i].attr0 = (ROWMASK & bubbles[i].screenRow) | ATTR0_SQUARE;
+	        shadowOAM[15 + i].attr1 = (COLMASK & bubbles[i].screenCol) | ATTR1_TINY;
+	        shadowOAM[15 + i].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(bubbles[i].tileCol,bubbles[i].tileRow);
 	    }
 
 
@@ -647,19 +647,19 @@ void drawEnemies() {
 
 	for (int i = 0; i < 3; i++) { //TODO: change 3 to NUMOPS
 		if (enemies[i]->hide || enemies[i]->screenRow < 0 || enemies[i]->screenRow > 160) {
-	        shadowOAM[8+i].attr0 |= ATTR0_HIDE;
+	        shadowOAM[9+i].attr0 |= ATTR0_HIDE;
 	    } else {
 
 	    	if (enemies[i]->bubbled == 0 && enemies[i]->screenRow >= 0 &&  enemies[i]->screenRow <= 160) { //trying to debug it being redrawn
-		        shadowOAM[8+i].attr0 = (ROWMASK & enemies[i]->screenRow) | ATTR0_SQUARE;
-		        shadowOAM[8+i].attr1 = (COLMASK & enemies[i]->screenCol) | ATTR1_SMALL;
-		        shadowOAM[8+i].attr2 = ATTR2_TILEID(enemies[i]->tileCol, enemies[i]->tileRow);
+		        shadowOAM[9+i].attr0 = (ROWMASK & enemies[i]->screenRow) | ATTR0_SQUARE;
+		        shadowOAM[9+i].attr1 = (COLMASK & enemies[i]->screenCol) | ATTR1_SMALL;
+		        shadowOAM[9+i].attr2 = ATTR2_TILEID(enemies[i]->tileCol, enemies[i]->tileRow);
 	  		}  else {
 
 	  			if (enemies[i]->bubbled == 1) {
-			        shadowOAM[8+i].attr0 = (ROWMASK & enemies[i]->screenRow) | ATTR0_SQUARE;
-			        shadowOAM[8+i].attr1 = (COLMASK & enemies[i]->screenCol) | ATTR1_SMALL;
-			        shadowOAM[8+i].attr2 = ATTR2_TILEID(enemies[i]->tileCol, enemies[i]->tileRow+2 );
+			        shadowOAM[9+i].attr0 = (ROWMASK & enemies[i]->screenRow) | ATTR0_SQUARE;
+			        shadowOAM[9+i].attr1 = (COLMASK & enemies[i]->screenCol) | ATTR1_SMALL;
+			        shadowOAM[9+i].attr2 = ATTR2_TILEID(enemies[i]->tileCol, enemies[i]->tileRow+2 );
 
 	  			}
 
@@ -709,7 +709,7 @@ void initStars() {
 
 
 	jungleBase.worldRow = 110;
-	jungleBase.worldCol = 120;
+	jungleBase.worldCol = 125;
 	jungleBase.screenRow = jungleBase.worldRow - vOff;
 	jungleBase.screenCol = jungleBase.worldCol - hOff;
 	jungleBase.active = 1;
@@ -717,9 +717,18 @@ void initStars() {
 	jungleBase.cheatR = 10;
 	jungleBase.cheatC = 2;
 
+	island.worldRow = 95;
+	island.worldCol = 105;
+	island.screenRow = island.worldRow - vOff;
+	island.screenCol = island.worldCol - hOff;
+	island.active = 1;
+	island.hide = 0;
+	island.cheatR = 10;
+	island.cheatC = 2;
 
 
-//do this for activeness and resetting screenR and screenC in future
+
+//TODO:do this for activeness and resetting screenR and screenC in future
 
 	for (int i = 0; i < NUMSTARS; i++) {
 		// stars[i]->active = 1;
@@ -760,6 +769,9 @@ void updateStars() {
 
 	garden.screenRow = garden.worldRow - vOff;
 	garden.screenCol = garden.worldCol - hOff;
+
+	island.screenRow = island.worldRow - vOff;
+	island.screenCol = island.worldCol - hOff;
 
 }
 

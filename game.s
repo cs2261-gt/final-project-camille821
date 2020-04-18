@@ -399,9 +399,9 @@ drawBubble:
 	ldr	r1, [r3, #100]
 	cmp	r1, #0
 	beq	.L81
-	ldrh	r1, [r2, #112]
+	ldrh	r1, [r2, #120]
 	orr	r1, r1, #512
-	strh	r1, [r2, #112]	@ movhi
+	strh	r1, [r2, #120]	@ movhi
 .L82:
 	add	r3, r3, #104
 	cmp	r3, ip
@@ -416,9 +416,9 @@ drawBubble:
 	ldrb	lr, [r3, #36]	@ zero_extendqisi2
 	and	r0, r0, r5
 	add	r1, r1, r4, lsl #5
-	strh	r0, [r2, #114]	@ movhi
-	strh	r1, [r2, #116]	@ movhi
-	strh	lr, [r2, #112]	@ movhi
+	strh	r0, [r2, #122]	@ movhi
+	strh	r1, [r2, #124]	@ movhi
+	strh	lr, [r2, #120]	@ movhi
 	b	.L82
 .L87:
 	.align	2
@@ -932,9 +932,9 @@ drawEnemies:
 	cmp	r0, #160
 	bls	.L181
 .L180:
-	ldrh	r1, [r3, #64]
+	ldrh	r1, [r3, #72]
 	orr	r1, r1, #512
-	strh	r1, [r3, #64]	@ movhi
+	strh	r1, [r3, #72]	@ movhi
 .L182:
 	add	r2, r2, #1
 	cmp	r2, #3
@@ -952,9 +952,9 @@ drawEnemies:
 	and	lr, lr, r4
 	orr	r1, lr, #16384
 	add	lr, r5, r6, lsl #5
-	strh	r0, [r3, #64]	@ movhi
-	strh	r1, [r3, #66]	@ movhi
-	strh	lr, [r3, #68]	@ movhi
+	strh	r0, [r3, #72]	@ movhi
+	strh	r1, [r3, #74]	@ movhi
+	strh	lr, [r3, #76]	@ movhi
 	b	.L182
 .L183:
 	cmp	lr, #1
@@ -966,9 +966,9 @@ drawEnemies:
 	add	lr, r6, #2
 	orr	r1, r1, #16384
 	add	lr, r5, lr, lsl #5
-	strh	r0, [r3, #64]	@ movhi
-	strh	r1, [r3, #66]	@ movhi
-	strh	lr, [r3, #68]	@ movhi
+	strh	r0, [r3, #72]	@ movhi
+	strh	r1, [r3, #74]	@ movhi
+	strh	lr, [r3, #76]	@ movhi
 	b	.L182
 .L188:
 	.align	2
@@ -987,83 +987,96 @@ initStars:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
+	mov	r1, #20
+	mov	r0, #115
+	mov	ip, #9
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	mov	r9, #20
-	mov	r2, #115
-	mov	fp, #9
-	mov	r10, #4
-	ldr	r1, .L193
-	ldr	lr, [r1]
-	ldr	r1, .L193+4
-	sub	ip, r9, lr
-	str	ip, [r1, #36]
-	ldr	ip, .L193+8
-	ldr	ip, [ip]
-	str	r2, [r1, #48]
-	sub	r2, r2, ip
-	str	r9, [r1, #44]
-	str	r2, [r1, #40]
-	ldr	r9, .L193+12
-	ldr	r2, .L193+16
-	str	fp, [r1]
-	str	r9, [r2, #44]
-	sub	fp, r9, lr
-	rsb	r9, ip, #110
-	str	r9, [r2, #40]
-	ldr	r9, .L193+20
-	str	r10, [r2, #4]
-	rsb	r10, lr, #240
-	str	r10, [r9, #36]
-	ldr	r10, .L193+24
-	rsb	lr, lr, #110
-	str	lr, [r10, #36]
-	mov	lr, #100
-	str	lr, [r9, #48]
-	sub	lr, lr, ip
-	rsb	ip, ip, #120
-	str	ip, [r10, #40]
-	mov	ip, #120
-	mov	r5, #1
-	mov	r4, #0
-	str	ip, [r10, #48]
-	mov	ip, #3
-	mov	r8, #10
-	str	ip, [r1, #4]
-	str	fp, [r2, #36]
-	str	r5, [r1, #52]
-	str	r4, [r1, #100]
-	mov	fp, #240
-	mov	r1, #110
-	mov	r6, #2
-	mov	r0, r5
-	mov	r7, r4
+	mov	fp, #4
+	ldr	lr, .L193
+	ldr	r5, [lr]
+	ldr	lr, .L193+4
+	sub	r4, r1, r5
+	str	r4, [lr, #36]
+	ldr	r4, .L193+8
+	ldr	r4, [r4]
+	str	r1, [lr, #44]
+	str	r0, [lr, #48]
+	ldr	r1, .L193+12
+	sub	r0, r0, r4
+	str	r0, [lr, #40]
+	ldr	r0, .L193+16
+	str	ip, [lr]
+	sub	ip, r1, r5
+	str	ip, [r0, #36]
+	str	r1, [r0, #44]
+	ldr	ip, .L193+20
+	rsb	r1, r4, #110
+	str	r1, [r0, #40]
+	rsb	r1, r5, #240
+	str	fp, [r0, #4]
+	str	r1, [ip, #36]
+	mov	fp, #100
+	mov	r1, #240
+	str	fp, [ip, #48]
+	str	r1, [ip, #44]
+	sub	fp, fp, r4
+	ldr	r1, .L193+24
+	str	fp, [ip, #40]
+	rsb	fp, r5, #110
+	str	fp, [r1, #36]
+	mov	fp, #125
+	str	fp, [r1, #48]
+	sub	fp, fp, r4
+	mov	r7, #1
+	mov	r6, #0
+	mov	r10, #10
+	str	fp, [r1, #40]
+	mov	fp, #3
+	mov	r8, #2
+	str	r7, [ip, #52]
+	str	r6, [ip, #100]
+	stm	ip, {r10, fp}
+	mov	ip, #110
+	str	r7, [r0, #52]
+	str	ip, [r0, #48]
+	str	r7, [r1, #52]
+	str	r6, [r0, #100]
+	str	r6, [r1, #100]
+	str	r10, [r0]
+	str	r7, [lr, #52]
+	str	r6, [lr, #100]
+	str	fp, [lr, #4]
+	str	ip, [r1, #44]
+	str	r10, [r1]
+	str	r8, [r1, #4]
+	mov	r1, #95
+	ldr	r0, .L193+28
+	str	r1, [r0, #44]
+	mov	r1, #105
+	mov	r2, r7
+	mov	r9, r6
 	mov	r3, #8
-	stm	r9, {r8, ip}
-	str	r1, [r2, #48]
-	str	fp, [r9, #44]
-	str	lr, [r9, #40]
-	str	r5, [r2, #52]
-	str	r5, [r9, #52]
-	str	r5, [r10, #52]
-	str	r4, [r2, #100]
-	str	r4, [r9, #100]
-	str	r4, [r10, #100]
-	str	r8, [r2]
-	str	r1, [r10, #44]
-	ldr	r1, .L193+28
-	str	r8, [r10]
-	str	r6, [r10, #4]
-	add	ip, r1, #16
+	ldr	ip, .L193+32
+	rsb	r5, r5, #95
+	rsb	r4, r4, #105
+	str	r5, [r0, #36]
+	str	r4, [r0, #40]
+	str	r7, [r0, #52]
+	str	r6, [r0, #100]
+	str	r10, [r0]
+	str	r8, [r0, #4]
+	str	r1, [r0, #48]
+	add	r0, ip, #20
 .L190:
-	ldr	r2, [r1], #4
-	cmp	r1, ip
-	str	r3, [r2, #64]
-	str	r3, [r2, #68]
-	str	r3, [r2, #92]
-	str	r6, [r2, #96]
-	str	r0, [r2, #56]
-	str	r0, [r2, #60]
-	str	r7, [r2, #12]
+	ldr	r1, [ip], #4
+	cmp	ip, r0
+	str	r3, [r1, #64]
+	str	r3, [r1, #68]
+	str	r3, [r1, #92]
+	str	r8, [r1, #96]
+	str	r2, [r1, #56]
+	str	r2, [r1, #60]
+	str	r9, [r1, #12]
 	bne	.L190
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	bx	lr
@@ -1077,6 +1090,7 @@ initStars:
 	.word	zoo
 	.word	garden
 	.word	jungleBase
+	.word	island
 	.word	.LANCHOR0+24
 	.size	initStars, .-initStars
 	.align	2
@@ -1146,8 +1160,8 @@ drawStars:
 	push	{r4, r5, r6, r7, lr}
 	ldr	r1, .L211+4
 	ldr	lr, .L211+8
-	ldr	r4, .L211+12
-	add	ip, r3, #32
+	ldr	r5, .L211+12
+	add	ip, r3, #40
 .L207:
 	ldr	r2, [r1], #4
 	ldr	r0, [r2, #100]
@@ -1167,41 +1181,41 @@ drawStars:
 	pop	{r4, r5, r6, r7, lr}
 	bx	lr
 .L203:
-	ldrh	r5, [lr, #48]
-	tst	r5, #2
-	bne	.L205
-	ldr	r5, [r2, #40]
-	ldr	r6, [r2]
-	ldr	r2, [r2, #4]
-	and	r5, r5, r4
-	add	r2, r2, r6, lsl #5
-	strh	r0, [r3, #32]	@ movhi
-	strh	r5, [r3, #34]	@ movhi
-	strh	r2, [r3, #36]	@ movhi
-	b	.L204
-.L205:
-	ldr	r5, [r2, #12]
-	cmp	r5, #0
+	ldrh	r4, [lr, #48]
+	tst	r4, #2
 	beq	.L210
-	cmp	r5, #1
-	bne	.L204
-	ldr	r6, [r2, #92]
-	ldr	r5, [r2, #96]
-	ldr	r7, [r2, #40]
-	add	r6, r6, #1
-	add	r2, r5, r6, lsl #5
-	strh	r0, [r3, #32]	@ movhi
-	strh	r2, [r3, #36]	@ movhi
-	strh	r7, [r3, #34]	@ movhi
-	b	.L204
-.L210:
+	ldr	r4, [r2, #12]
+	cmp	r4, #0
+	bne	.L206
 	ldr	r7, [r2, #92]
-	ldr	r5, [r2, #96]
+	ldr	r4, [r2, #96]
 	ldr	r6, [r2, #40]
-	add	r2, r5, r7, lsl #5
+	add	r2, r4, r7, lsl #5
 	strh	r0, [r3, #32]	@ movhi
 	strh	r2, [r3, #36]	@ movhi
 	strh	r6, [r3, #34]	@ movhi
+	b	.L204
+.L210:
+	ldr	r4, [r2, #40]
+	ldr	r6, [r2]
+	ldr	r2, [r2, #4]
+	and	r4, r4, r5
+	add	r2, r2, r6, lsl #5
+	strh	r0, [r3, #32]	@ movhi
+	strh	r4, [r3, #34]	@ movhi
+	strh	r2, [r3, #36]	@ movhi
+	b	.L204
+.L206:
+	cmp	r4, #1
+	bne	.L204
+	ldr	r6, [r2, #92]
+	ldr	r4, [r2, #96]
+	ldr	r7, [r2, #40]
+	add	r6, r6, #1
+	add	r2, r4, r6, lsl #5
+	strh	r0, [r3, #32]	@ movhi
+	strh	r2, [r3, #36]	@ movhi
+	strh	r7, [r3, #34]	@ movhi
 	b	.L204
 .L212:
 	.align	2
@@ -1792,7 +1806,7 @@ starCollisions:
 	ldr	r5, .L327+4
 	ldr	r7, .L327+8
 	sub	sp, sp, #20
-	add	r6, r4, #16
+	add	r6, r4, #20
 .L317:
 	ldr	r2, [r4], #4
 	ldr	r3, [r2, #12]
@@ -1839,15 +1853,15 @@ starCollisions:
 	add	r3, r3, #10
 	str	r3, [r5, #48]
 	b	.L312
-.L326:
-	ldr	r3, [r5, #44]
-	add	r3, r3, #10
-	str	r3, [r5, #44]
-	b	.L312
 .L325:
 	ldr	r3, [r5, #48]
 	sub	r3, r3, #10
 	str	r3, [r5, #48]
+	b	.L312
+.L326:
+	ldr	r3, [r5, #44]
+	add	r3, r3, #10
+	str	r3, [r5, #44]
 	b	.L312
 .L328:
 	.align	2
@@ -2114,44 +2128,51 @@ updateStars:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
 	ldr	r4, .L380
-	add	r5, r4, #16
+	add	r5, r4, #20
 .L377:
 	ldr	r0, [r4], #4
 	bl	bubbling
 	cmp	r4, r5
 	bne	.L377
-	ldr	lr, .L380+4
-	ldr	r0, .L380+8
+	ldr	r4, .L380+4
+	ldr	r2, .L380+8
+	ldr	r5, [r4, #44]
+	ldr	r2, [r2]
+	ldr	r3, .L380+12
+	sub	r5, r5, r2
+	ldr	r3, [r3]
+	str	r5, [r4, #36]
+	ldr	r5, [r4, #48]
+	ldr	lr, .L380+16
+	sub	r5, r5, r3
+	str	r5, [r4, #40]
 	ldr	r4, [lr, #44]
-	ldr	r0, [r0]
-	ldr	r1, .L380+12
-	sub	r4, r4, r0
-	ldr	r1, [r1]
+	sub	r4, r4, r2
 	str	r4, [lr, #36]
 	ldr	r4, [lr, #48]
-	ldr	ip, .L380+16
-	sub	r4, r4, r1
+	ldr	ip, .L380+20
+	sub	r4, r4, r3
 	str	r4, [lr, #40]
 	add	r4, ip, #44
 	ldm	r4, {r4, lr}
-	ldr	r2, .L380+20
-	ldr	r3, .L380+24
-	sub	r4, r4, r0
-	sub	lr, lr, r1
+	ldr	r0, .L380+24
+	ldr	r1, .L380+28
+	sub	r4, r4, r2
+	sub	lr, lr, r3
 	str	r4, [ip, #36]
 	str	lr, [ip, #40]
-	ldr	r4, [r2, #44]
-	ldr	ip, [r3, #44]
-	sub	r4, r4, r0
-	ldr	lr, [r2, #48]
-	sub	r0, ip, r0
-	ldr	ip, [r3, #48]
-	sub	lr, lr, r1
-	sub	r1, ip, r1
-	str	r4, [r2, #36]
-	str	lr, [r2, #40]
-	str	r0, [r3, #36]
-	str	r1, [r3, #40]
+	ldr	r4, [r0, #44]
+	ldr	ip, [r1, #44]
+	sub	r4, r4, r2
+	ldr	lr, [r0, #48]
+	sub	r2, ip, r2
+	ldr	ip, [r1, #48]
+	sub	lr, lr, r3
+	sub	r3, ip, r3
+	str	r4, [r0, #36]
+	str	lr, [r0, #40]
+	str	r2, [r1, #36]
+	str	r3, [r1, #40]
 	pop	{r4, r5, r6, lr}
 	bx	lr
 .L381:
@@ -2164,6 +2185,7 @@ updateStars:
 	.word	earth
 	.word	jungleBase
 	.word	garden
+	.word	island
 	.size	updateStars, .-updateStars
 	.align	2
 	.global	updateGame
@@ -2202,6 +2224,7 @@ updateGame:
 	.comm	bubbles,520,4
 	.comm	lives,312,4
 	.global	stars
+	.comm	island,104,4
 	.comm	garden,104,4
 	.comm	jungleBase,104,4
 	.comm	zoo,104,4
@@ -2232,10 +2255,11 @@ enemies:
 	.word	jasper
 	.word	aquamarine
 	.type	stars, %object
-	.size	stars, 16
+	.size	stars, 20
 stars:
 	.word	earth
 	.word	zoo
 	.word	jungleBase
 	.word	garden
+	.word	island
 	.ident	"GCC: (devkitARM release 47) 7.1.0"

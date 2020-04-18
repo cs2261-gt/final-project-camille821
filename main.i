@@ -1612,7 +1612,7 @@ int lose;
 
 
 extern OBJ_ATTR shadowOAM[128];
-extern ANISPRITE *stars[4];
+extern ANISPRITE *stars[5];
 
 
 
@@ -1813,8 +1813,8 @@ void game() {
 
 
     if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
+        goToWinState();
 
-        goToMIState();
     }
 
 
@@ -1830,6 +1830,12 @@ void game() {
     if (stars[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[3]->worldRow, stars[3]->worldCol, stars[3]->height, stars[3]->width)) {
         goToGardenState();
     }
+
+
+    if (stars[4]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[4]->worldRow, stars[4]->worldCol, stars[4]->height, stars[4]->width)) {
+        goToMIState();
+    }
+
 
 }
 
@@ -2061,7 +2067,7 @@ void goToMIState() {
     DMANow(3, island2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
-# 556 "main.c"
+# 562 "main.c"
 }
 
 

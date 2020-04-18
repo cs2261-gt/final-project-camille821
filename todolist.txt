@@ -15,24 +15,30 @@
 - add star locations to state machine
 - get basic sound stuff working
 - create and implement collision map
+- make extra Splashscreens (w/ textual info too...check notes for help)
 
-
+EASY:
 - update spritesheet
 - finish implementing core sounds for the game (bubbling, pause, help, win, lose)
--extras until BG is finished 
+- extra lives?
+- add sounds for everything else
 
-
+HARD/PUSH OFF:
 - impplement XL BG
 - make it so the VOFF is constantly moving
 - XL BG lose condition
 
-EXTRA
--extra lives?
-- make extra Splashscreens (w/ textual info too...check notes for help)
+
+MED:
 - add animated sprites to spritesheet
 - add extra screens to state machine
 - create animated loops on screen
-- add sounds for everything else
+
+
+TODO for Sat:
+- work on XL demo for horizontal format
+- work on animated sprite lab for steven scenes
+- implement scenes into state machine
 
 
 

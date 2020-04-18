@@ -7,7 +7,7 @@
 #define LIVES 3
 #define BUBBLECOUNT 5
 #define NUMOPS 6
-#define NUMSTARS 4
+#define NUMSTARS 5
 
 
 // Variables

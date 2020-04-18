@@ -286,8 +286,8 @@ void game() {
 
 
     if (stars[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[0]->worldRow, stars[0]->worldCol, stars[0]->height, stars[0]->width)) {
-        //goToWinState();
-        goToMIState();     
+        goToWinState();
+            
     }
 
 
@@ -303,6 +303,12 @@ void game() {
     if (stars[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[3]->worldRow, stars[3]->worldCol, stars[3]->height, stars[3]->width)) {
         goToGardenState();      
     }
+
+
+    if (stars[4]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[4]->worldRow, stars[4]->worldCol, stars[4]->height, stars[4]->width)) {
+        goToMIState();      
+    }
+
 
 }
 
