@@ -23,10 +23,7 @@ EASY:
 - extra lives?
 - add sounds for everything else
 
-HARD/PUSH OFF:
-- impplement XL BG
-- make it so the VOFF is constantly moving
-- XL BG lose condition
+
 
 
 MED:
@@ -37,6 +34,13 @@ MED:
 
 TODO for Sat:
 - work on XL demo for horizontal format
+
+-update Star and Enemies
+	-start from init for each so they can show up on the screen
+	-then fix update fxns
+	-add extra star collisions to state machine
+
+
 - work on animated sprite lab for steven scenes
 - implement scenes into state machine
 

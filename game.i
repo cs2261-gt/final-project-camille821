@@ -860,6 +860,7 @@ void hideSprites();
 
 
 typedef struct {
+    int hoff;
     int cheatR;
     int cheatC;
     int direction;
@@ -887,10 +888,10 @@ typedef struct {
     int tileCol;
     int hide;
 } ANISPRITE;
-# 221 "myLib.h"
+# 222 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 232 "myLib.h"
+# 233 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -899,11 +900,11 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 272 "myLib.h"
+# 273 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 313 "myLib.h"
+# 314 "myLib.h"
 typedef void (*ihp)(void);
-# 368 "myLib.h"
+# 369 "myLib.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -922,7 +923,7 @@ typedef struct{
 int collision(int rowA, int colA, int heightA, int widthA, int rowB, int colB, int heightB, int widthB);
 # 3 "game.c" 2
 # 1 "game.h" 1
-# 14 "game.h"
+# 17 "game.h"
 extern ANISPRITE steven;
 
 
@@ -939,6 +940,10 @@ extern unsigned short colors[6];
 void initGame();
 void updateGame();
 void drawGame();
+
+void initBG();
+void updateBG();
+void drawBG();
 
 void initSteven();
 void updateSteven();
@@ -995,6 +1000,7 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 extern const unsigned short spritesheet1Pal[256];
 # 7 "game.c" 2
+
 # 1 "sound.h" 1
 SOUND soundA;
 SOUND soundB;
@@ -1011,16 +1017,32 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 8 "game.c" 2
+# 9 "game.c" 2
+
+
 # 1 "colmap1.h" 1
 # 20 "colmap1.h"
 extern const unsigned short colmap1Bitmap[131072];
-# 9 "game.c" 2
-# 17 "game.c"
+# 12 "game.c" 2
+# 1 "escapismbg.h" 1
+# 22 "escapismbg.h"
+extern const unsigned short escapismbgTiles[23808];
+
+
+extern const unsigned short escapismbgMap[4096];
+
+
+extern const unsigned short escapismbgPal[256];
+# 13 "game.c" 2
+# 21 "game.c"
 ANISPRITE steven;
 int livesLeft;
+
+
 int hOff;
 int vOff;
+
+int screenBlock;
 
 
 
@@ -1030,9 +1052,11 @@ ANISPRITE wDiamond;
 ANISPRITE spinel;
 ANISPRITE jasper;
 ANISPRITE aquamarine;
+ANISPRITE topaz;
+ANISPRITE eyeball;
 
 
-ANISPRITE *enemies[6] = {&yDiamond, &bDiamond, &wDiamond, &spinel, &jasper, &aquamarine};
+ANISPRITE *enemies[8] = {&yDiamond, &bDiamond, &wDiamond, &spinel, &jasper, &aquamarine, &topaz, &eyeball};
 
 
 
@@ -1041,9 +1065,12 @@ ANISPRITE zoo;
 ANISPRITE jungleBase;
 ANISPRITE garden;
 ANISPRITE island;
+ANISPRITE kindergarten;
+ANISPRITE arena;
+ANISPRITE desert;
 
 
-ANISPRITE *stars[5] = {&earth, &zoo, &jungleBase, &garden, &island};
+ANISPRITE *stars[8] = {&earth, &zoo, &jungleBase, &garden, &island, &kindergarten, &arena, &desert};
 
 
 ANISPRITE lives[3];
@@ -1058,15 +1085,13 @@ enum { SPRITEFRONT, SPRITELEFT, SPRITERIGHT, SPRITEBACK, SPRITEIDLE};
 
 
 void initGame() {
+ initBG();
  initSteven();
  initEnemies();
  initStars();
- initLives();
+
  initBubbles();
 
-
-    hOff = 0;
-    vOff = 352;
 
 
 
@@ -1076,18 +1101,21 @@ void initGame() {
 
 
 void updateGame() {
+ updateBG();
  animateSteven();
  updateSteven();
  updateEnemies();
  updateStars();
- updateLives();
+
 
 
 
  for (int i = 0; i < 5; i++)
   updateBubble(&bubbles[i]);
-# 95 "game.c"
-}
+
+
+
+ }
 
 
 
@@ -1095,11 +1123,11 @@ void updateGame() {
 
 
 void drawGame() {
-
-    drawEnemies();
+    drawBG();
     drawSteven();
+  drawEnemies();
     drawStars();
-    drawLives();
+
 
 
 
@@ -1110,8 +1138,71 @@ void drawGame() {
     waitForVBlank();
     DMANow(3,shadowOAM,((OBJ_ATTR*)(0x7000000)),128*4);
 
+
+
+
+}
+
+
+void initBG() {
+
+ hOff = 0;
+    vOff = 0;
+    screenBlock = 28;
+
+    steven.hoff = 0;
+
+
+}
+
+
+void updateBG() {
+
+    if (hOff > 256) {
+
+        screenBlock++;
+        hOff -= 256;
+        (*(volatile unsigned short*)0x4000008) = ((0)<<2) | ((screenBlock)<<8) | (1<<14) | (1<<7);
+    }
+
+    if (steven.hoff > 512) {
+     steven.hoff -= 512;
+    }
+
+    for (int i = 0; i < 8; i++) {
+
+     if (stars[i]->hoff > 512 && hOff == 0) {
+      stars[i]->hoff -= 512;
+     }
+    }
+
+
+    for (int i = 0; i < 8; i++) {
+
+     if (enemies[i]->hoff > 512 && hOff == 0) {
+      enemies[i]->hoff -= 512;
+     }
+    }
+
+
+ for (int i = 0; i < 5; i++) {
+
+     if (bubbles[i].hoff > 512 && hOff >= 0) {
+      bubbles[i].hoff -= 512;
+     }
+
+ }
+
+
+
+
     (*(volatile unsigned short *)0x04000010) = hOff;
- (*(volatile unsigned short *)0x04000012) = vOff;
+    (*(volatile unsigned short *)0x04000012) = vOff;
+
+}
+
+
+void drawBG() {
 
 
 
@@ -1124,16 +1215,20 @@ void initBubbles() {
  for (int i = 0; i < 5; i++) {
   bubbles[i].tileRow = 8;
   bubbles[i].tileCol = 3;
-  bubbles[i].initScreenRow = steven.screenRow + (steven.height/2);
-  bubbles[i].initScreenCol = steven.screenCol + (steven.width/2);
-  bubbles[i].screenRow = steven.screenRow + (steven.height/2);
-  bubbles[i].screenCol = steven.screenCol + (steven.width/2);
+  bubbles[i].hoff = 0;
+  bubbles[i].worldRow = steven.worldRow + (steven.height/2);
+  bubbles[i].worldCol = steven.worldCol + (steven.width/2);
+  bubbles[i].screenRow = bubbles[i].worldCol - bubbles[i].hoff;
+  bubbles[i].screenCol = bubbles[i].worldRow - vOff;
+  bubbles[i].initScreenRow = bubbles[i].screenRow;
+  bubbles[i].initScreenCol = bubbles[i].screenCol;
   bubbles[i].height = 8;
   bubbles[i].width = 8;
   bubbles[i].rdel = 3;
         bubbles[i].cdel = 3;
   bubbles[i].active = 0;
   bubbles[i].hide = 1;
+  bubbles[i].hoff = 0;
  }
 }
 
@@ -1142,19 +1237,19 @@ void updateBubble(ANISPRITE * b) {
 
 
  if (b->active && b->direction == 1
-    && b->screenCol + b->cdel <= 240 -1
+    && b->screenCol + b->cdel <= 1024 -1
     && b->screenCol + b->cdel > 0 - b->width ) {
 
-   b->screenCol -= b->cdel;
+   b->worldCol -= b->cdel;
 
   } else
 
 
  if (b->active && b->direction == 2
-    && b->screenCol + b->cdel <= 240 + b-> width
+    && b->screenCol + b->cdel <= 1024 + b-> width
     && b->screenCol + b->cdel > 0 - b->width ) {
 
-   b->screenCol += b->cdel;
+   b->worldCol += b->cdel;
 
   } else
 
@@ -1163,7 +1258,7 @@ void updateBubble(ANISPRITE * b) {
     && b->screenRow + b->rdel <= 160 -1
     && b->screenRow + b->rdel > 0 - b->height ) {
 
-   b->screenRow -= b->rdel;
+   b->worldRow -= b->rdel;
 
   } else
 
@@ -1172,27 +1267,32 @@ void updateBubble(ANISPRITE * b) {
     && b->screenRow + b->rdel <= 160 + b->height
     && b->screenRow + b->rdel > 0 - b->height ) {
 
-   b->screenRow += b->rdel;
+   b->worldRow += b->rdel;
 
   } else {
    b->active = 0;
+   b->hide = 1;
   }
+# 304 "game.c"
+ for (int i = 0; i < 5; i++) {
+   bubbles[i].screenRow = bubbles[i].worldRow - vOff;
+  bubbles[i].screenCol = bubbles[i].worldCol - bubbles[i].hoff;
 
-
+ }
 
 }
 
 
 void throwLeft() {
-
+# 336 "game.c"
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
 
    bubbles[i].direction = 1;
 
-   bubbles[i].screenRow = steven.screenRow + (steven.height/2) - 4;
-   bubbles[i].screenCol = steven.screenCol;
+   bubbles[i].worldRow = steven.worldRow + (steven.height/2) - 4;
+   bubbles[i].worldCol = steven.worldCol;
 
 
    bubbles[i].active = 1;
@@ -1208,15 +1308,15 @@ void throwLeft() {
 }
 
 void throwRight() {
-
+# 381 "game.c"
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
 
    bubbles[i].direction = 2;
 
-   bubbles[i].screenRow = steven.screenRow + (steven.height/2) - 4;
-   bubbles[i].screenCol = steven.screenCol + steven.width;
+   bubbles[i].worldRow = steven.worldRow + (steven.height/2) - 4;
+   bubbles[i].worldCol = steven.worldCol + steven.width;
 
 
    bubbles[i].active = 1;
@@ -1232,15 +1332,15 @@ void throwRight() {
 
 
 void throwUp() {
-
+# 426 "game.c"
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
 
    bubbles[i].direction = 3;
 
-   bubbles[i].screenRow = steven.screenRow + 3;
-   bubbles[i].screenCol = steven.screenCol + (steven.width/2);
+   bubbles[i].worldRow = steven.worldRow + 3;
+   bubbles[i].worldCol = steven.worldCol + (steven.width/2);
 
 
    bubbles[i].active = 1;
@@ -1257,15 +1357,15 @@ void throwUp() {
 
 
 void throwDown() {
-
+# 471 "game.c"
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
 
    bubbles[i].direction = 4;
 
-   bubbles[i].screenRow = steven.screenRow + 11;
-   bubbles[i].screenCol = steven.screenCol + 4;
+   bubbles[i].worldRow = steven.worldRow + 11;
+   bubbles[i].worldCol = steven.worldCol + 4;
 
 
    bubbles[i].active = 1;
@@ -1303,11 +1403,11 @@ void drawBubble() {
     for (int i = 0; i < 5; i++) {
 
      if (bubbles[i].hide) {
-         shadowOAM[15 + i].attr0 |= (2<<8);
+         shadowOAM[20 + i].attr0 |= (2<<8);
      } else {
-         shadowOAM[15 + i].attr0 = (0xFF & bubbles[i].screenRow) | (0<<14);
-         shadowOAM[15 + i].attr1 = (0x1FF & bubbles[i].screenCol) | (0<<14);
-         shadowOAM[15 + i].attr2 = ((0)<<12) | ((bubbles[i].tileRow)*32+(bubbles[i].tileCol));
+         shadowOAM[20 + i].attr0 = (0xFF & bubbles[i].screenRow) | (0<<14);
+         shadowOAM[20 + i].attr1 = (0x1FF & bubbles[i].screenCol) | (0<<14);
+         shadowOAM[20 + i].attr2 = ((0)<<12) | ((bubbles[i].tileRow)*32+(bubbles[i].tileCol));
      }
 
 
@@ -1374,15 +1474,15 @@ void drawLives() {
 
 void initSteven() {
 
- steven.worldRow = 512 - 30;
- steven.worldCol = 240/2 -10;
+ steven.worldRow = 60;
+ steven.worldCol = 0;
     steven.screenRow = steven.worldRow - vOff;
-    steven.screenCol = steven.worldCol - hOff;
+    steven.screenCol = steven.worldCol - steven.hoff;
  steven.height = 16;
  steven.width = 16;
  steven.rdel = 1;
  steven.cdel = 1;
- steven.aniState = SPRITEBACK;
+ steven.aniState = SPRITERIGHT;
  steven.curFrame = 0;
  steven.active = 1;
  steven.hide = 0;
@@ -1393,6 +1493,7 @@ void initSteven() {
 
 
 void animateSteven() {
+
 
 
  if (steven.aniState != SPRITEIDLE) {
@@ -1412,18 +1513,16 @@ void animateSteven() {
 
 
 
- if((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && steven.worldRow >= 10) {
+ if((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && steven.worldRow > 0) {
 
 
 
   steven.aniState = SPRITEBACK;
 
-  if (vOff > 0) {
-   vOff--;
-  }
 
-  if(steven.worldRow > 0 && colmap1Bitmap[((steven.worldRow - 1)*(256)+(steven.worldCol))] &&
-                colmap1Bitmap[((steven.worldRow - 1)*(256)+(steven.worldCol + steven.width - 1))]) {
+
+  if(steven.worldRow > 0)
+                                                                                                       {
    steven.worldRow -= steven.rdel;
   }
 
@@ -1436,13 +1535,10 @@ void animateSteven() {
 
   steven.aniState = SPRITEFRONT;
 
-  if (vOff < 512) {
-   vOff++;
-  }
 
-  if(steven.worldRow + steven.height < 512 &&
-                colmap1Bitmap[((steven.worldRow + steven.height)*(256)+(steven.worldCol))] &&
-                colmap1Bitmap[((steven.worldRow + steven.height)*(256)+(steven.worldCol + steven.width - 1))]){
+  if(steven.worldRow + steven.height < 512
+
+                                                                                                                 ){
 
    steven.worldRow += steven.rdel;
 
@@ -1454,28 +1550,88 @@ void animateSteven() {
 
   steven.aniState = SPRITELEFT;
 
-  if(steven.worldCol > 0 && colmap1Bitmap[((steven.worldRow)*(256)+(steven.worldCol - 1))]
-                && colmap1Bitmap[((steven.worldRow + steven.height - 1)*(256)+(steven.worldCol - 1))]) {
+  if(steven.worldCol > 0
+                                                                                                         ) {
 
 
    steven.worldCol -= steven.cdel;
   }
+# 688 "game.c"
+  if ( (hOff > 0 && steven.screenCol < 100 && screenBlock >= 28) || (hOff < 256 && hOff > -512 && steven.screenCol < 100 && steven.worldCol > 512)) {
+            hOff--;
+            steven.hoff--;
+
+   for (int i = 0; i < 8; i++) {
+
+    stars[i]->hoff--;
+
+   }
+
+   for (int i = 0; i < 8; i++) {
+
+    enemies[i]->hoff--;
+
+   }
+
+
+   for (int i = 0; i < 5; i++) {
+
+    bubbles[i].hoff--;
+
+   }
+
+
+        }
 
  }
+# 723 "game.c"
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
 
 
   steven.aniState = SPRITERIGHT;
 
-  if( steven.worldCol + steven.width < 256
-   && colmap1Bitmap[((steven.worldRow)*(256)+(steven.worldCol + steven.width))]
-   && colmap1Bitmap[((steven.worldRow + steven.height - 1)*(256)+(steven.worldCol + steven.width))]) {
+  if( steven.worldCol + steven.width < 1024 - 1
+
+                                                                                                       ) {
 
 
    steven.worldCol += steven.cdel;
   }
 
+
+
+        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (1024 - 240 -1) && steven.screenCol > 240 / 3 )){
+            hOff++;
+            steven.hoff++;
+
+   for (int i = 0; i < 8; i++) {
+
+    stars[i]->hoff++;
+
+   }
+
+
+   for (int i = 0; i < 8; i++) {
+
+    enemies[i]->hoff++;
+
+   }
+
+
+    for (int i = 0; i < 5; i++) {
+
+    bubbles[i].hoff++;
+
+   }
+        }
+
+
+
  }
+
+
+
+
 
  if (steven.aniState == SPRITEIDLE) {
         steven.curFrame = 0;
@@ -1493,6 +1649,8 @@ void updateSteven() {
 
  enemyCollisions();
  starCollisions();
+
+
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
 
@@ -1517,8 +1675,8 @@ void updateSteven() {
   }
 
 
- steven.screenRow = steven.worldRow - vOff;
-    steven.screenCol = steven.worldCol - hOff;
+ steven.screenRow = steven.worldRow;
+    steven.screenCol = steven.worldCol - steven.hoff;
 
 
 }
@@ -1546,34 +1704,78 @@ void drawSteven() {
 void initEnemies() {
 
 
- yDiamond.worldRow = 340;
- yDiamond.worldCol = 150;
- yDiamond.initWorldRow = 340;
- yDiamond.initWorldCol = 150;
+ yDiamond.worldRow = 100;
+ yDiamond.worldCol = 140;
+ yDiamond.initWorldRow = 100;
+ yDiamond.initWorldCol = 140;
  yDiamond.active = 1;
  yDiamond.hide = 0;
 
 
- bDiamond.worldRow = 150;
- bDiamond.worldCol = 110;
- bDiamond.initWorldRow = 150;
- bDiamond.initWorldCol = 118;
+ bDiamond.worldRow = 62;
+ bDiamond.worldCol = 308;
+ bDiamond.initWorldRow = 62;
+ bDiamond.initWorldCol = 308;
  bDiamond.active = 1;
  bDiamond.hide = 0;
 
 
- wDiamond.worldRow = 45;
- wDiamond.worldCol = 90;
+ wDiamond.worldRow = 50;
+ wDiamond.worldCol = 355;
  wDiamond.initWorldRow = 50;
- wDiamond.initWorldCol = 90;
+ wDiamond.initWorldCol = 355;
  wDiamond.active = 1;
  wDiamond.hide = 0;
 
 
 
 
- for (int i = 0; i < 6; i++) {
-# 589 "game.c"
+ spinel.worldRow = 15;
+ spinel.worldCol = 440;
+ spinel.initWorldRow = spinel.worldRow;
+ spinel.initWorldCol = spinel.worldCol;
+
+
+
+ jasper.worldRow = 105;
+ jasper.worldCol = 490;
+ jasper.initWorldRow = jasper.worldRow;
+ jasper.initWorldCol = jasper.worldCol;
+
+
+
+ aquamarine.worldRow = 40;
+ aquamarine.worldCol = 645;
+ aquamarine.initWorldRow = aquamarine.worldRow;
+ aquamarine.initWorldCol = aquamarine.worldCol;
+
+
+ topaz.worldRow = 30;
+ topaz.worldCol = 703;
+ topaz.initWorldRow = topaz.worldRow;
+ topaz.initWorldCol = topaz.worldCol;
+
+
+ eyeball.worldRow = 66;
+ eyeball.worldCol = 800;
+ eyeball.initWorldRow = eyeball.worldRow;
+ eyeball.initWorldCol = eyeball.worldCol;
+
+
+
+
+
+ for (int i = 0; i < 8; i++) {
+
+  enemies[i]->active = 1;
+  enemies[i]->hide = 0;
+
+
+
+
+  enemies[i]->hoff = 0;
+  enemies[i]->screenRow = enemies[i]->worldRow - vOff;
+  enemies[i]->screenCol = enemies[i]->worldCol - enemies[i]->hoff;
   enemies[i]->width = 16;
   enemies[i]->height = 16;
   enemies[i]->tileRow = 8;
@@ -1593,61 +1795,34 @@ void initEnemies() {
 
 
 void updateEnemies() {
-
-
-
-
-
-
- hoverDN(&yDiamond, yDiamond.initWorldRow, 20);
-
-
-
- hoverV(&bDiamond, bDiamond.initWorldRow, 60);
-
-
-
- hoverH(&wDiamond, wDiamond.initWorldCol, 40);
-
-
-
-
-
- for (int i = 0; i < 6; i++) {
+# 953 "game.c"
+ for (int i = 0; i < 8; i++) {
    bubbling(enemies[i]);
+   enemies[i]->screenRow = enemies[i]->worldRow - vOff;
+  enemies[i]->screenCol = enemies[i]->worldCol - enemies[i]->hoff;
+
  }
-
-
- yDiamond.screenRow = yDiamond.worldRow - vOff;
- yDiamond.screenCol = yDiamond.worldCol - hOff;
-
-
- bDiamond.screenRow = bDiamond.worldRow - vOff;
- bDiamond.screenCol = bDiamond.worldCol - hOff;
-
- wDiamond.screenRow = wDiamond.worldRow - vOff;
- wDiamond.screenCol = wDiamond.worldCol - hOff;
 
 }
 
 
 void drawEnemies() {
 
- for (int i = 0; i < 3; i++) {
-  if (enemies[i]->hide || enemies[i]->screenRow < 0 || enemies[i]->screenRow > 160) {
-         shadowOAM[9+i].attr0 |= (2<<8);
+ for (int i = 0; i < 8; i++) {
+  if (enemies[i]->hide || enemies[i]->screenCol < 0 || enemies[i]->screenCol > 240) {
+         shadowOAM[12+i].attr0 |= (2<<8);
      } else {
 
       if (enemies[i]->bubbled == 0 && enemies[i]->screenRow >= 0 && enemies[i]->screenRow <= 160) {
-          shadowOAM[9+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
-          shadowOAM[9+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
-          shadowOAM[9+i].attr2 = ((enemies[i]->tileRow)*32+(enemies[i]->tileCol));
+          shadowOAM[12+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
+          shadowOAM[12+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
+          shadowOAM[12+i].attr2 = ((enemies[i]->tileRow)*32+(enemies[i]->tileCol));
      } else {
 
       if (enemies[i]->bubbled == 1) {
-           shadowOAM[9+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
-           shadowOAM[9+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
-           shadowOAM[9+i].attr2 = ((enemies[i]->tileRow+2)*32+(enemies[i]->tileCol));
+           shadowOAM[12+i].attr0 = (0xFF & enemies[i]->screenRow) | (0<<14);
+           shadowOAM[12+i].attr1 = (0x1FF & enemies[i]->screenCol) | (1<<14);
+           shadowOAM[12+i].attr2 = ((enemies[i]->tileRow+2)*32+(enemies[i]->tileCol));
 
       }
 
@@ -1666,65 +1841,60 @@ void initStars() {
 
 
 
- earth.worldRow = 20;
- earth.worldCol = 115;
- earth.screenRow = earth.worldRow - vOff;
- earth.screenCol = earth.worldCol - hOff;
- earth.active = 1;
- earth.hide = 0;
+ earth.worldRow = 25;
+ earth.worldCol = 1000;
  earth.cheatR = 9;
  earth.cheatC = 3;
 
 
 
- zoo.worldRow = 355;
- zoo.worldCol = 110;
- zoo.screenRow = zoo.worldRow - vOff;
- zoo.screenCol = zoo.worldCol - hOff;
- zoo.active = 1;
- zoo.hide = 0;
+ zoo.worldRow = 70;
+ zoo.worldCol = 125;
  zoo.cheatR = 10;
  zoo.cheatC = 4;
 
- garden.worldRow = 240;
- garden.worldCol = 100;
- garden.screenRow = garden.worldRow - vOff;
- garden.screenCol = garden.worldCol - hOff;
- garden.active = 1;
- garden.hide = 0;
+
+ jungleBase.worldRow = 65;
+ jungleBase.worldCol = 420;
+ jungleBase.cheatR = 10;
+ jungleBase.cheatC = 2;
+
+
+ garden.worldRow = 70;
+ garden.worldCol = 550;
  garden.cheatR = 10;
  garden.cheatC = 3;
 
 
- jungleBase.worldRow = 110;
- jungleBase.worldCol = 125;
- jungleBase.screenRow = jungleBase.worldRow - vOff;
- jungleBase.screenCol = jungleBase.worldCol - hOff;
- jungleBase.active = 1;
- jungleBase.hide = 0;
- jungleBase.cheatR = 10;
- jungleBase.cheatC = 2;
-
- island.worldRow = 95;
- island.worldCol = 105;
- island.screenRow = island.worldRow - vOff;
- island.screenCol = island.worldCol - hOff;
- island.active = 1;
- island.hide = 0;
+ island.worldRow = 70;
+ island.worldCol = 623;
  island.cheatR = 10;
  island.cheatC = 2;
 
 
+ kindergarten.worldRow = 95;
+ kindergarten.worldCol = 860;
+ kindergarten.cheatR = 10;
+ kindergarten.cheatC = 2;
 
 
-
- for (int i = 0; i < 5; i++) {
-
-
-
-
+ arena.worldRow = 50;
+ arena.worldCol = 945;
+ arena.cheatR = 10;
+ arena.cheatC = 2;
 
 
+ desert.worldRow = 125;
+ desert.worldCol = 1000;
+ desert.cheatR = 10;
+ desert.cheatC = 2;
+# 1058 "game.c"
+ for (int i = 0; i < 8; i++) {
+  stars[i]->active = 1;
+  stars[i]->hide = 0;
+  stars[i]->hoff = 0;
+  stars[i]->screenRow = stars[i]->worldRow - vOff;
+  stars[i]->screenCol = stars[i]->worldCol - stars[i]->hoff;
   stars[i]->width = 8;
   stars[i]->height = 8;
   stars[i]->tileRow = 8;
@@ -1738,28 +1908,14 @@ void initStars() {
 
 }
 void updateStars() {
-
-
- for (int i = 0; i < 5; i++) {
+# 1085 "game.c"
+ for (int i = 0; i < 8; i++) {
    bubbling(stars[i]);
+  stars[i]->screenRow = stars[i]->worldRow - vOff;
+  stars[i]->screenCol = stars[i]->worldCol - stars[i]->hoff;
  }
 
- zoo.screenRow = zoo.worldRow - vOff;
- zoo.screenCol = zoo.worldCol - hOff;
 
- earth.screenRow = earth.worldRow - vOff;
- earth.screenCol = earth.worldCol - hOff;
-
-
- jungleBase.screenRow = jungleBase.worldRow - vOff;
- jungleBase.screenCol = jungleBase.worldCol - hOff;
-
-
- garden.screenRow = garden.worldRow - vOff;
- garden.screenCol = garden.worldCol - hOff;
-
- island.screenRow = island.worldRow - vOff;
- island.screenCol = island.worldCol - hOff;
 
 }
 
@@ -1767,8 +1923,8 @@ void updateStars() {
 
 void drawStars() {
 
- for (int i = 0; i < 5; i++) {
-  if (stars[i]->hide || stars[i]->screenRow < 0 || stars[i]->screenRow > 160) {
+ for (int i = 0; i < 8; i++) {
+  if (stars[i]->hide || stars[i]->screenCol < 0 || stars[i]->screenCol > 240) {
          shadowOAM[4+i].attr0 |= (2<<8);
      } else {
 
@@ -1929,7 +2085,7 @@ void moveUp(ANISPRITE * a) {
 
 void enemyCollisions() {
 
- for (int i = 0; i < 6; i++) {
+ for (int i = 0; i < 8; i++) {
   if (enemies[i]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, enemies[i]->screenRow, enemies[i]->screenCol, enemies[i]->height, enemies[i]->width)) {
    livesLeft--;
 
@@ -1955,31 +2111,7 @@ void enemyCollisions() {
 
 }
 void starCollisions() {
-
- for (int i = 0 ; i < 5; i++) {
-
-  if (stars[i]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, stars[i]->screenRow, stars[i]->screenCol, stars[i]->height, stars[i]->width)) {
-
-   if (steven.aniState == SPRITELEFT) {
-    steven.worldCol += 10;
-
-   } else
-
-   if (steven.aniState == SPRITERIGHT) {
-    steven.worldCol -= 10;
-   } else
-
-   if (steven.aniState == SPRITEBACK) {
-    steven.worldRow += 10;
-   } else
-
-   if (steven.aniState == SPRITEFRONT) {
-    steven.worldRow -= 10;
-   }
-  }
-
- }
-
+# 1312 "game.c"
 }
 
 
@@ -1988,8 +2120,8 @@ void bubbling(ANISPRITE * a) {
  for (int i = 0; i < 5; i++) {
   if (bubbles[i].active
    && a->bubbled == 0
-   && collision(a->screenCol, a->screenRow, a->width, a->height,
-    bubbles[i].screenCol, bubbles[i].screenRow, bubbles[i].width, bubbles[i].height)) {
+   && collision(a->worldCol, a->worldRow, a->width, a->height,
+    bubbles[i].worldCol, bubbles[i].worldRow, bubbles[i].width, bubbles[i].height)) {
 
    a->bubbled = 1;
    bubbles[i].active = 0;
@@ -1999,8 +2131,8 @@ void bubbling(ANISPRITE * a) {
 
   if (bubbles[i].active
    && a->bubbled == 1
-   && collision(a->screenCol, a->screenRow, a->width, a->height,
-    bubbles[i].screenCol, bubbles[i].screenRow, bubbles[i].width, bubbles[i].height)) {
+   && collision(a->worldCol, a->worldRow, a->width, a->height,
+    bubbles[i].worldCol, bubbles[i].worldRow, bubbles[i].width, bubbles[i].height)) {
 
    a->bubbled = 0;
    bubbles[i].active = 0;

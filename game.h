@@ -6,8 +6,11 @@
 // Constants
 #define LIVES 3
 #define BUBBLECOUNT 5
-#define NUMOPS 6
-#define NUMSTARS 5
+// #define NUMOPS 6
+// #define NUMSTARS 5
+#define NUMOPS 8
+#define NUMSTARS 8
+#define WORLDWIDTH 1024
 
 
 // Variables
@@ -27,6 +30,10 @@ extern unsigned short colors[NUMCOLORS];
 void initGame();
 void updateGame();
 void drawGame();
+
+void initBG();
+void updateBG();
+void drawBG();
 
 void initSteven();
 void updateSteven();

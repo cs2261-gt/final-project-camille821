@@ -1,11 +1,5 @@
-//M3 Progress: I have the game playable to where the win state can be reached and have started adding sound
-//I have all or the core game mechanics implemented in my code and have put in the collission map
-//currently have a bug with the state screen not ully showing when player collides with star
-//another bug is my player getting stuck outside my colmap from resetting its position after star/enemy collision
-//(I did that as an attempt to avoid play from autmatically losing once/ continuously collidiong with stars/enemies)
-//Whats left to be done is the inplementation of the XL background and (hopefully) an autoscrolling screen
-// Some extra things I want to add is more sounds and some
-//extra cut scenes in my state machine
+//Bugs: shifting of the stars once thier hOff resets
+//Steven wont walk left in laft half of screen
 
 
 
@@ -15,39 +9,33 @@
 #include "game.h"
 
 //insert all splash screens
-
 #include "start.h"
-//#include "gameSplash.h"
 #include "gameSplash1.h"
 #include "pause.h"
 #include "win.h"
 #include "lose.h"
 #include "help.h"
+
 //star BG's
 #include "jungle.h"
 #include "jungle2.h"
-
-
 #include "island.h"
 #include "island2.h"
-
-
 #include "zoo.h"
 #include "zoo2.h"
-
-
 #include "garden.h"
 #include "garden2.h"
 
-
-
+//spritesheet
 #include "spritesheet1.h"
 
-
+//sound elements
 #include "sound.h"
-
 #include "spacedOutBeats.h"
 #include "gameSong.h"
+
+//XL Wide BG
+#include "escapismbg.h"
 
 
 // Prototypes
@@ -86,6 +74,7 @@ int lose;
 
 extern OBJ_ATTR shadowOAM[128];
 extern ANISPRITE *stars[NUMSTARS];
+extern int screenBlock;
 
 
 // Button Variables
@@ -159,12 +148,10 @@ void initialize() {
 // Sets up the start state
 void goToStart() {
 
+    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
     REG_BG0HOFF = 0;
     REG_BG0VOFF = 0;
-    
-    // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
     
     //Load the palette for your tiles
     DMANow(3, startPal, PALETTE, 256);
@@ -174,6 +161,13 @@ void goToStart() {
 
     //Load your tile map into the screenblock that your background is using
     DMANow(3, startMap, &SCREENBLOCK[20], startMapLen/2);
+    
+    waitForVBlank();
+    
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
 
 
     //play intro music
@@ -200,11 +194,12 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         // Seed the random generator
         srand(seed);
-        //UNCOMMENT FOR SOUND
+        
+        initGame();
         goToGame();
         stopSound();
         playSoundA(gameSong, GAMESONGLEN, 1);
-        initGame();
+        
     }
 
 
@@ -219,28 +214,25 @@ void goToGame() {
 // hacky, but basically disables BG 1 for this state
     REG_DISPCTL = MODE0 | BG0_ENABLE;
 
-    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(25) | BG_CHARBLOCK(0) | BG_SIZE_TALL;
+// hacky, but will do the trick to get sprites on this screen
+    REG_DISPCTL |= SPRITE_ENABLE;
+
+
+    REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
 
     // REG_BG0HOFF = hOff;
     // REG_BG0VOFF = vOff;
 
 
-
-    // hacky, but will do the trick to get sprites on this screen
-    REG_DISPCTL |= SPRITE_ENABLE;
-
-        //Load the palette for your tiles
-    DMANow(3, gameSplash1Pal, PALETTE, 256);
-
-    //Load your tiles into the charblock that your background is using
-    DMANow(3, gameSplash1Tiles,& CHARBLOCK[0], gameSplash1TilesLen/2);
-
-    //Load your tile map into the screenblock that your background is using
-    DMANow(3, gameSplash1Map, &SCREENBLOCK[25], gameSplash1MapLen/2);
+    //set up the XL wide background
+    DMANow(3, escapismbgPal, PALETTE, 256);
+    DMANow(3, escapismbgTiles, &CHARBLOCK[0], escapismbgTilesLen / 2);
+    DMANow(3, escapismbgMap, &SCREENBLOCK[28], escapismbgMapLen / 2);
 
 
-    // Load the marco sprite Tiles and Pal into their correct spaces in memory
-    // (Remember Sprite Palette and Background Palette are 2 different things)
+
+
+
 
     DMANow(3,spritesheet1Pal,SPRITEPALETTE, spritesheet1PalLen/2);
     DMANow(3,spritesheet1Tiles,&CHARBLOCK[4],spritesheet1TilesLen/2);
@@ -292,20 +284,30 @@ void game() {
 
 
     if (stars[1]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[1]->worldRow, stars[1]->worldCol, stars[1]->height, stars[1]->width)) {
+        steven.worldRow = 50;
+        steven.worldCol = 125;
         goToZooState();      
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
+        steven.worldRow = 90;
+        steven.worldCol = 380;
         goToJdbState();
+
     }
 
 
     if (stars[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[3]->worldRow, stars[3]->worldCol, stars[3]->height, stars[3]->width)) {
-        goToGardenState();      
+        steven.worldRow = 95;
+        steven.worldCol = 535;          
+        goToGardenState();
+    
     }
 
 
     if (stars[4]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[4]->worldRow, stars[4]->worldCol, stars[4]->height, stars[4]->width)) {
+        steven.worldRow = 30;
+        steven.worldCol = 620;
         goToMIState();      
     }
 
@@ -354,8 +356,10 @@ void pause() {
         unpauseSound();
         goToGame();  
     
-    } else if (BUTTON_PRESSED(BUTTON_SELECT)) { 
-        goToStart();
+    } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        REG_DISPCTL |= BG1_ENABLE;
+        goToHelpState();
+
     }
 }
 
@@ -541,23 +545,6 @@ void goToMIState() {
 
     state = PAUSE;
 
-
-    
-    // REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
-
-    // // hacky, but basically disables sprites for this state
-    // REG_DISPCTL = MODE0 | BG0_ENABLE;
-
-    // //Load the palette for your tiles
-    // DMANow(3, mIslandPal, PALETTE, 256);
-
-    // //Load your tiles into the charblock that your background is using
-    // DMANow(3, mIslandTiles,& CHARBLOCK[0], mIslandTilesLen/2);
-
-    // //Load your tile map into the screenblock that your background is using
-    // DMANow(3, mIslandMap, &SCREENBLOCK[20], mIslandMapLen/2);
-
-    // state = PAUSE;
 
 }
 

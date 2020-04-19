@@ -170,6 +170,7 @@ void hideSprites();
 
 // Generic struct for animated sprite
 typedef struct {
+    int hoff;
     int cheatR;
     int cheatC;
     int direction;

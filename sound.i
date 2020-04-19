@@ -64,6 +64,7 @@ void hideSprites();
 
 
 typedef struct {
+    int hoff;
     int cheatR;
     int cheatC;
     int direction;
@@ -91,10 +92,10 @@ typedef struct {
     int tileCol;
     int hide;
 } ANISPRITE;
-# 221 "myLib.h"
+# 222 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 232 "myLib.h"
+# 233 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -103,11 +104,11 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 272 "myLib.h"
+# 273 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 313 "myLib.h"
+# 314 "myLib.h"
 typedef void (*ihp)(void);
-# 368 "myLib.h"
+# 369 "myLib.h"
 typedef struct{
     const signed char* data;
     int length;
