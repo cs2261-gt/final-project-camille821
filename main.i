@@ -1455,6 +1455,11 @@ extern const unsigned short helpPal[256];
 # 20 "main.c" 2
 
 
+
+
+
+
+
 # 1 "jungle.h" 1
 # 22 "jungle.h"
 extern const unsigned short jungleTiles[6624];
@@ -1464,7 +1469,7 @@ extern const unsigned short jungleMap[1024];
 
 
 extern const unsigned short junglePal[256];
-# 23 "main.c" 2
+# 28 "main.c" 2
 # 1 "jungle2.h" 1
 # 22 "jungle2.h"
 extern const unsigned short jungle2Tiles[3168];
@@ -1474,7 +1479,7 @@ extern const unsigned short jungle2Map[1024];
 
 
 extern const unsigned short jungle2Pal[256];
-# 24 "main.c" 2
+# 29 "main.c" 2
 # 1 "island.h" 1
 # 22 "island.h"
 extern const unsigned short islandTiles[7056];
@@ -1484,7 +1489,7 @@ extern const unsigned short islandMap[1024];
 
 
 extern const unsigned short islandPal[256];
-# 25 "main.c" 2
+# 30 "main.c" 2
 # 1 "island2.h" 1
 # 22 "island2.h"
 extern const unsigned short island2Tiles[3840];
@@ -1494,7 +1499,7 @@ extern const unsigned short island2Map[1024];
 
 
 extern const unsigned short island2Pal[256];
-# 26 "main.c" 2
+# 31 "main.c" 2
 # 1 "zoo.h" 1
 # 22 "zoo.h"
 extern const unsigned short zooTiles[5184];
@@ -1504,7 +1509,7 @@ extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 27 "main.c" 2
+# 32 "main.c" 2
 # 1 "zoo2.h" 1
 # 22 "zoo2.h"
 extern const unsigned short zoo2Tiles[3472];
@@ -1514,7 +1519,7 @@ extern const unsigned short zoo2Map[1024];
 
 
 extern const unsigned short zoo2Pal[256];
-# 28 "main.c" 2
+# 33 "main.c" 2
 # 1 "garden.h" 1
 # 22 "garden.h"
 extern const unsigned short gardenTiles[6448];
@@ -1524,7 +1529,7 @@ extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 29 "main.c" 2
+# 34 "main.c" 2
 # 1 "garden2.h" 1
 # 22 "garden2.h"
 extern const unsigned short garden2Tiles[3424];
@@ -1534,7 +1539,7 @@ extern const unsigned short garden2Map[1024];
 
 
 extern const unsigned short garden2Pal[256];
-# 30 "main.c" 2
+# 35 "main.c" 2
 # 1 "kindergarten.h" 1
 # 22 "kindergarten.h"
 extern const unsigned short kindergartenTiles[14400];
@@ -1544,7 +1549,7 @@ extern const unsigned short kindergartenMap[1024];
 
 
 extern const unsigned short kindergartenPal[256];
-# 31 "main.c" 2
+# 36 "main.c" 2
 # 1 "kindergarten2.h" 1
 # 22 "kindergarten2.h"
 extern const unsigned short kindergarten2Tiles[4304];
@@ -1554,7 +1559,7 @@ extern const unsigned short kindergarten2Map[1024];
 
 
 extern const unsigned short kindergarten2Pal[256];
-# 32 "main.c" 2
+# 37 "main.c" 2
 # 1 "arena.h" 1
 # 22 "arena.h"
 extern const unsigned short arenaTiles[6480];
@@ -1564,7 +1569,7 @@ extern const unsigned short arenaMap[1024];
 
 
 extern const unsigned short arenaPal[256];
-# 33 "main.c" 2
+# 38 "main.c" 2
 # 1 "arena2.h" 1
 # 22 "arena2.h"
 extern const unsigned short arena2Tiles[3216];
@@ -1574,7 +1579,7 @@ extern const unsigned short arena2Map[1024];
 
 
 extern const unsigned short arena2Pal[256];
-# 34 "main.c" 2
+# 39 "main.c" 2
 # 1 "desert.h" 1
 # 22 "desert.h"
 extern const unsigned short desertTiles[6976];
@@ -1584,7 +1589,7 @@ extern const unsigned short desertMap[1024];
 
 
 extern const unsigned short desertPal[256];
-# 35 "main.c" 2
+# 40 "main.c" 2
 # 1 "desert2.h" 1
 # 22 "desert2.h"
 extern const unsigned short desert2Tiles[2608];
@@ -1594,7 +1599,7 @@ extern const unsigned short desert2Map[1024];
 
 
 extern const unsigned short desert2Pal[256];
-# 36 "main.c" 2
+# 41 "main.c" 2
 
 
 
@@ -1605,7 +1610,7 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 41 "main.c" 2
+# 46 "main.c" 2
 
 
 # 1 "sound.h" 1
@@ -1624,21 +1629,21 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 44 "main.c" 2
+# 49 "main.c" 2
 # 1 "spacedOutBeats.h" 1
 
 
 
 
 extern const signed char spacedOutBeats[1177056];
-# 45 "main.c" 2
+# 50 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 46 "main.c" 2
+# 51 "main.c" 2
 
 
 # 1 "escapismbg.h" 1
@@ -1650,12 +1655,89 @@ extern const unsigned short escapismbgMap[4096];
 
 
 extern const unsigned short escapismbgPal[256];
-# 49 "main.c" 2
+# 54 "main.c" 2
+
+
+
+
+# 1 "prison.h" 1
+# 22 "prison.h"
+extern const unsigned short prisonTiles[5360];
+
+
+extern const unsigned short prisonMap[1024];
+
+
+extern const unsigned short prisonPal[256];
+# 59 "main.c" 2
+# 1 "prison2.h" 1
+# 22 "prison2.h"
+extern const unsigned short prison2Tiles[4528];
+
+
+extern const unsigned short prison2Map[1024];
+
+
+extern const unsigned short prison2Pal[256];
+# 60 "main.c" 2
+# 1 "sleep.h" 1
+# 22 "sleep.h"
+extern const unsigned short sleepTiles[4048];
+
+
+extern const unsigned short sleepMap[1024];
+
+
+extern const unsigned short sleepPal[256];
+# 61 "main.c" 2
+# 1 "found.h" 1
+# 22 "found.h"
+extern const unsigned short foundTiles[5040];
+
+
+extern const unsigned short foundMap[1024];
+
+
+extern const unsigned short foundPal[256];
+# 62 "main.c" 2
+# 1 "swim.h" 1
+# 22 "swim.h"
+extern const unsigned short swimTiles[4864];
+
+
+extern const unsigned short swimMap[1024];
+
+
+extern const unsigned short swimPal[256];
+# 63 "main.c" 2
+# 1 "fast.h" 1
+# 22 "fast.h"
+extern const unsigned short fastTiles[4832];
+
+
+extern const unsigned short fastMap[1024];
+
+
+extern const unsigned short fastPal[256];
+# 64 "main.c" 2
 
 
 
 void initialize();
 
+
+
+void goToPrisonState();
+void goToSleepState();
+void goToFoundState();
+void goToSwimState();
+void goToFastState();
+
+void prisonState();
+void sleepState();
+void foundState();
+void swimState();
+void fastState();
 
 void goToStart();
 void start();
@@ -1683,7 +1765,7 @@ void goToDesertState();
 
 
 
-enum {START, GAME, PAUSE, WIN, LOSE, HELP};
+enum {START, GAME, PAUSE, WIN, LOSE, HELP, PRISON, SLEEP, FOUND, SWIM, FAST};
 int state;
 
 
@@ -1740,6 +1822,22 @@ int main() {
                 helpState();
                 break;
 
+            case PRISON:
+                prisonState();
+                break;
+            case SLEEP:
+                sleepState();
+                break;
+            case FOUND:
+                foundState();
+                break;
+            case SWIM:
+                swimState();
+                break;
+             case FAST:
+                fastState();
+                break;
+
         }
 
 
@@ -1747,6 +1845,234 @@ int main() {
 
     }
 }
+
+
+
+
+
+
+
+void goToPrison() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
+
+
+
+
+    DMANow(3, prisonPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, prisonTiles,& ((charblock *)0x6000000)[1], 10720/2);
+
+
+    DMANow(3, prisonMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, prison2Tiles,& ((charblock *)0x6000000)[0], 9056/2);
+
+
+    DMANow(3, prison2Map, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PRISON;
+
+}
+
+void prisonState() {
+
+
+    if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        goToStart();
+    }
+
+    if((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
+        goToSleep();
+    }
+
+}
+
+void goToSleep() {
+
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+
+
+    DMANow(3, sleepPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x4000008) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, sleepTiles,& ((charblock *)0x6000000)[1], 8096/2);
+
+
+    DMANow(3, sleepMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+    state = SLEEP;
+
+}
+
+void sleepState() {
+
+    if((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
+        goToFound();
+    }
+
+
+    if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        goToPrison();
+    }
+}
+
+
+void goToFound() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+
+
+    DMANow(3, foundPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x4000008) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, foundTiles,& ((charblock *)0x6000000)[1], 10080/2);
+
+
+    DMANow(3, foundMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+    state = FOUND;
+
+}
+
+void foundState() {
+
+    if((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
+        goToSwim();
+    }
+
+
+    if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        goToSleep();
+    }
+
+}
+void goToSwim() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+
+
+    DMANow(3, swimPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x4000008) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, swimTiles,& ((charblock *)0x6000000)[1], 9728/2);
+
+
+    DMANow(3, swimMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+    state = SWIM;
+
+}
+
+void swimState() {
+    if((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
+        goToFast();
+    }
+
+
+    if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        goToFound();
+    }
+
+
+}
+void goToFast() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+
+
+
+
+    DMANow(3, fastPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x4000008) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, fastTiles,& ((charblock *)0x6000000)[1], 9664/2);
+
+
+    DMANow(3, fastMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+    state = FAST;
+
+
+}
+
+
+void fastState() {
+
+    seed++;
+
+
+    waitForVBlank();
+
+    if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        goToSwim();
+    }
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+
+        srand(seed);
+
+        initGame();
+        goToGame();
+        stopSound();
+        playSoundA(gameSong, 903052, 1);
+
+    }
+
+
+}
+
+
 
 
 void initialize() {
@@ -1801,8 +2127,6 @@ void goToStart() {
 
 void start() {
 
-
-
     seed++;
 
 
@@ -1820,11 +2144,11 @@ void start() {
 
     }
 
+    if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
+        goToPrison();
 
-    if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
-        initGame();
-        goToHelpState();
     }
+# 500 "main.c"
 }
 
 

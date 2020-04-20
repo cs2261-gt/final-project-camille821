@@ -18,6 +18,11 @@
 #include "lose.h"
 #include "help.h"
 
+
+
+
+
+
 //star BG's
 #include "jungle.h"
 #include "jungle2.h"
@@ -48,17 +53,32 @@
 #include "escapismbg.h"
 
 
+
+//cut scene bgs
+#include "prison.h"
+#include "prison2.h"
+#include "sleep.h"
+#include "found.h"
+#include "swim.h"
+#include "fast.h"
+
+
 // Prototypes
 void initialize();
 
 // State Prototypes
-void cutSceneState();
-void goToPrison();
-void goToSleep();
-void goToFound();
-void goToSwim();
-void goToFast();
 
+void goToPrisonState();
+void goToSleepState();
+void goToFoundState();
+void goToSwimState();
+void goToFastState();
+
+void prisonState();
+void sleepState();
+void foundState();
+void swimState();
+void fastState();
 
 void goToStart();
 void start();
@@ -86,7 +106,7 @@ void goToDesertState();
 //TODO: add more stars!!!
 
 // States
-enum {START, GAME, PAUSE, WIN, LOSE, HELP, CUTSCENE};
+enum {START, GAME, PAUSE, WIN, LOSE, HELP, PRISON, SLEEP, FOUND, SWIM, FAST};
 int state;
 
 //int foodEaten;
@@ -143,6 +163,22 @@ int main() {
                 helpState();
                 break;
 
+            case PRISON:
+                prisonState();
+                break;
+            case SLEEP:
+                sleepState();
+                break;
+            case FOUND:
+                foundState();
+                break;
+            case SWIM:
+                swimState();
+                break;
+             case FAST:
+                fastState();
+                break;               
+
         }
      
     
@@ -150,6 +186,234 @@ int main() {
         
     }
 }
+
+
+
+
+
+
+
+void goToPrison() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, prisonPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG1CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, prisonTiles,& CHARBLOCK[1], prisonTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, prisonMap, &SCREENBLOCK[27], prisonMapLen/2);
+
+
+
+    // //Top BG with text bubble
+    REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, prison2Tiles,& CHARBLOCK[0], prison2TilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, prison2Map, &SCREENBLOCK[20], prison2MapLen/2);
+
+    state = PRISON; 
+
+}
+
+void prisonState() {
+
+
+    if(BUTTON_PRESSED(BUTTON_LEFT)) {
+        goToStart();
+    }
+
+    if(BUTTON_PRESSED(BUTTON_RIGHT)) {
+        goToSleep();
+    }
+
+}
+
+void goToSleep() {
+
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, sleepPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, sleepTiles,& CHARBLOCK[1], sleepTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, sleepMap, &SCREENBLOCK[27], sleepMapLen/2);
+
+    state = SLEEP;
+
+}
+
+void sleepState() {
+    
+    if(BUTTON_PRESSED(BUTTON_RIGHT)) {
+        goToFound();
+    }
+
+
+    if(BUTTON_PRESSED(BUTTON_LEFT)) {
+        goToPrison();
+    }
+}
+
+
+void goToFound() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, foundPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, foundTiles,& CHARBLOCK[1], foundTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, foundMap, &SCREENBLOCK[27], foundMapLen/2);
+
+    state = FOUND;
+
+}
+
+void foundState() {
+
+    if(BUTTON_PRESSED(BUTTON_RIGHT)) {
+        goToSwim();
+    }
+
+
+    if(BUTTON_PRESSED(BUTTON_LEFT)) {
+        goToSleep();
+    }
+
+}
+void goToSwim() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, swimPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, swimTiles,& CHARBLOCK[1], swimTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, swimMap, &SCREENBLOCK[27], swimMapLen/2);
+
+    state = SWIM;
+
+}
+
+void swimState() {
+    if(BUTTON_PRESSED(BUTTON_RIGHT)) {
+        goToFast();
+    }
+
+
+    if(BUTTON_PRESSED(BUTTON_LEFT)) {
+        goToFound();
+    }
+
+
+}
+void goToFast() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, fastPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, fastTiles,& CHARBLOCK[1], fastTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, fastMap, &SCREENBLOCK[27], fastMapLen/2);
+
+    state = FAST;
+
+
+}
+
+
+void fastState() {
+
+    seed++;
+
+    // Lock the framerate to 60 fps
+    waitForVBlank();
+
+    if(BUTTON_PRESSED(BUTTON_LEFT)) {
+        goToSwim();
+    }
+
+    // State transitions
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        // Seed the random generator
+        srand(seed);
+        
+        initGame();
+        goToGame();
+        stopSound();
+        playSoundA(gameSong, GAMESONGLEN, 1);
+        
+    }
+
+
+}
+
+
 
 // Sets up GBA
 void initialize() {
@@ -204,8 +468,6 @@ void goToStart() {
 // Runs every frame of the start state
 void start() {
 
-
-    
     seed++;
 
     // Lock the framerate to 60 fps
@@ -223,11 +485,18 @@ void start() {
         
     }
 
-
-    if (BUTTON_PRESSED(BUTTON_SELECT)) {
-        initGame();        
-        goToHelpState();
+    if (BUTTON_PRESSED(BUTTON_RIGHT)) {
+        goToPrison();
+        
     }
+
+
+    // if (BUTTON_PRESSED(BUTTON_SELECT)) {
+    //     initGame();        
+    //     goToHelpState();
+    // }
+
+
 }
 
 // Sets up the game state
