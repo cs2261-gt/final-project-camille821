@@ -1238,7 +1238,7 @@ void updateBubble(ANISPRITE * b) {
 
  if (b->active && b->direction == 1
     && b->screenCol + b->cdel <= 1024 -1
-    && b->screenCol + b->cdel > 0 - b->width ) {
+    && b->screenCol + b->cdel > 0 - b->width && b->hoff > 0 ) {
 
    b->worldCol -= b->cdel;
 
@@ -1247,7 +1247,7 @@ void updateBubble(ANISPRITE * b) {
 
  if (b->active && b->direction == 2
     && b->screenCol + b->cdel <= 1024 + b-> width
-    && b->screenCol + b->cdel > 0 - b->width ) {
+    && b->screenCol + b->cdel > 0 - b->width && b->hoff < 1024) {
 
    b->worldCol += b->cdel;
 
@@ -1273,21 +1273,30 @@ void updateBubble(ANISPRITE * b) {
    b->active = 0;
    b->hide = 1;
   }
-# 304 "game.c"
+
+
+
  for (int i = 0; i < 5; i++) {
    bubbles[i].screenRow = bubbles[i].worldRow - vOff;
   bubbles[i].screenCol = bubbles[i].worldCol - bubbles[i].hoff;
 
  }
 
+
 }
 
 
 void throwLeft() {
-# 336 "game.c"
+
+
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
+
+
+   bubbles[i].active = 1;
+   bubbles[i].hide = 0;
+
 
    bubbles[i].direction = 1;
 
@@ -1295,8 +1304,6 @@ void throwLeft() {
    bubbles[i].worldCol = steven.worldCol;
 
 
-   bubbles[i].active = 1;
-   bubbles[i].hide = 0;
 
 
 
@@ -1308,7 +1315,8 @@ void throwLeft() {
 }
 
 void throwRight() {
-# 381 "game.c"
+
+
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
@@ -1332,7 +1340,7 @@ void throwRight() {
 
 
 void throwUp() {
-# 426 "game.c"
+
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
@@ -1357,7 +1365,8 @@ void throwUp() {
 
 
 void throwDown() {
-# 471 "game.c"
+
+
  for (int i = 0; i < 5; i++) {
 
   if (!bubbles[i].active) {
@@ -1502,7 +1511,7 @@ void animateSteven() {
     }
 
 
- if(steven.aniCounter % 5 == 0) {
+ if(steven.aniCounter % 3 == 0) {
 
 
   steven.curFrame++;
@@ -1536,7 +1545,7 @@ void animateSteven() {
   steven.aniState = SPRITEFRONT;
 
 
-  if(steven.worldRow + steven.height < 512
+  if(steven.worldRow + steven.height < 160
 
                                                                                                                  ){
 
@@ -1556,8 +1565,8 @@ void animateSteven() {
 
    steven.worldCol -= steven.cdel;
   }
-# 688 "game.c"
-  if ( (hOff > 0 && steven.screenCol < 100 && screenBlock >= 28) || (hOff < 256 && hOff > -512 && steven.screenCol < 100 && steven.worldCol > 512)) {
+# 597 "game.c"
+  if ((steven.hoff > 0 && steven.hoff || screenBlock == 30) < 1024 && steven.screenCol < 100 ) {
             hOff--;
             steven.hoff--;
 
@@ -1584,7 +1593,10 @@ void animateSteven() {
         }
 
  }
-# 723 "game.c"
+
+
+
+
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
 
 
@@ -1704,26 +1716,26 @@ void drawSteven() {
 void initEnemies() {
 
 
- yDiamond.worldRow = 100;
- yDiamond.worldCol = 140;
- yDiamond.initWorldRow = 100;
- yDiamond.initWorldCol = 140;
+ yDiamond.worldRow = 67;
+ yDiamond.worldCol = 177;
+ yDiamond.initWorldRow = 67;
+ yDiamond.initWorldCol = 177;
  yDiamond.active = 1;
  yDiamond.hide = 0;
 
 
  bDiamond.worldRow = 62;
- bDiamond.worldCol = 308;
+ bDiamond.worldCol = 308 - 40;
  bDiamond.initWorldRow = 62;
- bDiamond.initWorldCol = 308;
+ bDiamond.initWorldCol =308-40;
  bDiamond.active = 1;
  bDiamond.hide = 0;
 
 
- wDiamond.worldRow = 50;
- wDiamond.worldCol = 355;
- wDiamond.initWorldRow = 50;
- wDiamond.initWorldCol = 355;
+ wDiamond.worldRow = 45;
+ wDiamond.worldCol = 353;
+ wDiamond.initWorldRow = 45;
+ wDiamond.initWorldCol = 353;
  wDiamond.active = 1;
  wDiamond.hide = 0;
 
@@ -1732,34 +1744,36 @@ void initEnemies() {
 
  spinel.worldRow = 15;
  spinel.worldCol = 440;
- spinel.initWorldRow = spinel.worldRow;
- spinel.initWorldCol = spinel.worldCol;
+ spinel.initWorldRow = 15;
+ spinel.initWorldCol = 440;
 
 
 
  jasper.worldRow = 105;
  jasper.worldCol = 490;
- jasper.initWorldRow = jasper.worldRow;
- jasper.initWorldCol = jasper.worldCol;
+ jasper.initWorldRow = 105;
+ jasper.initWorldCol = 490;
 
 
 
  aquamarine.worldRow = 40;
  aquamarine.worldCol = 645;
- aquamarine.initWorldRow = aquamarine.worldRow;
- aquamarine.initWorldCol = aquamarine.worldCol;
+ aquamarine.initWorldRow = 40;
+ aquamarine.initWorldCol = 645;
 
 
- topaz.worldRow = 30;
+ topaz.worldRow = 28;
  topaz.worldCol = 703;
- topaz.initWorldRow = topaz.worldRow;
- topaz.initWorldCol = topaz.worldCol;
+ topaz.initWorldRow = 28;
+ topaz.initWorldCol = 703;
 
 
  eyeball.worldRow = 66;
  eyeball.worldCol = 800;
- eyeball.initWorldRow = eyeball.worldRow;
- eyeball.initWorldCol = eyeball.worldCol;
+ eyeball.initWorldRow = 66;
+ eyeball.initWorldCol = 800;
+ eyeball.initScreenRow = eyeball.initWorldRow - eyeball.hoff;
+ eyeball.initScreenCol = eyeball.initWorldCol - eyeball.hoff;
 
 
 
@@ -1769,10 +1783,6 @@ void initEnemies() {
 
   enemies[i]->active = 1;
   enemies[i]->hide = 0;
-
-
-
-
   enemies[i]->hoff = 0;
   enemies[i]->screenRow = enemies[i]->worldRow - vOff;
   enemies[i]->screenCol = enemies[i]->worldCol - enemies[i]->hoff;
@@ -1795,7 +1805,38 @@ void initEnemies() {
 
 
 void updateEnemies() {
-# 953 "game.c"
+
+
+
+
+
+ hoverDN(&yDiamond, yDiamond.initWorldRow, 35);
+
+
+
+
+ hoverH(&bDiamond, bDiamond.initWorldCol, 40);
+
+
+
+ hoverV(&wDiamond, wDiamond.initWorldRow, 35);
+
+
+ hoverH(&spinel, spinel.initWorldCol, 50);
+
+
+ hoverH(&jasper, jasper.initWorldCol, 50);
+
+
+ hoverDN(&aquamarine, aquamarine.initWorldRow, 55);
+
+
+
+ moveRect(&topaz, topaz.initWorldRow, topaz.initWorldCol, 80, 80);
+
+
+ hoverH(&eyeball, eyeball.initWorldCol, 160);
+# 876 "game.c"
  for (int i = 0; i < 8; i++) {
    bubbling(enemies[i]);
    enemies[i]->screenRow = enemies[i]->worldRow - vOff;
@@ -1841,8 +1882,9 @@ void initStars() {
 
 
 
- earth.worldRow = 25;
+ earth.worldRow = 20;
  earth.worldCol = 1000;
+ earth.initWorldRow = 20;
  earth.cheatR = 9;
  earth.cheatC = 3;
 
@@ -1878,17 +1920,18 @@ void initStars() {
  kindergarten.cheatC = 2;
 
 
- arena.worldRow = 50;
- arena.worldCol = 945;
+ arena.worldRow = 38;
+ arena.worldCol = 935;
  arena.cheatR = 10;
  arena.cheatC = 2;
 
 
- desert.worldRow = 125;
+ desert.worldRow = 115;
+ desert.initWorldRow = 115;
  desert.worldCol = 1000;
  desert.cheatR = 10;
  desert.cheatC = 2;
-# 1058 "game.c"
+# 983 "game.c"
  for (int i = 0; i < 8; i++) {
   stars[i]->active = 1;
   stars[i]->hide = 0;
@@ -1908,7 +1951,7 @@ void initStars() {
 
 }
 void updateStars() {
-# 1085 "game.c"
+# 1012 "game.c"
  for (int i = 0; i < 8; i++) {
    bubbling(stars[i]);
   stars[i]->screenRow = stars[i]->worldRow - vOff;
@@ -1983,6 +2026,8 @@ void moveRect( ANISPRITE * a, int initRow, int initCol, int width, int height) {
  if (a->worldCol == initCol && a->worldRow <= initRow + height && a->worldRow > initRow) {
   a->worldRow -= a->rdel;
  }
+
+
 
 }
 
@@ -2086,32 +2131,73 @@ void moveUp(ANISPRITE * a) {
 void enemyCollisions() {
 
  for (int i = 0; i < 8; i++) {
-  if (enemies[i]->bubbled == 0 && collision(steven.screenRow, steven.screenCol, steven.height, steven.width, enemies[i]->screenRow, enemies[i]->screenCol, enemies[i]->height, enemies[i]->width)) {
+  if (enemies[i]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[i]->worldRow, enemies[i]->worldCol, enemies[i]->height, enemies[i]->width)) {
    livesLeft--;
 
-   if (steven.aniState == SPRITELEFT) {
-    steven.worldCol += 10;
-
-   } else
-
-   if (steven.aniState == SPRITERIGHT) {
-    steven.worldCol -= 10;
-   } else
-
-   if (steven.aniState == SPRITEBACK) {
-    steven.worldRow += 10;
-   } else
-
-   if (steven.aniState == SPRITEFRONT) {
-    steven.worldRow -= 10;
-   }
   }
 
  }
 
+ if (enemies[0]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[0]->worldRow, enemies[0]->worldCol, enemies[0]->height, enemies[0]->width)) {
+        steven.worldRow = 30;
+        steven.worldCol = 95;
+
+    }
+
+
+    if (enemies[1]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[1]->worldRow, enemies[1]->worldCol, enemies[1]->height, enemies[1]->width)) {
+        steven.worldRow = 60;
+        steven.worldCol = enemies[1]->initWorldCol-50;
+
+    }
+
+    if (enemies[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[2]->worldRow, enemies[2]->worldCol, enemies[2]->height, enemies[2]->width)) {
+        steven.worldRow = 40;
+        steven.worldCol = 320;
+
+
+    }
+
+
+    if (enemies[3]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[3]->worldRow, enemies[3]->worldCol, enemies[3]->height, enemies[3]->width)) {
+        steven.worldRow = 60;
+        steven.worldCol = 440;
+
+
+    }
+
+
+    if (enemies[4]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[4]->worldRow, enemies[4]->worldCol, enemies[4]->height, enemies[4]->width)) {
+        steven.worldRow = 45;
+        steven.worldCol = 490;
+
+    }
+
+
+    if (enemies[5]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[5]->worldRow, enemies[5]->worldCol, enemies[5]->height, enemies[5]->width)) {
+        steven.worldRow = 30;
+        steven.worldCol = 620;
+
+    }
+
+
+    if (enemies[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[6]->worldRow, enemies[6]->worldCol, enemies[6]->height, enemies[6]->width)) {
+        steven.worldRow = 70;
+        steven.worldCol = 73;
+
+    }
+
+    if (enemies[7]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[7]->worldRow, enemies[7]->worldCol, enemies[7]->height, enemies[7]->width)) {
+        steven.worldRow = 70;
+        steven.worldCol = 765;
+
+    }
+
+
+
 }
 void starCollisions() {
-# 1312 "game.c"
+
 }
 
 

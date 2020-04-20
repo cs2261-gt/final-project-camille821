@@ -7,6 +7,8 @@
 
 
 
+
+
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 1 3
 # 10 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/machine/ieeefp.h" 1 3
@@ -800,7 +802,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 333 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 
-# 7 "main.c" 2
+# 9 "main.c" 2
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 1 3
 # 36 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/lib/gcc/arm-none-eabi/7.1.0/include/stddef.h" 1 3 4
@@ -1193,7 +1195,7 @@ static __inline__ int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
 }
 # 767 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 
-# 8 "main.c" 2
+# 10 "main.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1319,7 +1321,7 @@ typedef struct{
 
 
 int collision(int rowA, int colA, int heightA, int widthA, int rowB, int colB, int heightB, int widthB);
-# 9 "main.c" 2
+# 11 "main.c" 2
 # 1 "game.h" 1
 # 17 "game.h"
 extern ANISPRITE steven;
@@ -1388,7 +1390,7 @@ void throwRight();
 void throwUp();
 void throwDown();
 void bubbling(ANISPRITE * a);
-# 10 "main.c" 2
+# 12 "main.c" 2
 
 
 # 1 "start.h" 1
@@ -1400,7 +1402,7 @@ extern const unsigned short startMap[1024];
 
 
 extern const unsigned short startPal[256];
-# 13 "main.c" 2
+# 15 "main.c" 2
 # 1 "gameSplash1.h" 1
 # 22 "gameSplash1.h"
 extern const unsigned short gameSplash1Tiles[21888];
@@ -1410,7 +1412,7 @@ extern const unsigned short gameSplash1Map[2048];
 
 
 extern const unsigned short gameSplash1Pal[256];
-# 14 "main.c" 2
+# 16 "main.c" 2
 # 1 "pause.h" 1
 # 22 "pause.h"
 extern const unsigned short pauseTiles[512];
@@ -1420,7 +1422,7 @@ extern const unsigned short pauseMap[1024];
 
 
 extern const unsigned short pausePal[256];
-# 15 "main.c" 2
+# 17 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
 extern const unsigned short winTiles[1568];
@@ -1430,7 +1432,7 @@ extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 16 "main.c" 2
+# 18 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
 extern const unsigned short loseTiles[3040];
@@ -1440,7 +1442,7 @@ extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 17 "main.c" 2
+# 19 "main.c" 2
 # 1 "help.h" 1
 # 22 "help.h"
 extern const unsigned short helpTiles[832];
@@ -1450,7 +1452,7 @@ extern const unsigned short helpMap[1024];
 
 
 extern const unsigned short helpPal[256];
-# 18 "main.c" 2
+# 20 "main.c" 2
 
 
 # 1 "jungle.h" 1
@@ -1462,7 +1464,7 @@ extern const unsigned short jungleMap[1024];
 
 
 extern const unsigned short junglePal[256];
-# 21 "main.c" 2
+# 23 "main.c" 2
 # 1 "jungle2.h" 1
 # 22 "jungle2.h"
 extern const unsigned short jungle2Tiles[3168];
@@ -1472,7 +1474,7 @@ extern const unsigned short jungle2Map[1024];
 
 
 extern const unsigned short jungle2Pal[256];
-# 22 "main.c" 2
+# 24 "main.c" 2
 # 1 "island.h" 1
 # 22 "island.h"
 extern const unsigned short islandTiles[7056];
@@ -1482,7 +1484,7 @@ extern const unsigned short islandMap[1024];
 
 
 extern const unsigned short islandPal[256];
-# 23 "main.c" 2
+# 25 "main.c" 2
 # 1 "island2.h" 1
 # 22 "island2.h"
 extern const unsigned short island2Tiles[3840];
@@ -1492,7 +1494,7 @@ extern const unsigned short island2Map[1024];
 
 
 extern const unsigned short island2Pal[256];
-# 24 "main.c" 2
+# 26 "main.c" 2
 # 1 "zoo.h" 1
 # 22 "zoo.h"
 extern const unsigned short zooTiles[5184];
@@ -1502,7 +1504,7 @@ extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 25 "main.c" 2
+# 27 "main.c" 2
 # 1 "zoo2.h" 1
 # 22 "zoo2.h"
 extern const unsigned short zoo2Tiles[3472];
@@ -1512,7 +1514,7 @@ extern const unsigned short zoo2Map[1024];
 
 
 extern const unsigned short zoo2Pal[256];
-# 26 "main.c" 2
+# 28 "main.c" 2
 # 1 "garden.h" 1
 # 22 "garden.h"
 extern const unsigned short gardenTiles[6448];
@@ -1522,7 +1524,7 @@ extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 27 "main.c" 2
+# 29 "main.c" 2
 # 1 "garden2.h" 1
 # 22 "garden2.h"
 extern const unsigned short garden2Tiles[3424];
@@ -1532,7 +1534,69 @@ extern const unsigned short garden2Map[1024];
 
 
 extern const unsigned short garden2Pal[256];
-# 28 "main.c" 2
+# 30 "main.c" 2
+# 1 "kindergarten.h" 1
+# 22 "kindergarten.h"
+extern const unsigned short kindergartenTiles[14400];
+
+
+extern const unsigned short kindergartenMap[1024];
+
+
+extern const unsigned short kindergartenPal[256];
+# 31 "main.c" 2
+# 1 "kindergarten2.h" 1
+# 22 "kindergarten2.h"
+extern const unsigned short kindergarten2Tiles[4304];
+
+
+extern const unsigned short kindergarten2Map[1024];
+
+
+extern const unsigned short kindergarten2Pal[256];
+# 32 "main.c" 2
+# 1 "arena.h" 1
+# 22 "arena.h"
+extern const unsigned short arenaTiles[6480];
+
+
+extern const unsigned short arenaMap[1024];
+
+
+extern const unsigned short arenaPal[256];
+# 33 "main.c" 2
+# 1 "arena2.h" 1
+# 22 "arena2.h"
+extern const unsigned short arena2Tiles[3216];
+
+
+extern const unsigned short arena2Map[1024];
+
+
+extern const unsigned short arena2Pal[256];
+# 34 "main.c" 2
+# 1 "desert.h" 1
+# 22 "desert.h"
+extern const unsigned short desertTiles[6976];
+
+
+extern const unsigned short desertMap[1024];
+
+
+extern const unsigned short desertPal[256];
+# 35 "main.c" 2
+# 1 "desert2.h" 1
+# 22 "desert2.h"
+extern const unsigned short desert2Tiles[2608];
+
+
+extern const unsigned short desert2Map[1024];
+
+
+extern const unsigned short desert2Pal[256];
+# 36 "main.c" 2
+
+
 
 
 # 1 "spritesheet1.h" 1
@@ -1541,7 +1605,7 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 31 "main.c" 2
+# 41 "main.c" 2
 
 
 # 1 "sound.h" 1
@@ -1560,21 +1624,21 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 34 "main.c" 2
+# 44 "main.c" 2
 # 1 "spacedOutBeats.h" 1
 
 
 
 
 extern const signed char spacedOutBeats[1177056];
-# 35 "main.c" 2
+# 45 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 36 "main.c" 2
+# 46 "main.c" 2
 
 
 # 1 "escapismbg.h" 1
@@ -1586,7 +1650,7 @@ extern const unsigned short escapismbgMap[4096];
 
 
 extern const unsigned short escapismbgPal[256];
-# 39 "main.c" 2
+# 49 "main.c" 2
 
 
 
@@ -1609,6 +1673,9 @@ void goToJdbState();
 void goToMIState();
 void goToZooState();
 void goToGardenState();
+void goToKindergartenState();
+void goToArenaState();
+void goToDesertState();
 
 
 
@@ -1755,6 +1822,7 @@ void start() {
 
 
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        initGame();
         goToHelpState();
     }
 }
@@ -1863,6 +1931,27 @@ void game() {
     }
 
 
+    if (stars[5]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[5]->worldRow, stars[5]->worldCol, stars[5]->height, stars[5]->width)) {
+        steven.worldRow = stars[5]->worldRow;
+        steven.worldCol = stars[5]->worldCol - 20;
+        goToKindergartenState();
+    }
+
+
+    if (stars[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[6]->worldRow, stars[6]->worldCol, stars[6]->height, stars[6]->width)) {
+        steven.worldRow = stars[6]->worldRow;
+
+        steven.worldCol = stars[6]->worldCol + 16;
+        goToArenaState();
+    }
+
+    if (stars[7]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[7]->worldRow, stars[7]->worldCol, stars[7]->height, stars[7]->width)) {
+        steven.worldRow = 68;
+        steven.worldCol = 985;
+        goToDesertState();
+    }
+
+
 }
 
 
@@ -1903,6 +1992,8 @@ void pause() {
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+
+
 
         unpauseSound();
         goToGame();
@@ -2169,6 +2260,119 @@ void goToGardenState() {
 
 
     DMANow(3, garden2Map, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PAUSE;
+
+}
+
+
+
+void goToKindergartenState() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
+
+
+
+
+    DMANow(3, kindergartenPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x400000A) = (1<<7) | ((20)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, kindergartenTiles,& ((charblock *)0x6000000)[1], 28800/2);
+
+
+    DMANow(3, kindergartenMap, &((screenblock *)0x6000000)[20], 2048/2);
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((26)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, kindergarten2Tiles,& ((charblock *)0x6000000)[0], 8608/2);
+
+
+    DMANow(3, kindergarten2Map, &((screenblock *)0x6000000)[26], 2048/2);
+
+    state = PAUSE;
+
+
+}
+void goToArenaState() {
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
+
+
+
+
+    DMANow(3, arenaPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, arenaTiles,& ((charblock *)0x6000000)[1], 12960/2);
+
+
+    DMANow(3, arenaMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, arena2Tiles,& ((charblock *)0x6000000)[0], 6432/2);
+
+
+    DMANow(3, arena2Map, &((screenblock *)0x6000000)[20], 2048/2);
+
+    state = PAUSE;
+
+}
+void goToDesertState() {
+
+
+    (*(volatile unsigned short *)0x04000010) = 0;
+    (*(volatile unsigned short *)0x04000012) = 0;
+
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8);
+
+
+
+
+    DMANow(3, desertPal, ((unsigned short *)0x5000000), 256);
+
+
+     (*(volatile unsigned short*)0x400000A) = (0<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, desertTiles,& ((charblock *)0x6000000)[1], 13952/2);
+
+
+    DMANow(3, desertMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+
+
+
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    DMANow(3, desert2Tiles,& ((charblock *)0x6000000)[0], 5216/2);
+
+
+    DMANow(3, desert2Map, &((screenblock *)0x6000000)[20], 2048/2);
 
     state = PAUSE;
 

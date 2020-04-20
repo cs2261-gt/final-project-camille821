@@ -1,5 +1,7 @@
 //Bugs: shifting of the stars once thier hOff resets
 //Steven wont walk left in laft half of screen
+//collision with kindergrten state screen kinda glitchy..can this be fixed??
+//rectangle movement tweakin
 
 
 
@@ -25,6 +27,14 @@
 #include "zoo2.h"
 #include "garden.h"
 #include "garden2.h"
+#include "kindergarten.h"
+#include "kindergarten2.h"
+#include "arena.h"
+#include "arena2.h"
+#include "desert.h"
+#include "desert2.h"
+
+
 
 //spritesheet
 #include "spritesheet1.h"
@@ -42,6 +52,14 @@
 void initialize();
 
 // State Prototypes
+void cutSceneState();
+void goToPrison();
+void goToSleep();
+void goToFound();
+void goToSwim();
+void goToFast();
+
+
 void goToStart();
 void start();
 void goToGame();
@@ -58,6 +76,9 @@ void goToJdbState();
 void goToMIState();
 void goToZooState();
 void goToGardenState();
+void goToKindergartenState();
+void goToArenaState();
+void goToDesertState();
 
 
 
@@ -65,7 +86,7 @@ void goToGardenState();
 //TODO: add more stars!!!
 
 // States
-enum {START, GAME, PAUSE, WIN, LOSE, HELP};
+enum {START, GAME, PAUSE, WIN, LOSE, HELP, CUTSCENE};
 int state;
 
 //int foodEaten;
@@ -203,7 +224,8 @@ void start() {
     }
 
 
-    if (BUTTON_PRESSED(BUTTON_SELECT)) {        
+    if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        initGame();        
         goToHelpState();
     }
 }
@@ -312,6 +334,27 @@ void game() {
     }
 
 
+    if (stars[5]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[5]->worldRow, stars[5]->worldCol, stars[5]->height, stars[5]->width)) {
+        steven.worldRow = stars[5]->worldRow;
+        steven.worldCol = stars[5]->worldCol - 20;
+        goToKindergartenState();     
+    }
+
+
+    if (stars[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[6]->worldRow, stars[6]->worldCol, stars[6]->height, stars[6]->width)) {
+        steven.worldRow = stars[6]->worldRow;
+        
+        steven.worldCol = stars[6]->worldCol + 16;
+        goToArenaState();     
+    }
+
+    if (stars[7]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[7]->worldRow, stars[7]->worldCol, stars[7]->height, stars[7]->width)) {
+        steven.worldRow = 68;     
+        steven.worldCol = 985;
+        goToDesertState();     
+    }
+
+
 }
 
 // Sets up the pause state
@@ -353,6 +396,8 @@ void pause() {
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
         //UNCOMMENT FOR SOUND
+
+        //BUG: if you go from start > help > game the sound won't start
         unpauseSound();
         goToGame();  
     
@@ -620,6 +665,119 @@ void goToGardenState() {
     DMANow(3, garden2Map, &SCREENBLOCK[20], garden2MapLen/2);
 
     state = PAUSE; 
+
+}
+
+
+
+void goToKindergartenState() {
+ 
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, kindergartenPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG1CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, kindergartenTiles,& CHARBLOCK[1], kindergartenTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, kindergartenMap, &SCREENBLOCK[20], kindergartenMapLen/2);
+
+
+
+    // // //Top BG with text bubble
+    REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(26) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, kindergarten2Tiles,& CHARBLOCK[0], kindergarten2TilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, kindergarten2Map, &SCREENBLOCK[26], kindergarten2MapLen/2);
+
+    state = PAUSE; 
+
+
+}
+void goToArenaState() {
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, arenaPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG1CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, arenaTiles,& CHARBLOCK[1], arenaTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, arenaMap, &SCREENBLOCK[27], arenaMapLen/2);
+
+
+
+    //Top BG with text bubble
+    REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, arena2Tiles,& CHARBLOCK[0], arena2TilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, arena2Map, &SCREENBLOCK[20], arena2MapLen/2);
+
+    state = PAUSE;
+
+}
+void goToDesertState() {
+
+
+    REG_BG0HOFF = 0;
+    REG_BG0VOFF = 0;
+
+
+    // hacky, but basically disables sprites for this state
+    REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE;
+
+
+
+    //Load the palette for your tiles
+    DMANow(3, desertPal, PALETTE, 256);
+
+    //Back BG
+     REG_BG1CNT = BG_4BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, desertTiles,& CHARBLOCK[1], desertTilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, desertMap, &SCREENBLOCK[27], desertMapLen/2);
+
+
+
+    //Top BG with text bubble
+    REG_BG0CNT = BG_4BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    //Load your tiles into the charblock that your background is using
+    DMANow(3, desert2Tiles,& CHARBLOCK[0], desert2TilesLen/2);
+
+    //Load your tile map into the screenblock that your background is using
+    DMANow(3, desert2Map, &SCREENBLOCK[20], desert2MapLen/2);
+
+    state = PAUSE;
 
 }
 
