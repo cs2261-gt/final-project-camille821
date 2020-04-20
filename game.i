@@ -1089,7 +1089,7 @@ void initGame() {
  initSteven();
  initEnemies();
  initStars();
-
+ initLives();
  initBubbles();
 
 
@@ -1106,7 +1106,7 @@ void updateGame() {
  updateSteven();
  updateEnemies();
  updateStars();
-
+ updateLives();
 
 
 
@@ -1127,7 +1127,7 @@ void drawGame() {
     drawSteven();
   drawEnemies();
     drawStars();
-
+ drawLives();
 
 
 
@@ -1191,7 +1191,17 @@ void updateBG() {
       bubbles[i].hoff -= 512;
      }
 
- }
+    }
+
+    for (int i = 0; i < 3; i++) {
+
+     if (lives[i].hoff > 512 && hOff >= 0) {
+      lives[i].hoff -= 512;
+     }
+
+    }
+
+
 
 
 
@@ -1429,6 +1439,7 @@ void drawBubble() {
 void initLives() {
  livesLeft = 3;
  for (int i = 0; i < 3; i++) {
+  lives[i].hoff = 0;
      lives[i].height = 16;
      lives[i].width = 16;
      lives[i].active = 1;
@@ -1565,7 +1576,7 @@ void animateSteven() {
 
    steven.worldCol -= steven.cdel;
   }
-# 597 "game.c"
+# 608 "game.c"
   if ((steven.hoff > 0 && steven.hoff || screenBlock == 30) < 1024 && steven.screenCol < 100 ) {
             hOff--;
             steven.hoff--;
@@ -1586,6 +1597,12 @@ void animateSteven() {
    for (int i = 0; i < 5; i++) {
 
     bubbles[i].hoff--;
+
+   }
+
+   for (int i = 0; i < 3; i++) {
+
+    lives[i].hoff--;
 
    }
 
@@ -1633,6 +1650,12 @@ void animateSteven() {
     for (int i = 0; i < 5; i++) {
 
     bubbles[i].hoff++;
+
+   }
+
+   for (int i = 0; i < 3; i++) {
+
+    lives[i].hoff++;
 
    }
         }
@@ -1836,7 +1859,7 @@ void updateEnemies() {
 
 
  hoverH(&eyeball, eyeball.initWorldCol, 160);
-# 876 "game.c"
+# 899 "game.c"
  for (int i = 0; i < 8; i++) {
    bubbling(enemies[i]);
    enemies[i]->screenRow = enemies[i]->worldRow - vOff;
@@ -1931,7 +1954,7 @@ void initStars() {
  desert.worldCol = 1000;
  desert.cheatR = 10;
  desert.cheatC = 2;
-# 983 "game.c"
+# 1006 "game.c"
  for (int i = 0; i < 8; i++) {
   stars[i]->active = 1;
   stars[i]->hide = 0;
@@ -1951,7 +1974,7 @@ void initStars() {
 
 }
 void updateStars() {
-# 1012 "game.c"
+# 1035 "game.c"
  for (int i = 0; i < 8; i++) {
    bubbling(stars[i]);
   stars[i]->screenRow = stars[i]->worldRow - vOff;

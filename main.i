@@ -2078,6 +2078,7 @@ void fastState() {
 void initialize() {
 
 
+    initGame();
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
@@ -2148,7 +2149,14 @@ void start() {
         goToPrison();
 
     }
-# 500 "main.c"
+
+
+    if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+
+        goToHelpState();
+    }
+
+
 }
 
 

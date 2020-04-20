@@ -419,6 +419,7 @@ void fastState() {
 void initialize() {
 
     
+    initGame();
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
@@ -491,10 +492,10 @@ void start() {
     }
 
 
-    // if (BUTTON_PRESSED(BUTTON_SELECT)) {
-    //     initGame();        
-    //     goToHelpState();
-    // }
+    if (BUTTON_PRESSED(BUTTON_SELECT)) {
+                
+        goToHelpState();
+    }
 
 
 }

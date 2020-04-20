@@ -72,7 +72,7 @@ void initGame() {
 	initSteven();
 	initEnemies();
 	initStars();
-	// initLives();
+	initLives();
 	initBubbles();
 
 
@@ -89,7 +89,7 @@ void updateGame() {
 	updateSteven();
 	updateEnemies();
 	updateStars();
-	// updateLives();
+	updateLives();
 	
 
 	//Update all the bubbles
@@ -110,7 +110,7 @@ void drawGame() {
     drawSteven();
  	drawEnemies();
     drawStars();
- //    drawLives();
+	drawLives();
     
 
   	// Draw all the bubbles
@@ -173,8 +173,18 @@ void updateBG() {
     	if (bubbles[i].hoff > 512 && hOff >= 0) {
     		bubbles[i].hoff -= 512;
     	}
+
+    }
+
+    for (int i = 0; i < LIVES; i++) {
+
+    	if (lives[i].hoff > 512 && hOff >= 0) {
+    		lives[i].hoff -= 512;
+    	}
+
+    }
 	
-	}
+	
 
 
 
@@ -412,6 +422,7 @@ void drawBubble() {
 void initLives() {
 	livesLeft = LIVES;
 	for (int i = 0; i < 3; i++) {
+		lives[i].hoff = 0;
 	    lives[i].height = 16;
 	    lives[i].width = 16;
 	    lives[i].active = 1;
@@ -616,6 +627,12 @@ void animateSteven() {
 				bubbles[i].hoff--;
 				
 			}
+			
+			for (int i = 0; i < LIVES; i++) {
+			 	
+				lives[i].hoff--;
+				
+			}
 
 
         }
@@ -661,6 +678,12 @@ void animateSteven() {
 				for (int i = 0; i < BUBBLECOUNT; i++) {
 			 	
 				bubbles[i].hoff++;
+				
+			}
+
+			for (int i = 0; i < LIVES; i++) {
+			 	
+				lives[i].hoff++;
 				
 			}
         }
