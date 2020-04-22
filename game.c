@@ -9,6 +9,7 @@
 
 //BG elements
 #include "colmap1.h"
+#include "colmap.h"
 #include "escapismbg.h"
 
 
@@ -27,6 +28,12 @@ int vOff;
 // screenBlock to change for XL background
 int screenBlock;
 
+//extra lives 
+ANISPRITE b1;
+ANISPRITE b2;
+ANISPRITE b3;
+
+ANISPRITE *bonuses[LIVES] = {&b1, &b2, &b3};
 
 //enemies
 ANISPRITE yDiamond;
@@ -69,6 +76,7 @@ enum { SPRITEFRONT, SPRITELEFT, SPRITERIGHT, SPRITEBACK, SPRITEIDLE};
 // Initialize the game
 void initGame() {
 	initBG();
+	initBonuses();
 	initSteven();
 	initEnemies();
 	initStars();
@@ -85,6 +93,7 @@ void initGame() {
 // Updates the game each frame
 void updateGame() {
 	updateBG();
+	updateBonuses();
 	animateSteven();
 	updateSteven();
 	updateEnemies();
@@ -107,6 +116,7 @@ void updateGame() {
 // Draws the game each frame
 void drawGame() {
     drawBG();
+    drawBonuses();
     drawSteven();
  	drawEnemies();
     drawStars();
@@ -126,6 +136,87 @@ void drawGame() {
 
 }
 
+void initBonuses() {
+	b1.worldRow = 70;
+	b1.worldCol = 490;
+
+
+	b2.worldRow = 70;
+	b2.worldCol = 725;
+
+
+
+
+	b3.worldRow = 56;
+	b3.worldCol = 970;
+
+
+	for (int i = 0; i < LIVES; i++) {
+		bonuses[i]->hoff = 0;
+		bonuses[i]->active = 1;
+		bonuses[i]->hide = 0;
+		bonuses[i]->height = 16;
+		bonuses[i]->width = 16;
+		bonuses[i]->screenCol = bonuses[i]->worldCol - bonuses[i]->hoff;
+		bonuses[i]->screenRow = bonuses[i]->worldRow;
+		bonuses[i]->tileRow = 8;
+	    bonuses[i]->tileCol = 9;
+	}
+
+}
+void updateBonuses() {
+	//also update with update player and update Bg
+	//hanlde player collisions
+
+	for (int i = 0; i < LIVES; i++) {
+		if (livesLeft == 2 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+		 bonuses[i]->worldRow, bonuses[i]->worldCol, bonuses[i]->height, bonuses[i]->width)) {
+			//steven.worldRow = steven.worldRow -16;
+			livesLeft++;
+			lives[2].hide = 0;
+			lives[2].active = 1;
+			bonuses[i]->active = 0;
+			bonuses[i]->hide =1;
+
+		}
+
+
+		if (livesLeft == 1 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+		 bonuses[i]->worldRow, bonuses[i]->worldCol, bonuses[i]->height, bonuses[i]->width)) {
+			steven.worldRow = steven.worldRow -16;
+			livesLeft++;
+			lives[1].hide = 0;
+			lives[1].active = 1;
+			bonuses[i]->active = 0;
+			bonuses[i]->hide =1;
+
+		}
+	}
+
+	for (int i = 0; i < LIVES; i++) {
+		bonuses[i]->screenCol = bonuses[i]->worldCol - bonuses[i]->hoff;
+		bonuses[i]->screenRow = bonuses[i]->worldRow;		
+	}
+
+
+}
+void drawBonuses() {
+
+    for (int i = 0; i < LIVES; i++) {
+
+	    if (bonuses[i]->hide || bonuses[i]->screenCol < 0 || bonuses[i]->screenCol > 240) {
+	        shadowOAM[30 + i].attr0 |= ATTR0_HIDE;
+	    } else {
+	        shadowOAM[30 + i].attr0 = (ROWMASK & bonuses[i]->screenRow) | ATTR0_SQUARE;
+	        shadowOAM[30 + i].attr1 = (COLMASK & bonuses[i]->screenCol) | ATTR1_SMALL;
+	        shadowOAM[30 + i].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(bonuses[i]->tileCol,bonuses[i]->tileRow);
+	    }
+
+
+    }
+
+}
+
 
 void initBG() {
 
@@ -141,12 +232,37 @@ void initBG() {
 
 void updateBG() {
 
-    if (hOff > 256) {
+
+
+	/////////////WHAT WAS HERE BEFORE///////////////////////////////////////
+
+    if (hOff > 256 && screenBlock < 31) { // trying to fix end of game bug
         // change where BG0 now looks for maps!
         screenBlock++;
         hOff -= 256;
         REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+
+        if (steven.worldCol > 1024 - 256 && !steven.direction) {
+	    	screenBlock = 31;
+	    	REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    	}
     }
+
+
+    //MOVING LEFT DEBUGGING///////////////////////////////////////////////////
+
+     if (steven.direction && hOff < 256 && screenBlock == 31) {//prevents screen tearing
+        // change where BG0 now looks for maps!
+        screenBlock--;
+        hOff += 256;
+        REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    }
+
+
+
+    //MOVING LEFT DEBUGGING///////////////////////////////////////////////////
+
+
 
     if (steven.hoff > 512) {
     	steven.hoff -= 512;
@@ -154,15 +270,22 @@ void updateBG() {
 
     for (int i = 0; i < NUMSTARS; i++) {	
 
-    	if (stars[i]->hoff > 512 && hOff == 0) {
+    	if (stars[i]->hoff > 512 && hOff == 0 && screenBlock != 31) {
     		stars[i]->hoff -= 512;
+    	}
+    }
+
+       for (int i = 0; i < LIVES; i++) {	
+
+    	if (bonuses[i]->hoff > 512 && hOff == 0) {
+    		bonuses[i]->hoff -= 512;
     	}
     }
 
 
     for (int i = 0; i < NUMOPS; i++) {	
 
-    	if (enemies[i]->hoff > 512 && hOff == 0) {
+    	if (enemies[i]->hoff > 512 && hOff == 0 && screenBlock != 31) {
     		enemies[i]->hoff -= 512;
     	}
     }
@@ -174,6 +297,12 @@ void updateBG() {
     		bubbles[i].hoff -= 512;
     	}
 
+
+
+    	if (bubbles[i].hoff < -512 && hOff >= 512) {
+    		bubbles[i].hoff += 512;
+    	}
+
     }
 
     for (int i = 0; i < LIVES; i++) {
@@ -183,7 +312,8 @@ void updateBG() {
     	}
 
     }
-	
+
+
 	
 
 
@@ -230,8 +360,8 @@ void updateBubble(ANISPRITE * b) {
 
 			
 	if (b->active && b->direction == 1 
-				&& b->screenCol + b->cdel <= WORLDWIDTH-1
-				&& b->screenCol + b->cdel > 0 - b->width && b->hoff > 0 ) {//move bullet until it is off left side of screen
+				&& b->screenCol + b->cdel <= WORLDWIDTH-1   //((b->worldCol < 512 -10 && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < WORLDWIDTH && b-> worldCol - b->hoff > 0))
+				&& b->screenCol + b->cdel > 0 - b->width && ((b->worldCol  >= 0 - b->width && screenBlock <31)|| ( b->worldCol > 512 && b->worldCol < WORLDWIDTH + b->width)) ) {//move bullet until it is off left side of screen
 			
 			b->worldCol -= b->cdel;
 
@@ -240,7 +370,7 @@ void updateBubble(ANISPRITE * b) {
 
 	if (b->active && b->direction == 2 
 				&& b->screenCol + b->cdel <= WORLDWIDTH + b-> width //move bullet until it is off right side of screen
-				&& b->screenCol + b->cdel > 0 - b->width && b->hoff < WORLDWIDTH) {
+				&& b->screenCol + b->cdel > 0 - b->width && ((b->worldCol < 512 - b->width && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < WORLDWIDTH && b-> worldCol - b->hoff > 0))) {
 			
 			b->worldCol += b->cdel;
 
@@ -267,7 +397,10 @@ void updateBubble(ANISPRITE * b) {
 			b->hide = 1;			
 		}
 
-
+		// if (b->active && (b->screenCol < 0 || b->screenCol > 256)) {
+		// 	b->active = 1;
+		// 	b->hide = 0;
+		// }
 
 	for (int i = 0; i < BUBBLECOUNT; i++) {
 	 	bubbles[i].screenRow = bubbles[i].worldRow - vOff;
@@ -429,7 +562,7 @@ void initLives() {
 	    lives[i].screenRow = 4;
 	    lives[i].screenCol = 180 + (20 * i);
 	    lives[i].tileRow = 8;
-	    lives[i].tileCol = 4;
+	    lives[i].tileCol = 9;
 	    lives[i].hide = 0;
 	}
 }
@@ -493,7 +626,7 @@ void initSteven() {
 	steven.numFrames = 3;
 }
 
-
+////////////////////////////////PLAYER MOVEMENT//////////////////////////////////////////
 
 void animateSteven() {
 
@@ -505,7 +638,7 @@ void animateSteven() {
     }
 
     // Change the animation frame every 5 frames of gameplay
-	if(steven.aniCounter % 3 == 0) {
+	if(steven.aniCounter % 2 == 0) {
 
 
 		steven.curFrame++;
@@ -524,8 +657,8 @@ void animateSteven() {
 		
 
 
-		if(steven.worldRow > 0)  /*&& colmap1Bitmap[OFFSET(steven.worldRow - 1, steven.worldCol, 256)] &&
-                colmap1Bitmap[OFFSET(steven.worldRow - 1, steven.worldCol + steven.width - 1, 256)])*/ {
+		if(steven.worldRow > 0  && colmapBitmap[OFFSET(steven.worldRow - 1, steven.worldCol, 1024)] 
+			&& colmapBitmap[OFFSET(steven.worldRow - 1, steven.worldCol + steven.width - 1, 1024)]) {
 			steven.worldRow -= steven.rdel;
 		}
 
@@ -534,14 +667,15 @@ void animateSteven() {
 	}
 
 	if(BUTTON_HELD(BUTTON_DOWN)) {
+		
 		// steven.screenRow += steven.rdel;
 			
 		steven.aniState = SPRITEFRONT;
 
 
-		if(steven.worldRow + steven.height < 160 /*  &&
-                colmap1Bitmap[OFFSET(steven.worldRow + steven.height, steven.worldCol, 256)] &&
-                colmap1Bitmap[OFFSET(steven.worldRow + steven.height, steven.worldCol + steven.width - 1, 256)]*/){
+		if(steven.worldRow + steven.height < 160   &&
+                colmapBitmap[OFFSET(steven.worldRow + steven.height, steven.worldCol, WORLDWIDTH)] &&
+                colmapBitmap[OFFSET(steven.worldRow + steven.height, steven.worldCol + steven.width - 1, WORLDWIDTH)]){
 
 			steven.worldRow += steven.rdel;	
 		
@@ -550,11 +684,11 @@ void animateSteven() {
 
 	if(BUTTON_HELD(BUTTON_LEFT)) {
 		
-				
+		steven.direction = 1;	
 		steven.aniState = SPRITELEFT;
 
-		if(steven.worldCol > 0  /*&& colmap1Bitmap[OFFSET(steven.worldRow, steven.worldCol - 1, 256)]
-                && colmap1Bitmap[OFFSET(steven.worldRow + steven.height - 1, steven.worldCol - 1, 256)]*/) {
+		if(steven.worldCol > 0  && colmapBitmap[OFFSET(steven.worldRow, steven.worldCol - 1, WORLDWIDTH)]
+                && colmapBitmap[OFFSET(steven.worldRow + steven.height - 1, steven.worldCol - 1, WORLDWIDTH)]) {
 
 
 			steven.worldCol -= steven.cdel;	
@@ -562,56 +696,22 @@ void animateSteven() {
 
 
 
-				// hacky, but ensures if at final part of map, meaning we've reached the 31st screenblock, then don't move hOff
-		// also gets extra last pixels on the right
-   //      if ( (hOff > 0 && steven.worldCol < 512 && steven.screenCol < 100) || (steven.worldCol > 512 && hOff >= 512 && steven.screenCol < 100)) {
-   //          hOff--;
-   //          steven.hoff--;
-
-			// for (int i = 0; i < NUMSTARS; i++) {
-			 	
-			// 	stars[i]->hoff--;
-				
-			// }
 
 
-   //      }
-
-
-		// if ( (hOff > 0 && steven.screenCol < 100 && screenBlock >= 28) || (hOff < 256 && hOff > -512 && steven.screenCol < 100 && steven.worldCol > 512)) {
-  //           hOff--;
-  //           steven.hoff--;
-
-		// 	for (int i = 0; i < NUMSTARS; i++) {
-			 	
-		// 		stars[i]->hoff--;
-				
-		// 	}
-
-		// 	for (int i = 0; i < NUMOPS; i++) {
-			 	
-		// 		enemies[i]->hoff--;
-				
-		// 	}
-
-
-		// 	for (int i = 0; i < BUBBLECOUNT; i++) {
-			 	
-		// 		bubbles[i].hoff--;
-				
-		// 	}
-
-
-  //       }
-
-
-		if ((steven.hoff > 0 && steven.hoff || screenBlock == 30) < 1024 && steven.screenCol < 100 ) {
+		if ((steven.hoff > 0 && steven.hoff < 1024 )/*|| (screenBlock >= 29 && steven.screenCol < 100 )*/) {
             hOff--;
             steven.hoff--;
 
 			for (int i = 0; i < NUMSTARS; i++) {
 			 	
 				stars[i]->hoff--;
+				
+			}
+
+
+			for (int i = 0; i < LIVES; i++) {
+			 	
+				bonuses[i]->hoff--;
 				
 			}
 
@@ -644,12 +744,12 @@ void animateSteven() {
 
 	if(BUTTON_HELD(BUTTON_RIGHT)) {
 		
-					
+		steven.direction = 0;			
 		steven.aniState = SPRITERIGHT;
 
 		if( steven.worldCol + steven.width < WORLDWIDTH - 1 
-			/*&& colmap1Bitmap[OFFSET(steven.worldRow, steven.worldCol + steven.width, 256)] 
-			&& colmap1Bitmap[OFFSET(steven.worldRow + steven.height - 1, steven.worldCol + steven.width, 256)]*/) {
+			&& colmapBitmap[OFFSET(steven.worldRow, steven.worldCol + steven.width, 1024)] 
+			&& colmapBitmap[OFFSET(steven.worldRow + steven.height - 1, steven.worldCol + steven.width, 1024)]) {
 			
 
 			steven.worldCol += steven.cdel;
@@ -657,7 +757,8 @@ void animateSteven() {
 
 		// hacky, but ensures if at final part of map, meaning we've reached the 31st screenblock, then don't move hOff
 		// also gets extra last pixels on the right
-        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (WORLDWIDTH - SCREENWIDTH -1) && steven.screenCol > SCREENWIDTH / 3 )){//} && player.screenCol > SCREENWIDTH / 3) {
+		//((screenBlock == 31 && steven.worldCol >= WORLDWIDTH -240)hOff < 17 && steven.screenCol > 100)  || (screenBlock < 31 && hOff < (WORLDWIDTH - SCREENWIDTH -1) && steven.screenCol > SCREENWIDTH / 3 )
+        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (WORLDWIDTH - SCREENWIDTH ) && steven.screenCol > SCREENWIDTH / 3 /*&& steven.worldCol <= 960*/)){//} && player.screenCol > SCREENWIDTH / 3) {
             hOff++;
             steven.hoff++;
 
@@ -674,8 +775,14 @@ void animateSteven() {
 				
 			}
 
+			for (int i = 0; i < LIVES; i++) {
+			 	
+				bonuses[i]->hoff++;
+				
+			}
 
-				for (int i = 0; i < BUBBLECOUNT; i++) {
+
+			for (int i = 0; i < BUBBLECOUNT; i++) {
 			 	
 				bubbles[i].hoff++;
 				
@@ -686,7 +793,12 @@ void animateSteven() {
 				lives[i].hoff++;
 				
 			}
-        }
+        
+         } //else if (steven.worldCol > 960) {
+        // 	//steven.hoff++;
+        // 	//steven.screenCol++;
+        // 	steven.worldCol++;
+        // }
 
 
 	
@@ -793,7 +905,7 @@ void initEnemies() {
 //{&yDiamond, &bDiamond, &wDiamond, &spinel, &jasper, &aquamarine, &topaz, &eyeball};
 
 	//20,440
-	spinel.worldRow = 15;
+	spinel.worldRow = 17;
 	spinel.worldCol = 440;
 	spinel.initWorldRow = 15;
 	spinel.initWorldCol = 440;
@@ -839,8 +951,8 @@ void initEnemies() {
 		enemies[i]->screenCol = enemies[i]->worldCol - enemies[i]->hoff;
 		enemies[i]->width = 16;
 		enemies[i]->height = 16;
-		enemies[i]->tileRow = 8;
-		enemies[i]->tileCol = 0;
+		enemies[i]->tileRow = 20;
+		enemies[i]->tileCol = i * 2;//for now
 		enemies[i]->rdel = 2;
 		enemies[i]->cdel = 2;
 		enemies[i]->bubbled = 0;
@@ -967,29 +1079,29 @@ void initStars() {
 	garden.cheatC = 3;
 
 
-	island.worldRow = 70;
+	island.worldRow = 60;
 	island.worldCol = 623;
-	island.cheatR = 10;
-	island.cheatC = 2;
+	island.cheatR = 8;
+	island.cheatC = 4;
 
 
 	kindergarten.worldRow = 95;
 	kindergarten.worldCol = 860;
-	kindergarten.cheatR = 10;
-	kindergarten.cheatC = 2;
+	kindergarten.cheatR = 9;
+	kindergarten.cheatC = 4;
 
 
 	arena.worldRow = 38;
 	arena.worldCol = 935;
-	arena.cheatR = 10;
-	arena.cheatC = 2;
+	arena.cheatR = 9;
+	arena.cheatC = 5;
 
 
 	desert.worldRow = 115;
 	desert.initWorldRow = 115;
 	desert.worldCol = 1000;
 	desert.cheatR = 10;
-	desert.cheatC = 2;
+	desert.cheatC = 5;
 
 
 
@@ -1026,6 +1138,8 @@ void updateStars() {
 
 
 //hover s1 and s7 10, change init row to be 5 less
+	hoverV(&earth, earth.initWorldRow, 10);
+	hoverV(&desert, desert.initWorldRow, 10);
 
 
 
@@ -1262,8 +1376,8 @@ void enemyCollisions() {
 
 
     if (enemies[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[6]->worldRow, enemies[6]->worldCol, enemies[6]->height, enemies[6]->width)) {
-        steven.worldRow = 70;
-        steven.worldCol = 73;
+        steven.worldRow = bonuses[1]->worldRow;
+        steven.worldCol = bonuses[1]->worldCol - 45;
      
     }
 

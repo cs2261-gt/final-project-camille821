@@ -2,13 +2,7 @@
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "main.c"
-
-
-
-
-
-
-
+# 18 "main.c"
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 1 3
 # 10 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/machine/ieeefp.h" 1 3
@@ -802,7 +796,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 333 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 
-# 9 "main.c" 2
+# 19 "main.c" 2
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 1 3
 # 36 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/lib/gcc/arm-none-eabi/7.1.0/include/stddef.h" 1 3 4
@@ -1195,7 +1189,7 @@ static __inline__ int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
 }
 # 767 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 
-# 10 "main.c" 2
+# 20 "main.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1321,7 +1315,7 @@ typedef struct{
 
 
 int collision(int rowA, int colA, int heightA, int widthA, int rowB, int colB, int heightB, int widthB);
-# 11 "main.c" 2
+# 21 "main.c" 2
 # 1 "game.h" 1
 # 17 "game.h"
 extern ANISPRITE steven;
@@ -1352,7 +1346,9 @@ void animateSteven();
 void enemyCollisions();
 void starCollisions();
 
-
+void initBonuses();
+void updateBonuses();
+void drawBonuses();
 
 void initEnemies();
 void updateEnemies();
@@ -1390,19 +1386,19 @@ void throwRight();
 void throwUp();
 void throwDown();
 void bubbling(ANISPRITE * a);
-# 12 "main.c" 2
+# 22 "main.c" 2
 
 
 # 1 "start.h" 1
 # 22 "start.h"
-extern const unsigned short startTiles[736];
+extern const unsigned short startTiles[16992];
 
 
 extern const unsigned short startMap[1024];
 
 
 extern const unsigned short startPal[256];
-# 15 "main.c" 2
+# 25 "main.c" 2
 # 1 "gameSplash1.h" 1
 # 22 "gameSplash1.h"
 extern const unsigned short gameSplash1Tiles[21888];
@@ -1412,47 +1408,47 @@ extern const unsigned short gameSplash1Map[2048];
 
 
 extern const unsigned short gameSplash1Pal[256];
-# 16 "main.c" 2
-# 1 "pause.h" 1
-# 22 "pause.h"
-extern const unsigned short pauseTiles[512];
+# 26 "main.c" 2
+# 1 "pauseswim.h" 1
+# 22 "pauseswim.h"
+extern const unsigned short pauseswimTiles[10336];
 
 
-extern const unsigned short pauseMap[1024];
+extern const unsigned short pauseswimMap[1024];
 
 
-extern const unsigned short pausePal[256];
-# 17 "main.c" 2
+extern const unsigned short pauseswimPal[256];
+# 27 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
-extern const unsigned short winTiles[1568];
+extern const unsigned short winTiles[16320];
 
 
 extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 18 "main.c" 2
+# 28 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
-extern const unsigned short loseTiles[3040];
+extern const unsigned short loseTiles[16000];
 
 
 extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 19 "main.c" 2
+# 29 "main.c" 2
 # 1 "help.h" 1
 # 22 "help.h"
-extern const unsigned short helpTiles[832];
+extern const unsigned short helpTiles[16928];
 
 
 extern const unsigned short helpMap[1024];
 
 
 extern const unsigned short helpPal[256];
-# 20 "main.c" 2
+# 30 "main.c" 2
 
 
 
@@ -1469,7 +1465,7 @@ extern const unsigned short jungleMap[1024];
 
 
 extern const unsigned short junglePal[256];
-# 28 "main.c" 2
+# 38 "main.c" 2
 # 1 "jungle2.h" 1
 # 22 "jungle2.h"
 extern const unsigned short jungle2Tiles[3168];
@@ -1479,7 +1475,7 @@ extern const unsigned short jungle2Map[1024];
 
 
 extern const unsigned short jungle2Pal[256];
-# 29 "main.c" 2
+# 39 "main.c" 2
 # 1 "island.h" 1
 # 22 "island.h"
 extern const unsigned short islandTiles[7056];
@@ -1489,7 +1485,7 @@ extern const unsigned short islandMap[1024];
 
 
 extern const unsigned short islandPal[256];
-# 30 "main.c" 2
+# 40 "main.c" 2
 # 1 "island2.h" 1
 # 22 "island2.h"
 extern const unsigned short island2Tiles[3840];
@@ -1499,7 +1495,7 @@ extern const unsigned short island2Map[1024];
 
 
 extern const unsigned short island2Pal[256];
-# 31 "main.c" 2
+# 41 "main.c" 2
 # 1 "zoo.h" 1
 # 22 "zoo.h"
 extern const unsigned short zooTiles[5184];
@@ -1509,7 +1505,7 @@ extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 32 "main.c" 2
+# 42 "main.c" 2
 # 1 "zoo2.h" 1
 # 22 "zoo2.h"
 extern const unsigned short zoo2Tiles[3472];
@@ -1519,7 +1515,7 @@ extern const unsigned short zoo2Map[1024];
 
 
 extern const unsigned short zoo2Pal[256];
-# 33 "main.c" 2
+# 43 "main.c" 2
 # 1 "garden.h" 1
 # 22 "garden.h"
 extern const unsigned short gardenTiles[6448];
@@ -1529,7 +1525,7 @@ extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 34 "main.c" 2
+# 44 "main.c" 2
 # 1 "garden2.h" 1
 # 22 "garden2.h"
 extern const unsigned short garden2Tiles[3424];
@@ -1539,7 +1535,7 @@ extern const unsigned short garden2Map[1024];
 
 
 extern const unsigned short garden2Pal[256];
-# 35 "main.c" 2
+# 45 "main.c" 2
 # 1 "kindergarten.h" 1
 # 22 "kindergarten.h"
 extern const unsigned short kindergartenTiles[14400];
@@ -1549,7 +1545,7 @@ extern const unsigned short kindergartenMap[1024];
 
 
 extern const unsigned short kindergartenPal[256];
-# 36 "main.c" 2
+# 46 "main.c" 2
 # 1 "kindergarten2.h" 1
 # 22 "kindergarten2.h"
 extern const unsigned short kindergarten2Tiles[4304];
@@ -1559,7 +1555,7 @@ extern const unsigned short kindergarten2Map[1024];
 
 
 extern const unsigned short kindergarten2Pal[256];
-# 37 "main.c" 2
+# 47 "main.c" 2
 # 1 "arena.h" 1
 # 22 "arena.h"
 extern const unsigned short arenaTiles[6480];
@@ -1569,7 +1565,7 @@ extern const unsigned short arenaMap[1024];
 
 
 extern const unsigned short arenaPal[256];
-# 38 "main.c" 2
+# 48 "main.c" 2
 # 1 "arena2.h" 1
 # 22 "arena2.h"
 extern const unsigned short arena2Tiles[3216];
@@ -1579,7 +1575,7 @@ extern const unsigned short arena2Map[1024];
 
 
 extern const unsigned short arena2Pal[256];
-# 39 "main.c" 2
+# 49 "main.c" 2
 # 1 "desert.h" 1
 # 22 "desert.h"
 extern const unsigned short desertTiles[6976];
@@ -1589,7 +1585,7 @@ extern const unsigned short desertMap[1024];
 
 
 extern const unsigned short desertPal[256];
-# 40 "main.c" 2
+# 50 "main.c" 2
 # 1 "desert2.h" 1
 # 22 "desert2.h"
 extern const unsigned short desert2Tiles[2608];
@@ -1599,7 +1595,7 @@ extern const unsigned short desert2Map[1024];
 
 
 extern const unsigned short desert2Pal[256];
-# 41 "main.c" 2
+# 51 "main.c" 2
 
 
 
@@ -1610,7 +1606,7 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 46 "main.c" 2
+# 56 "main.c" 2
 
 
 # 1 "sound.h" 1
@@ -1629,21 +1625,21 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 49 "main.c" 2
+# 59 "main.c" 2
 # 1 "spacedOutBeats.h" 1
 
 
 
 
 extern const signed char spacedOutBeats[1177056];
-# 50 "main.c" 2
+# 60 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 51 "main.c" 2
+# 61 "main.c" 2
 
 
 # 1 "escapismbg.h" 1
@@ -1655,7 +1651,7 @@ extern const unsigned short escapismbgMap[4096];
 
 
 extern const unsigned short escapismbgPal[256];
-# 54 "main.c" 2
+# 64 "main.c" 2
 
 
 
@@ -1669,7 +1665,7 @@ extern const unsigned short prisonMap[1024];
 
 
 extern const unsigned short prisonPal[256];
-# 59 "main.c" 2
+# 69 "main.c" 2
 # 1 "prison2.h" 1
 # 22 "prison2.h"
 extern const unsigned short prison2Tiles[4528];
@@ -1679,7 +1675,7 @@ extern const unsigned short prison2Map[1024];
 
 
 extern const unsigned short prison2Pal[256];
-# 60 "main.c" 2
+# 70 "main.c" 2
 # 1 "sleep.h" 1
 # 22 "sleep.h"
 extern const unsigned short sleepTiles[4048];
@@ -1689,7 +1685,7 @@ extern const unsigned short sleepMap[1024];
 
 
 extern const unsigned short sleepPal[256];
-# 61 "main.c" 2
+# 71 "main.c" 2
 # 1 "found.h" 1
 # 22 "found.h"
 extern const unsigned short foundTiles[5040];
@@ -1699,7 +1695,7 @@ extern const unsigned short foundMap[1024];
 
 
 extern const unsigned short foundPal[256];
-# 62 "main.c" 2
+# 72 "main.c" 2
 # 1 "swim.h" 1
 # 22 "swim.h"
 extern const unsigned short swimTiles[4864];
@@ -1709,7 +1705,7 @@ extern const unsigned short swimMap[1024];
 
 
 extern const unsigned short swimPal[256];
-# 63 "main.c" 2
+# 73 "main.c" 2
 # 1 "fast.h" 1
 # 22 "fast.h"
 extern const unsigned short fastTiles[4832];
@@ -1719,7 +1715,7 @@ extern const unsigned short fastMap[1024];
 
 
 extern const unsigned short fastPal[256];
-# 64 "main.c" 2
+# 74 "main.c" 2
 
 
 
@@ -1733,11 +1729,13 @@ void goToFoundState();
 void goToSwimState();
 void goToFastState();
 
+
 void prisonState();
 void sleepState();
 void foundState();
 void swimState();
 void fastState();
+void swimPause();
 
 void goToStart();
 void start();
@@ -1765,7 +1763,7 @@ void goToDesertState();
 
 
 
-enum {START, GAME, PAUSE, WIN, LOSE, HELP, PRISON, SLEEP, FOUND, SWIM, FAST};
+enum {START, GAME, PAUSE, WIN, LOSE, HELP, PRISON, SLEEP, FOUND, SWIM, FAST, SWIMPAUSE};
 int state;
 
 
@@ -1783,6 +1781,9 @@ unsigned short oldButtons;
 
 extern int hOff;
 extern int vOff;
+
+ANISPRITE sleep;
+ANISPRITE swim;
 
 
 int seed;
@@ -1838,9 +1839,13 @@ int main() {
                 fastState();
                 break;
 
+            case SWIMPAUSE:
+                swimPause();
+                break;
+
         }
-
-
+    waitForVBlank();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128*4);
 
 
     }
@@ -1905,12 +1910,14 @@ void prisonState() {
 void goToSleep() {
 
 
+
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
 
+    hideSprites();
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
 
 
 
@@ -1924,6 +1931,15 @@ void goToSleep() {
 
 
     DMANow(3, sleepMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+
+    sleep.width = 64;
+    sleep.height = 64;
+    sleep.screenCol = 87;
+    sleep.screenRow = 57;
+    sleep.aniCounter = 0;
+    sleep.curFrame = 0;
+    sleep.numFrames = 3;
 
     state = SLEEP;
 
@@ -1939,6 +1955,42 @@ void sleepState() {
     if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
         goToPrison();
     }
+
+    waitForVBlank();
+    shadowOAM[0].attr0 = sleep.screenRow | (0<<14);
+    shadowOAM[0].attr1 = sleep.screenCol | (3<<14);
+    shadowOAM[0].attr2 = ((0)*32+((sleep.curFrame*8) + 8));
+
+
+    if(sleep.aniCounter % 30 == 0) {
+
+        sleep.curFrame++;
+        if (sleep.curFrame >= sleep.numFrames) {
+            sleep.curFrame = 0;
+
+        }
+
+        if (sleep.curFrame == sleep.numFrames - 1) {
+
+            sleep.screenRow = 57 - 30;
+            sleep.screenCol = 87 - 40;
+
+        } else {
+            sleep.screenRow = 57;
+            sleep.screenCol = 87;
+        }
+    }
+
+    sleep.aniCounter++;
+
+
+
+
+    waitForVBlank();
+
+
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128*4);
+
 }
 
 
@@ -1987,7 +2039,10 @@ void goToSwim() {
 
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+    hideSprites();
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
 
 
 
@@ -2002,11 +2057,20 @@ void goToSwim() {
 
     DMANow(3, swimMap, &((screenblock *)0x6000000)[27], 2048/2);
 
+    swim.width = 64;
+    swim.height = 64;
+    swim.screenCol = 152;
+    swim.screenRow = 84;
+    swim.aniCounter = 0;
+    swim.curFrame = 0;
+    swim.numFrames = 2;
+
     state = SWIM;
 
 }
 
 void swimState() {
+
     if((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
         goToFast();
     }
@@ -2015,6 +2079,30 @@ void swimState() {
     if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
         goToFound();
     }
+
+    shadowOAM[0].attr0 = swim.screenRow | (0<<14);
+    shadowOAM[0].attr1 = swim.screenCol | (3<<14);
+    shadowOAM[0].attr2 = ((12)*32+((swim.curFrame*8)));
+
+
+    if(swim.aniCounter % 30 == 0) {
+
+        swim.curFrame++;
+        if (swim.curFrame >= swim.numFrames) {
+            swim.curFrame = 0;
+
+        }
+
+
+    }
+
+    swim.aniCounter++;
+
+
+
+
+    waitForVBlank();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128*4);
 
 
 }
@@ -2082,6 +2170,11 @@ void initialize() {
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
+    DMANow(3,spritesheet1Tiles,&((charblock *)0x6000000)[4],32768/2);
+    DMANow(3,spritesheet1Pal,((unsigned short *)0x5000200), 256);
+
+
+
 
     setupInterrupts();
     setupSounds();
@@ -2102,7 +2195,7 @@ void goToStart() {
     DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, startTiles,& ((charblock *)0x6000000)[0], 1472/2);
+    DMANow(3, startTiles,& ((charblock *)0x6000000)[0], 33984/2);
 
 
     DMANow(3, startMap, &((screenblock *)0x6000000)[20], 2048/2);
@@ -2241,8 +2334,8 @@ void game() {
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
-        steven.worldRow = 90;
-        steven.worldCol = 380;
+        steven.worldRow = stars[2]->worldRow;
+        steven.worldCol = stars[2]->worldCol -16;
         goToJdbState();
 
     }
@@ -2258,7 +2351,7 @@ void game() {
 
     if (stars[4]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[4]->worldRow, stars[4]->worldCol, stars[4]->height, stars[4]->width)) {
         steven.worldRow = 30;
-        steven.worldCol = 620;
+        steven.worldCol = 620 + 25;
         goToMIState();
     }
 
@@ -2271,9 +2364,9 @@ void game() {
 
 
     if (stars[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[6]->worldRow, stars[6]->worldCol, stars[6]->height, stars[6]->width)) {
-        steven.worldRow = stars[6]->worldRow;
+        steven.worldRow = 38;
 
-        steven.worldCol = stars[6]->worldCol + 16;
+        steven.worldCol = 935 + 16;
         goToArenaState();
     }
 
@@ -2290,28 +2383,90 @@ void game() {
 void goToPause() {
 
 
-
-
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
+
+
+    hideSprites();
+
+
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
 
 
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+    DMANow(3, pauseswimPal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
+     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((27)<<8) | ((1)<<2) | (0<<14);
+
+    DMANow(3, pauseswimTiles,& ((charblock *)0x6000000)[1], 20672/2);
 
 
-    DMANow(3, pauseTiles,& ((charblock *)0x6000000)[0], 1024/2);
+    DMANow(3, pauseswimMap, &((screenblock *)0x6000000)[27], 2048/2);
+
+    swim.width = 64;
+    swim.height = 64;
+    swim.screenCol = 152;
+    swim.screenRow = 84;
+    swim.aniCounter = 0;
+    swim.curFrame = 0;
+    swim.numFrames = 2;
 
 
-    DMANow(3, pauseMap, &((screenblock *)0x6000000)[20], 2048/2);
 
-    state = PAUSE;
+    state = SWIMPAUSE;
+}
+
+
+void swimPause() {
+
+
+    pauseSound();
+
+
+    waitForVBlank();
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+
+
+
+        unpauseSound();
+        goToGame();
+
+    } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        (*(unsigned short *)0x4000000) |= (1<<9);
+        goToHelpState();
+
+    }
+
+
+    shadowOAM[0].attr0 = swim.screenRow | (0<<14);
+    shadowOAM[0].attr1 = swim.screenCol | (3<<14);
+    shadowOAM[0].attr2 = ((12)*32+((swim.curFrame*8)));
+
+
+    if(swim.aniCounter % 30 == 0) {
+
+        swim.curFrame++;
+        if (swim.curFrame >= swim.numFrames) {
+            swim.curFrame = 0;
+
+        }
+
+
+    }
+
+    swim.aniCounter++;
+
+
+
+
+    waitForVBlank();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128*4);
+
 }
 
 
@@ -2353,7 +2508,7 @@ void goToWinState() {
     DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, winTiles,& ((charblock *)0x6000000)[0], 3136/2);
+    DMANow(3, winTiles,& ((charblock *)0x6000000)[0], 32640/2);
 
 
     DMANow(3, winMap, &((screenblock *)0x6000000)[20], 2048/2);
@@ -2387,7 +2542,7 @@ void goToLoseState() {
     DMANow(3, losePal, ((unsigned short *)0x5000000), 256);
 
 
-    DMANow(3, loseTiles,& ((charblock *)0x6000000)[0], 6080/2);
+    DMANow(3, loseTiles,& ((charblock *)0x6000000)[0], 32000/2);
 
 
     DMANow(3, loseMap, &((screenblock *)0x6000000)[20], 2048/2);
@@ -2422,7 +2577,7 @@ void goToHelpState() {
 
 
     DMANow(3, &helpPal, ((unsigned short *)0x5000000), 512/2);
-    DMANow(3, helpTiles, &((charblock *)0x6000000)[0], 1664/2);
+    DMANow(3, helpTiles, &((charblock *)0x6000000)[0], 33856/2);
     DMANow(3, helpMap, &((screenblock *)0x6000000)[20], 2048/2);
 
 

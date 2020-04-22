@@ -5,7 +5,7 @@
 
 // Constants
 #define LIVES 3
-#define BUBBLECOUNT 5
+#define BUBBLECOUNT 10
 // #define NUMOPS 6
 // #define NUMSTARS 5
 #define NUMOPS 8
@@ -42,7 +42,9 @@ void animateSteven();
 void enemyCollisions();
 void starCollisions();
 
-
+void initBonuses();
+void updateBonuses();
+void drawBonuses();
 
 void initEnemies();
 void updateEnemies();

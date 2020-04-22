@@ -1,7 +1,17 @@
-//Bugs: shifting of the stars once thier hOff resets
-//Steven wont walk left in laft half of screen
-//collision with kindergrten state screen kinda glitchy..can this be fixed??
-//rectangle movement tweakin
+//Whats  done so far:
+//All of the project requirements except playing two sounds at once
+
+//Things Left:
+//incorporating all of my sounds
+//I thinnk i want to redo my intructions screen bc it looks too busy
+//polising some visuals
+
+//How to play:
+//you can either skip to the game state from the start screen or use left and right keys to go through the cut scene states
+//use up, down, left and right keys to move player
+//press A to shoot bubblees
+// press B to cheat and get a hint at what each star is
+
 
 
 
@@ -13,7 +23,7 @@
 //insert all splash screens
 #include "start.h"
 #include "gameSplash1.h"
-#include "pause.h"
+#include "pauseswim.h"
 #include "win.h"
 #include "lose.h"
 #include "help.h"
@@ -74,11 +84,13 @@ void goToFoundState();
 void goToSwimState();
 void goToFastState();
 
+
 void prisonState();
 void sleepState();
 void foundState();
 void swimState();
 void fastState();
+void swimPause();
 
 void goToStart();
 void start();
@@ -106,7 +118,7 @@ void goToDesertState();
 //TODO: add more stars!!!
 
 // States
-enum {START, GAME, PAUSE, WIN, LOSE, HELP, PRISON, SLEEP, FOUND, SWIM, FAST};
+enum {START, GAME, PAUSE, WIN, LOSE, HELP, PRISON, SLEEP, FOUND, SWIM, FAST, SWIMPAUSE};
 int state;
 
 //int foodEaten;
@@ -124,6 +136,9 @@ unsigned short oldButtons;
 
 extern int hOff;
 extern int vOff;
+
+ANISPRITE sleep;
+ANISPRITE swim;
 
 // Random Seed
 int seed;
@@ -177,11 +192,15 @@ int main() {
                 break;
              case FAST:
                 fastState();
-                break;               
+                break; 
+
+            case SWIMPAUSE:
+                swimPause();
+                break;              
 
         }
-     
-    
+    waitForVBlank();
+    DMANow(3, shadowOAM, OAM, 128*4);
 
         
     }
@@ -244,14 +263,16 @@ void prisonState() {
 }
 
 void goToSleep() {
+//90,57
 
 
     REG_BG0HOFF = 0;
     REG_BG0VOFF = 0;
 
+    hideSprites();
 
     // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
 
 
 
@@ -265,6 +286,15 @@ void goToSleep() {
 
     //Load your tile map into the screenblock that your background is using
     DMANow(3, sleepMap, &SCREENBLOCK[27], sleepMapLen/2);
+
+
+    sleep.width = 64;
+    sleep.height = 64;
+    sleep.screenCol = 87;
+    sleep.screenRow = 57;
+    sleep.aniCounter = 0;
+    sleep.curFrame = 0;
+    sleep.numFrames = 3;
 
     state = SLEEP;
 
@@ -280,6 +310,42 @@ void sleepState() {
     if(BUTTON_PRESSED(BUTTON_LEFT)) {
         goToPrison();
     }
+
+    waitForVBlank();
+    shadowOAM[0].attr0 = sleep.screenRow | ATTR0_SQUARE;
+    shadowOAM[0].attr1 = sleep.screenCol | ATTR1_LARGE; 
+    shadowOAM[0].attr2 = ATTR2_TILEID((sleep.curFrame*8) + 8,0 );
+
+        //animation frame every 50 frames of gameplay
+    if(sleep.aniCounter % 30 == 0) {
+        
+        sleep.curFrame++;
+        if (sleep.curFrame >= sleep.numFrames) {
+            sleep.curFrame = 0;
+                
+        } 
+
+        if (sleep.curFrame == sleep.numFrames - 1) {
+                            //given row and col from OG lab
+            sleep.screenRow = 57 - 30;
+            sleep.screenCol = 87 - 40;
+
+        } else {
+            sleep.screenRow = 57;
+            sleep.screenCol = 87;
+        }
+    }
+
+    sleep.aniCounter++;
+
+
+
+
+    waitForVBlank();
+
+        
+    DMANow(3, shadowOAM, OAM, 128*4);
+
 }
 
 
@@ -327,8 +393,11 @@ void goToSwim() {
     REG_BG0VOFF = 0;
 
 
+
+    hideSprites();
+
     // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
 
 
 
@@ -343,11 +412,20 @@ void goToSwim() {
     //Load your tile map into the screenblock that your background is using
     DMANow(3, swimMap, &SCREENBLOCK[27], swimMapLen/2);
 
+    swim.width = 64;
+    swim.height = 64;
+    swim.screenCol = 152;
+    swim.screenRow = 84;
+    swim.aniCounter = 0;
+    swim.curFrame = 0;
+    swim.numFrames = 2;
+
     state = SWIM;
 
 }
 
 void swimState() {
+
     if(BUTTON_PRESSED(BUTTON_RIGHT)) {
         goToFast();
     }
@@ -356,6 +434,30 @@ void swimState() {
     if(BUTTON_PRESSED(BUTTON_LEFT)) {
         goToFound();
     }
+
+    shadowOAM[0].attr0 = swim.screenRow | ATTR0_SQUARE;
+    shadowOAM[0].attr1 = swim.screenCol | ATTR1_LARGE; 
+    shadowOAM[0].attr2 = ATTR2_TILEID((swim.curFrame*8), 12 );
+
+        //animation frame every 50 frames of gameplay
+    if(swim.aniCounter % 30 == 0) {
+        
+        swim.curFrame++;
+        if (swim.curFrame >= swim.numFrames) {
+            swim.curFrame = 0;
+                
+        } 
+
+
+    }
+
+    swim.aniCounter++;
+
+
+
+
+    waitForVBlank();      
+    DMANow(3, shadowOAM, OAM, 128*4);
 
 
 }
@@ -422,6 +524,11 @@ void initialize() {
     initGame();
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
+
+    DMANow(3,spritesheet1Tiles,&CHARBLOCK[4],spritesheet1TilesLen/2);
+    DMANow(3,spritesheet1Pal,SPRITEPALETTE, 256);
+
+
 
     //UNCOMMENT FOR SOUND
     setupInterrupts();
@@ -582,8 +689,8 @@ void game() {
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
-        steven.worldRow = 90;
-        steven.worldCol = 380;
+        steven.worldRow = stars[2]->worldRow;
+        steven.worldCol = stars[2]->worldCol -16;
         goToJdbState();
 
     }
@@ -599,7 +706,7 @@ void game() {
 
     if (stars[4]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[4]->worldRow, stars[4]->worldCol, stars[4]->height, stars[4]->width)) {
         steven.worldRow = 30;
-        steven.worldCol = 620;
+        steven.worldCol = 620 + 25;
         goToMIState();      
     }
 
@@ -612,9 +719,9 @@ void game() {
 
 
     if (stars[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[6]->worldRow, stars[6]->worldCol, stars[6]->height, stars[6]->width)) {
-        steven.worldRow = stars[6]->worldRow;
+        steven.worldRow = 38;
         
-        steven.worldCol = stars[6]->worldCol + 16;
+        steven.worldCol = 935 + 16;
         goToArenaState();     
     }
 
@@ -631,28 +738,90 @@ void game() {
 void goToPause() {
 
 
-    
-
     REG_BG0HOFF = 0;
     REG_BG0VOFF = 0;
-    
-    REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
 
+
+    hideSprites();
 
     // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+
+
 
     //Load the palette for your tiles
-    DMANow(3, pausePal, PALETTE, 256);
+    DMANow(3, pauseswimPal, PALETTE, 256);
 
+    //Back BG
+     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(27) | BG_CHARBLOCK(1) | BG_SIZE_SMALL;
     //Load your tiles into the charblock that your background is using
-    DMANow(3, pauseTiles,& CHARBLOCK[0], pauseTilesLen/2);
+    DMANow(3, pauseswimTiles,& CHARBLOCK[1], pauseswimTilesLen/2);
 
     //Load your tile map into the screenblock that your background is using
-    DMANow(3, pauseMap, &SCREENBLOCK[20], pauseMapLen/2);
+    DMANow(3, pauseswimMap, &SCREENBLOCK[27], pauseswimMapLen/2);
 
-    state = PAUSE;
+    swim.width = 64;
+    swim.height = 64;
+    swim.screenCol = 152;
+    swim.screenRow = 84;
+    swim.aniCounter = 0;
+    swim.curFrame = 0;
+    swim.numFrames = 2;  
+
+
+
+    state = SWIMPAUSE;
+}
+
+
+void swimPause() {
+    
+    //UNCOMMENT FOR SOUND
+    pauseSound();
+    
+    // Lock the framerate to 60 fps
+    waitForVBlank();
+
+    // State transitions
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        //UNCOMMENT FOR SOUND
+
+        
+        unpauseSound();
+        goToGame();  
+    
+    } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        REG_DISPCTL |= BG1_ENABLE;
+        goToHelpState();
+
+    }
+
+
+    shadowOAM[0].attr0 = swim.screenRow | ATTR0_SQUARE;
+    shadowOAM[0].attr1 = swim.screenCol | ATTR1_LARGE; 
+    shadowOAM[0].attr2 = ATTR2_TILEID((swim.curFrame*8), 12 );
+
+        //animation frame every 50 frames of gameplay
+    if(swim.aniCounter % 30 == 0) {
+        
+        swim.curFrame++;
+        if (swim.curFrame >= swim.numFrames) {
+            swim.curFrame = 0;
+                
+        } 
+
+
+    }
+
+    swim.aniCounter++;
+
+
+
+
+    waitForVBlank();      
+    DMANow(3, shadowOAM, OAM, 128*4);
+
 }
 
 // Runs every frame of the pause state

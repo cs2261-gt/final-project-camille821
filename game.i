@@ -952,7 +952,9 @@ void animateSteven();
 void enemyCollisions();
 void starCollisions();
 
-
+void initBonuses();
+void updateBonuses();
+void drawBonuses();
 
 void initEnemies();
 void updateEnemies();
@@ -1024,6 +1026,10 @@ void stopSound();
 # 20 "colmap1.h"
 extern const unsigned short colmap1Bitmap[131072];
 # 12 "game.c" 2
+# 1 "colmap.h" 1
+# 20 "colmap.h"
+extern const unsigned short colmapBitmap[163840];
+# 13 "game.c" 2
 # 1 "escapismbg.h" 1
 # 22 "escapismbg.h"
 extern const unsigned short escapismbgTiles[23808];
@@ -1033,8 +1039,8 @@ extern const unsigned short escapismbgMap[4096];
 
 
 extern const unsigned short escapismbgPal[256];
-# 13 "game.c" 2
-# 21 "game.c"
+# 14 "game.c" 2
+# 22 "game.c"
 ANISPRITE steven;
 int livesLeft;
 
@@ -1044,6 +1050,12 @@ int vOff;
 
 int screenBlock;
 
+
+ANISPRITE b1;
+ANISPRITE b2;
+ANISPRITE b3;
+
+ANISPRITE *bonuses[3] = {&b1, &b2, &b3};
 
 
 ANISPRITE yDiamond;
@@ -1076,7 +1088,7 @@ ANISPRITE *stars[8] = {&earth, &zoo, &jungleBase, &garden, &island, &kindergarte
 ANISPRITE lives[3];
 
 
-ANISPRITE bubbles[5];
+ANISPRITE bubbles[10];
 
 
 OBJ_ATTR shadowOAM[128];
@@ -1086,6 +1098,7 @@ enum { SPRITEFRONT, SPRITELEFT, SPRITERIGHT, SPRITEBACK, SPRITEIDLE};
 
 void initGame() {
  initBG();
+ initBonuses();
  initSteven();
  initEnemies();
  initStars();
@@ -1102,6 +1115,7 @@ void initGame() {
 
 void updateGame() {
  updateBG();
+ updateBonuses();
  animateSteven();
  updateSteven();
  updateEnemies();
@@ -1110,7 +1124,7 @@ void updateGame() {
 
 
 
- for (int i = 0; i < 5; i++)
+ for (int i = 0; i < 10; i++)
   updateBubble(&bubbles[i]);
 
 
@@ -1124,6 +1138,7 @@ void updateGame() {
 
 void drawGame() {
     drawBG();
+    drawBonuses();
     drawSteven();
   drawEnemies();
     drawStars();
@@ -1131,7 +1146,7 @@ void drawGame() {
 
 
 
- for (int i = 0; i < 5; i++)
+ for (int i = 0; i < 10; i++)
   drawBubble(&bubbles[i]);
 
 
@@ -1140,6 +1155,87 @@ void drawGame() {
 
 
 
+
+}
+
+void initBonuses() {
+ b1.worldRow = 70;
+ b1.worldCol = 490;
+
+
+ b2.worldRow = 70;
+ b2.worldCol = 725;
+
+
+
+
+ b3.worldRow = 56;
+ b3.worldCol = 970;
+
+
+ for (int i = 0; i < 3; i++) {
+  bonuses[i]->hoff = 0;
+  bonuses[i]->active = 1;
+  bonuses[i]->hide = 0;
+  bonuses[i]->height = 16;
+  bonuses[i]->width = 16;
+  bonuses[i]->screenCol = bonuses[i]->worldCol - bonuses[i]->hoff;
+  bonuses[i]->screenRow = bonuses[i]->worldRow;
+  bonuses[i]->tileRow = 8;
+     bonuses[i]->tileCol = 9;
+ }
+
+}
+void updateBonuses() {
+
+
+
+ for (int i = 0; i < 3; i++) {
+  if (livesLeft == 2 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+   bonuses[i]->worldRow, bonuses[i]->worldCol, bonuses[i]->height, bonuses[i]->width)) {
+
+   livesLeft++;
+   lives[2].hide = 0;
+   lives[2].active = 1;
+   bonuses[i]->active = 0;
+   bonuses[i]->hide =1;
+
+  }
+
+
+  if (livesLeft == 1 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+   bonuses[i]->worldRow, bonuses[i]->worldCol, bonuses[i]->height, bonuses[i]->width)) {
+   steven.worldRow = steven.worldRow -16;
+   livesLeft++;
+   lives[1].hide = 0;
+   lives[1].active = 1;
+   bonuses[i]->active = 0;
+   bonuses[i]->hide =1;
+
+  }
+ }
+
+ for (int i = 0; i < 3; i++) {
+  bonuses[i]->screenCol = bonuses[i]->worldCol - bonuses[i]->hoff;
+  bonuses[i]->screenRow = bonuses[i]->worldRow;
+ }
+
+
+}
+void drawBonuses() {
+
+    for (int i = 0; i < 3; i++) {
+
+     if (bonuses[i]->hide || bonuses[i]->screenCol < 0 || bonuses[i]->screenCol > 240) {
+         shadowOAM[30 + i].attr0 |= (2<<8);
+     } else {
+         shadowOAM[30 + i].attr0 = (0xFF & bonuses[i]->screenRow) | (0<<14);
+         shadowOAM[30 + i].attr1 = (0x1FF & bonuses[i]->screenCol) | (1<<14);
+         shadowOAM[30 + i].attr2 = ((0)<<12) | ((bonuses[i]->tileRow)*32+(bonuses[i]->tileCol));
+     }
+
+
+    }
 
 }
 
@@ -1158,12 +1254,37 @@ void initBG() {
 
 void updateBG() {
 
-    if (hOff > 256) {
+
+
+
+
+    if (hOff > 256 && screenBlock < 31) {
 
         screenBlock++;
         hOff -= 256;
         (*(volatile unsigned short*)0x4000008) = ((0)<<2) | ((screenBlock)<<8) | (1<<14) | (1<<7);
+
+        if (steven.worldCol > 1024 - 256 && !steven.direction) {
+      screenBlock = 31;
+      (*(volatile unsigned short*)0x4000008) = ((0)<<2) | ((screenBlock)<<8) | (1<<14) | (1<<7);
+     }
     }
+
+
+
+
+     if (steven.direction && hOff < 256 && screenBlock == 31) {
+
+        screenBlock--;
+        hOff += 256;
+        (*(volatile unsigned short*)0x4000008) = ((0)<<2) | ((screenBlock)<<8) | (1<<14) | (1<<7);
+    }
+
+
+
+
+
+
 
     if (steven.hoff > 512) {
      steven.hoff -= 512;
@@ -1171,24 +1292,37 @@ void updateBG() {
 
     for (int i = 0; i < 8; i++) {
 
-     if (stars[i]->hoff > 512 && hOff == 0) {
+     if (stars[i]->hoff > 512 && hOff == 0 && screenBlock != 31) {
       stars[i]->hoff -= 512;
+     }
+    }
+
+       for (int i = 0; i < 3; i++) {
+
+     if (bonuses[i]->hoff > 512 && hOff == 0) {
+      bonuses[i]->hoff -= 512;
      }
     }
 
 
     for (int i = 0; i < 8; i++) {
 
-     if (enemies[i]->hoff > 512 && hOff == 0) {
+     if (enemies[i]->hoff > 512 && hOff == 0 && screenBlock != 31) {
       enemies[i]->hoff -= 512;
      }
     }
 
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
 
      if (bubbles[i].hoff > 512 && hOff >= 0) {
       bubbles[i].hoff -= 512;
+     }
+
+
+
+     if (bubbles[i].hoff < -512 && hOff >= 512) {
+      bubbles[i].hoff += 512;
      }
 
     }
@@ -1200,6 +1334,7 @@ void updateBG() {
      }
 
     }
+
 
 
 
@@ -1222,7 +1357,7 @@ void drawBG() {
 
 
 void initBubbles() {
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
   bubbles[i].tileRow = 8;
   bubbles[i].tileCol = 3;
   bubbles[i].hoff = 0;
@@ -1248,7 +1383,7 @@ void updateBubble(ANISPRITE * b) {
 
  if (b->active && b->direction == 1
     && b->screenCol + b->cdel <= 1024 -1
-    && b->screenCol + b->cdel > 0 - b->width && b->hoff > 0 ) {
+    && b->screenCol + b->cdel > 0 - b->width && ((b->worldCol >= 0 - b->width && screenBlock <31)|| ( b->worldCol > 512 && b->worldCol < 1024 + b->width)) ) {
 
    b->worldCol -= b->cdel;
 
@@ -1257,7 +1392,7 @@ void updateBubble(ANISPRITE * b) {
 
  if (b->active && b->direction == 2
     && b->screenCol + b->cdel <= 1024 + b-> width
-    && b->screenCol + b->cdel > 0 - b->width && b->hoff < 1024) {
+    && b->screenCol + b->cdel > 0 - b->width && ((b->worldCol < 512 - b->width && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < 1024 && b-> worldCol - b->hoff > 0))) {
 
    b->worldCol += b->cdel;
 
@@ -1286,7 +1421,10 @@ void updateBubble(ANISPRITE * b) {
 
 
 
- for (int i = 0; i < 5; i++) {
+
+
+
+ for (int i = 0; i < 10; i++) {
    bubbles[i].screenRow = bubbles[i].worldRow - vOff;
   bubbles[i].screenCol = bubbles[i].worldCol - bubbles[i].hoff;
 
@@ -1299,7 +1437,7 @@ void updateBubble(ANISPRITE * b) {
 void throwLeft() {
 
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
 
   if (!bubbles[i].active) {
 
@@ -1327,7 +1465,7 @@ void throwLeft() {
 void throwRight() {
 
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
 
   if (!bubbles[i].active) {
 
@@ -1351,7 +1489,7 @@ void throwRight() {
 
 void throwUp() {
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
 
   if (!bubbles[i].active) {
 
@@ -1377,7 +1515,7 @@ void throwUp() {
 void throwDown() {
 
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
 
   if (!bubbles[i].active) {
 
@@ -1402,7 +1540,7 @@ void throwDown() {
 
 void throwBubble() {
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
   if (!bubbles[i].active) {
 
 
@@ -1419,7 +1557,7 @@ void throwBubble() {
 
 void drawBubble() {
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
 
      if (bubbles[i].hide) {
          shadowOAM[20 + i].attr0 |= (2<<8);
@@ -1446,7 +1584,7 @@ void initLives() {
      lives[i].screenRow = 4;
      lives[i].screenCol = 180 + (20 * i);
      lives[i].tileRow = 8;
-     lives[i].tileCol = 4;
+     lives[i].tileCol = 9;
      lives[i].hide = 0;
  }
 }
@@ -1522,7 +1660,7 @@ void animateSteven() {
     }
 
 
- if(steven.aniCounter % 3 == 0) {
+ if(steven.aniCounter % 2 == 0) {
 
 
   steven.curFrame++;
@@ -1541,8 +1679,8 @@ void animateSteven() {
 
 
 
-  if(steven.worldRow > 0)
-                                                                                                       {
+  if(steven.worldRow > 0 && colmapBitmap[((steven.worldRow - 1)*(1024)+(steven.worldCol))]
+   && colmapBitmap[((steven.worldRow - 1)*(1024)+(steven.worldCol + steven.width - 1))]) {
    steven.worldRow -= steven.rdel;
   }
 
@@ -1553,12 +1691,13 @@ void animateSteven() {
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
 
 
+
   steven.aniState = SPRITEFRONT;
 
 
-  if(steven.worldRow + steven.height < 160
-
-                                                                                                                 ){
+  if(steven.worldRow + steven.height < 160 &&
+                colmapBitmap[((steven.worldRow + steven.height)*(1024)+(steven.worldCol))] &&
+                colmapBitmap[((steven.worldRow + steven.height)*(1024)+(steven.worldCol + steven.width - 1))]){
 
    steven.worldRow += steven.rdel;
 
@@ -1567,23 +1706,34 @@ void animateSteven() {
 
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
 
-
+  steven.direction = 1;
   steven.aniState = SPRITELEFT;
 
-  if(steven.worldCol > 0
-                                                                                                         ) {
+  if(steven.worldCol > 0 && colmapBitmap[((steven.worldRow)*(1024)+(steven.worldCol - 1))]
+                && colmapBitmap[((steven.worldRow + steven.height - 1)*(1024)+(steven.worldCol - 1))]) {
 
 
    steven.worldCol -= steven.cdel;
   }
-# 608 "game.c"
-  if ((steven.hoff > 0 && steven.hoff || screenBlock == 30) < 1024 && steven.screenCol < 100 ) {
+
+
+
+
+
+  if ((steven.hoff > 0 && steven.hoff < 1024 ) ) {
             hOff--;
             steven.hoff--;
 
    for (int i = 0; i < 8; i++) {
 
     stars[i]->hoff--;
+
+   }
+
+
+   for (int i = 0; i < 3; i++) {
+
+    bonuses[i]->hoff--;
 
    }
 
@@ -1594,7 +1744,7 @@ void animateSteven() {
    }
 
 
-   for (int i = 0; i < 5; i++) {
+   for (int i = 0; i < 10; i++) {
 
     bubbles[i].hoff--;
 
@@ -1616,12 +1766,12 @@ void animateSteven() {
 
  if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
 
-
+  steven.direction = 0;
   steven.aniState = SPRITERIGHT;
 
   if( steven.worldCol + steven.width < 1024 - 1
-
-                                                                                                       ) {
+   && colmapBitmap[((steven.worldRow)*(1024)+(steven.worldCol + steven.width))]
+   && colmapBitmap[((steven.worldRow + steven.height - 1)*(1024)+(steven.worldCol + steven.width))]) {
 
 
    steven.worldCol += steven.cdel;
@@ -1629,7 +1779,8 @@ void animateSteven() {
 
 
 
-        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (1024 - 240 -1) && steven.screenCol > 240 / 3 )){
+
+        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (1024 - 240 ) && steven.screenCol > 240 / 3 )){
             hOff++;
             steven.hoff++;
 
@@ -1646,8 +1797,14 @@ void animateSteven() {
 
    }
 
+   for (int i = 0; i < 3; i++) {
 
-    for (int i = 0; i < 5; i++) {
+    bonuses[i]->hoff++;
+
+   }
+
+
+   for (int i = 0; i < 10; i++) {
 
     bubbles[i].hoff++;
 
@@ -1658,7 +1815,12 @@ void animateSteven() {
     lives[i].hoff++;
 
    }
-        }
+
+         }
+
+
+
+
 
 
 
@@ -1765,7 +1927,7 @@ void initEnemies() {
 
 
 
- spinel.worldRow = 15;
+ spinel.worldRow = 17;
  spinel.worldCol = 440;
  spinel.initWorldRow = 15;
  spinel.initWorldCol = 440;
@@ -1811,8 +1973,8 @@ void initEnemies() {
   enemies[i]->screenCol = enemies[i]->worldCol - enemies[i]->hoff;
   enemies[i]->width = 16;
   enemies[i]->height = 16;
-  enemies[i]->tileRow = 8;
-  enemies[i]->tileCol = 0;
+  enemies[i]->tileRow = 20;
+  enemies[i]->tileCol = i * 2;
   enemies[i]->rdel = 2;
   enemies[i]->cdel = 2;
   enemies[i]->bubbled = 0;
@@ -1859,7 +2021,7 @@ void updateEnemies() {
 
 
  hoverH(&eyeball, eyeball.initWorldCol, 160);
-# 899 "game.c"
+# 1011 "game.c"
  for (int i = 0; i < 8; i++) {
    bubbling(enemies[i]);
    enemies[i]->screenRow = enemies[i]->worldRow - vOff;
@@ -1931,30 +2093,30 @@ void initStars() {
  garden.cheatC = 3;
 
 
- island.worldRow = 70;
+ island.worldRow = 60;
  island.worldCol = 623;
- island.cheatR = 10;
- island.cheatC = 2;
+ island.cheatR = 8;
+ island.cheatC = 4;
 
 
  kindergarten.worldRow = 95;
  kindergarten.worldCol = 860;
- kindergarten.cheatR = 10;
- kindergarten.cheatC = 2;
+ kindergarten.cheatR = 9;
+ kindergarten.cheatC = 4;
 
 
  arena.worldRow = 38;
  arena.worldCol = 935;
- arena.cheatR = 10;
- arena.cheatC = 2;
+ arena.cheatR = 9;
+ arena.cheatC = 5;
 
 
  desert.worldRow = 115;
  desert.initWorldRow = 115;
  desert.worldCol = 1000;
  desert.cheatR = 10;
- desert.cheatC = 2;
-# 1006 "game.c"
+ desert.cheatC = 5;
+# 1118 "game.c"
  for (int i = 0; i < 8; i++) {
   stars[i]->active = 1;
   stars[i]->hide = 0;
@@ -1974,7 +2136,18 @@ void initStars() {
 
 }
 void updateStars() {
-# 1035 "game.c"
+
+
+
+
+ hoverV(&earth, earth.initWorldRow, 10);
+ hoverV(&desert, desert.initWorldRow, 10);
+
+
+
+
+
+
  for (int i = 0; i < 8; i++) {
    bubbling(stars[i]);
   stars[i]->screenRow = stars[i]->worldRow - vOff;
@@ -2205,8 +2378,8 @@ void enemyCollisions() {
 
 
     if (enemies[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[6]->worldRow, enemies[6]->worldCol, enemies[6]->height, enemies[6]->width)) {
-        steven.worldRow = 70;
-        steven.worldCol = 73;
+        steven.worldRow = bonuses[1]->worldRow;
+        steven.worldCol = bonuses[1]->worldCol - 45;
 
     }
 
@@ -2226,7 +2399,7 @@ void starCollisions() {
 
 void bubbling(ANISPRITE * a) {
 
- for (int i = 0; i < 5; i++) {
+ for (int i = 0; i < 10; i++) {
   if (bubbles[i].active
    && a->bubbled == 0
    && collision(a->worldCol, a->worldRow, a->width, a->height,

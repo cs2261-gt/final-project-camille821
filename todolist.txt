@@ -18,16 +18,31 @@
 - make extra Splashscreens (w/ textual info too...check notes for help)
 
 EASY:
-- update spritesheet
-- finish implementing core sounds for the game (bubbling, pause, help, win, lose)
+- update spritesheet (enemies, cheats,stars)
+- finish implementing core sounds for the game (bubbling, pause, help, win, lose, star state, cutscenes)
 - extra lives?
 - add sounds for everything else
+
+
+Todo Moday:
+- finish and implement cutscene animated sprites
+- add extra ives to game
+- add colmap
+
+
+- make state BGs for (start, help, win, lose, pause)
+- update spritesheet
+- finish implementing core sounds for the game (bubbling, pause, help, win, lose) 
+
+
+
 
 
 
 
 MED:
 - add animated sprites to spritesheet
+
 - add extra screens to state machine
 - create animated loops on screen
 
@@ -45,6 +60,14 @@ TODO for Sat:
 - implement scenes into state machine
 
 
+     if (steven.direction && hOff < 256 ) {
+        // change where BG0 now looks for maps!
+        screenBlock--;
+        hOff += 256;
+        REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    }
 
+
+    line 48:
 
 
