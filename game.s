@@ -1804,85 +1804,85 @@ initStars:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	mov	r10, #65
-	mov	r5, #10
+	mov	r4, #10
 	mov	fp, #2
-	mov	ip, #70
-	mov	r4, #115
-	mov	r6, #4
-	mov	r8, #3
-	mov	r9, #540
-	ldr	lr, .L330
-	str	r10, [lr, #32]
-	str	r10, [lr, #48]
+	mov	r5, #70
+	mov	lr, #115
+	mov	r7, #4
+	mov	r8, #540
+	ldr	ip, .L330
+	str	r10, [ip, #32]
+	str	r10, [ip, #48]
 	ldr	r10, .L330+4
-	str	r5, [lr, #4]
-	str	fp, [lr, #8]
-	str	r10, [lr, #52]
-	str	r10, [lr, #36]
-	ldr	lr, .L330+8
-	str	r5, [lr, #4]
-	str	ip, [lr, #32]
-	str	ip, [lr, #48]
-	str	r4, [lr, #52]
-	str	r6, [lr, #8]
-	str	r4, [lr, #36]
-	ldr	lr, .L330+12
-	str	ip, [lr, #32]
-	str	ip, [lr, #48]
-	str	r5, [lr, #4]
-	str	r8, [lr, #8]
-	str	r9, [lr, #52]
-	str	r9, [lr, #36]
-	ldr	lr, .L330+16
-	str	r8, [lr, #8]
-	mov	r8, #20
-	mov	r7, #9
-	str	r8, [lr, #48]
-	str	r8, [lr, #32]
-	mov	r8, #1000
-	mov	r1, #8
-	str	r7, [lr, #4]
-	str	r8, [lr, #52]
-	ldr	lr, .L330+20
-	str	ip, [lr, #32]
-	str	ip, [lr, #48]
-	ldr	ip, .L330+24
-	str	r6, [lr, #8]
-	str	ip, [lr, #36]
-	str	ip, [lr, #52]
-	str	r1, [lr, #4]
-	mov	lr, #95
-	ldr	ip, .L330+28
-	str	lr, [ip, #32]
-	str	lr, [ip, #48]
-	mov	lr, #840
-	str	lr, [ip, #36]
-	add	lr, lr, r5
+	str	r4, [ip, #4]
+	str	fp, [ip, #8]
+	str	r10, [ip, #52]
+	str	r10, [ip, #36]
+	ldr	ip, .L330+8
+	str	r5, [ip, #32]
+	str	r5, [ip, #48]
+	str	r4, [ip, #4]
 	str	lr, [ip, #52]
-	ldr	lr, .L330+32
-	str	r5, [lr, #4]
-	mov	r5, #5
-	str	r7, [ip, #4]
-	str	r6, [ip, #8]
-	ldr	ip, .L330+36
-	str	r5, [lr, #8]
-	str	r5, [ip, #8]
+	str	r7, [ip, #8]
+	str	lr, [ip, #36]
+	ldr	ip, .L330+12
+	mov	r9, #58
+	str	r8, [ip, #52]
+	str	r8, [ip, #36]
+	mov	r8, #3
+	str	r4, [ip, #4]
+	str	r9, [ip, #32]
+	str	r9, [ip, #48]
+	str	r8, [ip, #8]
+	ldr	ip, .L330+16
+	str	r8, [ip, #8]
+	mov	r8, #20
+	mov	r6, #9
+	str	r8, [ip, #48]
+	str	r8, [ip, #32]
+	mov	r8, #1000
+	str	r6, [ip, #4]
+	str	r8, [ip, #52]
+	ldr	ip, .L330+20
+	mov	r1, #8
+	str	r5, [ip, #32]
+	str	r5, [ip, #48]
+	ldr	r5, .L330+24
+	str	r5, [ip, #36]
+	str	r5, [ip, #52]
+	mov	r5, #95
+	str	r7, [ip, #8]
+	str	r1, [ip, #4]
+	ldr	ip, .L330+28
+	str	r5, [ip, #32]
+	str	r5, [ip, #48]
+	mov	r5, #840
+	str	r5, [ip, #36]
+	stmib	ip, {r6, r7}
+	mov	r7, #5
+	add	r5, r5, r4
+	str	r5, [ip, #52]
+	ldr	r5, .L330+32
+	str	r4, [r5, #4]
+	str	lr, [r5, #48]
+	str	lr, [r5, #32]
+	str	r7, [r5, #8]
+	str	r8, [r5, #52]
 	mov	r5, #38
+	ldr	ip, .L330+36
 	str	r5, [ip, #32]
 	str	r5, [ip, #48]
 	mov	r5, #940
 	mov	r0, fp
 	mov	r2, #1
 	mov	r3, #0
-	str	r4, [lr, #48]
-	str	r4, [lr, #32]
-	str	r8, [lr, #52]
 	ldr	lr, .L330+40
 	ldr	r4, .L330+44
-	str	r7, [ip, #4]
+	str	r7, [ip, #8]
 	str	r5, [ip, #36]
 	str	r5, [ip, #52]
 	ldr	r7, [lr]
+	str	r6, [ip, #4]
 	add	r6, r4, #32
 .L327:
 	ldr	ip, [r4], #4
@@ -3136,7 +3136,7 @@ updateStars:
 	ldr	r1, [r0, #36]
 	bl	hoverH
 	ldr	r0, .L558+8
-	mov	r2, #15
+	mov	r2, #20
 	ldr	r1, [r0, #32]
 	bl	hoverV
 	ldr	r0, .L558+12

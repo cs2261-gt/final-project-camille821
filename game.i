@@ -1828,7 +1828,7 @@ void animateSteven() {
 
 
 
-        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (1024 - 240 ) && steven.screenCol > 240 / 3 )){
+        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (1024 - 240 ) && steven.screenCol > (240 / 3) )){
             hOff++;
             steven.hoff++;
 
@@ -2133,9 +2133,9 @@ void initStars() {
  jungleBase.cheatC = 2;
 
 
- garden.initWorldRow = 70;
+ garden.initWorldRow = 70-12;
  garden.initWorldCol = 550-10;
- garden.worldRow = 70;
+ garden.worldRow = 70-12;
  garden.worldCol = 550-10;
  garden.cheatR = 10;
  garden.cheatC = 3;
@@ -2196,7 +2196,7 @@ void updateStars() {
 
  hoverH(&zoo, zoo.initWorldCol,10);
  hoverH(&jungleBase, jungleBase.initWorldCol, 20);
- hoverV(&garden, garden.initWorldRow, 15);
+ hoverV(&garden, garden.initWorldRow, 20);
  hoverH(&island, island.initWorldCol, 20);
  hoverH(&kindergarten, kindergarten.initWorldCol, 25);
  hoverH(&arena, arena.initWorldCol, 40);

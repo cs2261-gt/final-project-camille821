@@ -802,7 +802,7 @@ void animateSteven() {
 		//what I had prior: (steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3) - bugged out towards begging of screen tho
 		//trial 1 - worked for first 1/4th of screen: steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3) && steven.hoff < 240
 
-		if ((steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3)/*|| (screenBlock >= 29 && steven.screenCol < 100 )*/)) {
+		if ((steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3) /*|| (screenBlock >= 29 && steven.screenCol < 100 )*/)) {
             hOff--;
             steven.hoff--;
 
@@ -862,7 +862,7 @@ void animateSteven() {
 		// hacky, but ensures if at final part of map, meaning we've reached the 31st screenblock, then don't move hOff
 		// also gets extra last pixels on the right
 		//((screenBlock == 31 && steven.worldCol >= WORLDWIDTH -240)hOff < 17 && steven.screenCol > 100)  || (screenBlock < 31 && hOff < (WORLDWIDTH - SCREENWIDTH -1) && steven.screenCol > SCREENWIDTH / 3 )
-        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (WORLDWIDTH - SCREENWIDTH ) && steven.screenCol > SCREENWIDTH / 3 /*&& steven.worldCol <= 960*/)){//} && player.screenCol > SCREENWIDTH / 3) {
+        if ((screenBlock == 31 && hOff < 17) || (screenBlock < 31 && hOff < (WORLDWIDTH - SCREENWIDTH ) && steven.screenCol > (SCREENWIDTH / 3) /*&& steven.worldCol <= 960*/)){//} && player.screenCol > SCREENWIDTH / 3) {
             hOff++;
             steven.hoff++;
 
@@ -1199,9 +1199,9 @@ void initStars() {
 	jungleBase.cheatC = 2;
 
 
-	garden.initWorldRow = 70;
+	garden.initWorldRow = 70-12;
 	garden.initWorldCol = 550-10;
-	garden.worldRow = 70;
+	garden.worldRow = 70-12;
 	garden.worldCol = 550-10;
 	garden.cheatR = 10;
 	garden.cheatC = 3;
@@ -1274,7 +1274,7 @@ void updateStars() {
 //hover s1 and s7 10, change init row to be 5 less
 	hoverH(&zoo, zoo.initWorldCol,10);
 	hoverH(&jungleBase, jungleBase.initWorldCol, 20);
-	hoverV(&garden, garden.initWorldRow, 15);
+	hoverV(&garden, garden.initWorldRow, 20);
 	hoverH(&island, island.initWorldCol, 20);
 	hoverH(&kindergarten, kindergarten.initWorldCol, 25);
 	hoverH(&arena, arena.initWorldCol, 40);
