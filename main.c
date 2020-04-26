@@ -123,6 +123,7 @@ int state;
 
 //int foodEaten;
 int lose;
+int helpFirst;
 
 
 extern OBJ_ATTR shadowOAM[128];
@@ -521,7 +522,7 @@ void fastState() {
 void initialize() {
 
     
-    initGame();
+    //initGame();
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
@@ -540,6 +541,9 @@ void initialize() {
 
 // Sets up the start state
 void goToStart() {
+
+    helpFirst = 0;
+
 
     REG_BG0CNT = BG_8BPP | BG_SCREENBLOCK(20) | BG_CHARBLOCK(0) | BG_SIZE_SMALL;
 
@@ -589,7 +593,7 @@ void start() {
         initGame();
         goToGame();
         stopSound();
-        playSoundA(gameSong, GAMESONGLEN, 1);
+        playSoundA(gameSong, GAMESONGLEN - 10, 1);
         
     }
 
@@ -600,8 +604,10 @@ void start() {
 
 
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
-                
+        helpFirst = 1;        
         goToHelpState();
+    } else {
+        helpFirst = 0;
     }
 
 
@@ -689,8 +695,8 @@ void game() {
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
-        steven.worldRow = stars[2]->worldRow;
-        steven.worldCol = stars[2]->worldCol -16;
+        steven.worldRow = 65;
+        steven.worldCol = 400;
         goToJdbState();
 
     }
@@ -712,16 +718,16 @@ void game() {
 
 
     if (stars[5]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[5]->worldRow, stars[5]->worldCol, stars[5]->height, stars[5]->width)) {
-        steven.worldRow = stars[5]->worldRow;
-        steven.worldCol = stars[5]->worldCol - 20;
+        steven.worldRow = 95;
+        steven.worldCol = 875;
         goToKindergartenState();     
     }
 
 
     if (stars[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[6]->worldRow, stars[6]->worldCol, stars[6]->height, stars[6]->width)) {
-        steven.worldRow = 38;
+        steven.worldRow = 38+16;
         
-        steven.worldCol = 935 + 16;
+        steven.worldCol = 935;
         goToArenaState();     
     }
 
@@ -946,10 +952,21 @@ void helpState() {
     // Lock the framerate to 60 fps
     waitForVBlank();
 
-    if (BUTTON_PRESSED(BUTTON_START)) {
+    if (BUTTON_PRESSED(BUTTON_START) && !helpFirst) {
         unpauseSound();
         goToGame();
     }
+
+    if (BUTTON_PRESSED(BUTTON_START) && helpFirst) {
+        srand(seed);
+        
+        initGame();
+        goToGame();
+        stopSound();
+        playSoundA(gameSong, GAMESONGLEN - 10, 1);
+        helpFirst = 0;
+    }
+
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToStart();
     }

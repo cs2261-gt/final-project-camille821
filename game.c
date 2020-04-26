@@ -96,8 +96,8 @@ void updateGame() {
 	updateBonuses();
 	animateSteven();
 	updateSteven();
-	updateEnemies();
 	updateStars();
+	updateEnemies();
 	updateLives();
 	
 
@@ -169,7 +169,7 @@ void updateBonuses() {
 	//hanlde player collisions
 
 	for (int i = 0; i < LIVES; i++) {
-		if (livesLeft == 2 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+		if (livesLeft == 2 && bonuses[i]->active && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
 		 bonuses[i]->worldRow, bonuses[i]->worldCol, bonuses[i]->height, bonuses[i]->width)) {
 			//steven.worldRow = steven.worldRow -16;
 			livesLeft++;
@@ -181,7 +181,7 @@ void updateBonuses() {
 		}
 
 
-		if (livesLeft == 1 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+		if (livesLeft == 1 && bonuses[i]->active && collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
 		 bonuses[i]->worldRow, bonuses[i]->worldCol, bonuses[i]->height, bonuses[i]->width)) {
 			steven.worldRow = steven.worldRow -16;
 			livesLeft++;
@@ -232,35 +232,91 @@ void initBG() {
 
 void updateBG() {
 
-
-
-	/////////////WHAT WAS HERE BEFORE///////////////////////////////////////
-
-    if (hOff > 256 && screenBlock < 31) { // trying to fix end of game bug
-        // change where BG0 now looks for maps!
-        screenBlock++;
-        hOff -= 256;
-        REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
-
-        if (steven.worldCol > 1024 - 256 && !steven.direction) {
-	    	screenBlock = 31;
+		//when screen reaches 2nd screenBlock of 256 px
+		if (screenBlock == 28 && hOff > 256 && !steven.direction) {
+	    	screenBlock = 29;
+	    	hOff = 0;
 	    	REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
     	}
+
+    	//when screen reaches 3rd screenBlock of 256 px
+		if (screenBlock == 29 && hOff > 256 && !steven.direction) {
+	    	screenBlock = 30;
+	    	hOff = 0;
+	    	REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    	}
+
+    	//when screen reaches 4th screenBlock of 256 px
+		if (screenBlock == 30 && hOff > 256 && !steven.direction) {
+	    	screenBlock = 31;
+	    	hOff = 0;
+	    	REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    	}
+
+
+
+
+    //moving left logic
+     if (steven.direction && hOff < 0 && screenBlock == 31) {
+        // change where BG0 now looks for maps!
+        screenBlock = 30;
+        hOff = 256; 
+        REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
     }
 
 
-    //MOVING LEFT DEBUGGING///////////////////////////////////////////////////
-
-     if (steven.direction && hOff < 256 && screenBlock == 31) {//prevents screen tearing
+    if (steven.direction && hOff < 0 && screenBlock == 30) {
         // change where BG0 now looks for maps!
-        screenBlock--;
-        hOff += 256;
+        screenBlock = 29;
+        hOff = 256; 
+        REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    }
+
+    if (steven.direction && hOff < 0 && screenBlock == 29) {
+        // change where BG0 now looks for maps!
+        screenBlock = 28;
+        hOff = 256; 
         REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
     }
 
 
 
-    //MOVING LEFT DEBUGGING///////////////////////////////////////////////////
+
+
+
+
+
+
+	//OG moving right logic
+    // if (hOff > 256 && screenBlock < 31) { // trying to fix end of game bug
+    //     // change where BG0 now looks for maps!
+    //     screenBlock++;
+    //     hOff -= 256;
+    //     REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+
+    //     if (steven.worldCol > 1024 - 256 && !steven.direction) {
+	   //  	screenBlock = 31;
+	   //  	REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    // 	}
+    // }
+
+
+
+
+
+    
+
+
+    // // OG moving left logic
+    //  if (steven.direction && hOff < 256 && screenBlock == 31) {
+    //     // change where BG0 now looks for maps!
+    //     screenBlock--;
+    //     hOff += 256; //just resets change back to init value
+    //     REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
+    // }
+
+
+
 
 
 
@@ -268,40 +324,60 @@ void updateBG() {
     	steven.hoff -= 512;
     }
 
+    if (steven.hoff < 0) {
+    	steven.hoff -= 512;
+    }
+
     for (int i = 0; i < NUMSTARS; i++) {	
 
-    	if (stars[i]->hoff > 512 && hOff == 0 && screenBlock != 31) {
+    	if (stars[i]->hoff > 512 && hOff == 0 && screenBlock < 30/*screenBlock != 31*/) { //i think current bug has something to do with this
     		stars[i]->hoff -= 512;
+    	}
+
+    	if (stars[i]->hoff < -512 && hOff >= 512) {
+    		stars[i]->hoff += 512;
     	}
     }
 
        for (int i = 0; i < LIVES; i++) {	
 
-    	if (bonuses[i]->hoff > 512 && hOff == 0) {
-    		bonuses[i]->hoff -= 512;
-    	}
+    	// if (bonuses[i]->hoff > 512 && hOff == 0) {
+    	// 	bonuses[i]->hoff -= 512;
+    	// }
+
+    	// if (bonuses[i]->hoff < -512 && hOff >= 512) {
+    	// 	bonuses[i]->hoff += 512;
+    	// }
     }
 
 
     for (int i = 0; i < NUMOPS; i++) {	
 
-    	if (enemies[i]->hoff > 512 && hOff == 0 && screenBlock != 31) {
+    	if (enemies[i]->hoff > 512 && hOff == 0 && screenBlock < 30 /*screenBlock != 31*/) { //i think current bug has something to do with this
     		enemies[i]->hoff -= 512;
+    	}
+
+    	if (enemies[i]->hoff < -512 && hOff >= 512) {
+    		enemies[i]->hoff += 512;
     	}
     }
 
 
 	for (int i = 0; i < BUBBLECOUNT; i++) {
-
+		//right movement
     	if (bubbles[i].hoff > 512 && hOff >= 0) {
     		bubbles[i].hoff -= 512;
     	}
 
 
-
+    	//left movement- why -512 instead of zero??? 
+    	//so it doesnt stop at mid of screen
     	if (bubbles[i].hoff < -512 && hOff >= 512) {
     		bubbles[i].hoff += 512;
     	}
+
+
+
 
     }
 
@@ -310,6 +386,11 @@ void updateBG() {
     	if (lives[i].hoff > 512 && hOff >= 0) {
     		lives[i].hoff -= 512;
     	}
+
+
+      	if (lives[i].hoff < -512 && hOff >= 512) {
+    		lives[i].hoff += 512;
+    	} 	
 
     }
 
@@ -358,10 +439,10 @@ void initBubbles() {
 void updateBubble(ANISPRITE * b) {
 	
 
-			
 	if (b->active && b->direction == 1 
-				&& b->screenCol + b->cdel <= WORLDWIDTH-1   //((b->worldCol < 512 -10 && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < WORLDWIDTH && b-> worldCol - b->hoff > 0))
-				&& b->screenCol + b->cdel > 0 - b->width && ((b->worldCol  >= 0 - b->width && screenBlock <31)|| ( b->worldCol > 512 && b->worldCol < WORLDWIDTH + b->width)) ) {//move bullet until it is off left side of screen
+				&& b->worldCol + b->cdel <= WORLDWIDTH-1   //((b->worldCol < 512 -10 && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < WORLDWIDTH && b-> worldCol - b->hoff > 0))
+				&& b->worldCol + b->cdel > 0 - b->width 
+				/*&& ((b->worldCol  >= 0 - b->width && screenBlock <31)|| ( b->worldCol > 512 && b->worldCol < WORLDWIDTH + b->width))*/ ) {//move bullet until it is off left side of screen
 			
 			b->worldCol -= b->cdel;
 
@@ -369,8 +450,9 @@ void updateBubble(ANISPRITE * b) {
 
 
 	if (b->active && b->direction == 2 
-				&& b->screenCol + b->cdel <= WORLDWIDTH + b-> width //move bullet until it is off right side of screen
-				&& b->screenCol + b->cdel > 0 - b->width && ((b->worldCol < 512 - b->width && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < WORLDWIDTH && b-> worldCol - b->hoff > 0))) {
+				&& b->worldCol + b->cdel <= WORLDWIDTH + b-> width //move bullet until it is off right side of screen
+				&& b->worldCol + b->cdel > 0 - b->width 
+				/*&& ((b->worldCol < 512 - b->width && screenBlock <31) || ( b->worldCol > 512 && b->worldCol < WORLDWIDTH && b-> worldCol - b->hoff > 0))*/) {
 			
 			b->worldCol += b->cdel;
 
@@ -378,8 +460,8 @@ void updateBubble(ANISPRITE * b) {
 
 
 	if (b->active && b->direction == 3 
-				&& b->screenRow + b->rdel <= SCREENHEIGHT-1 
-				&& b->screenRow + b->rdel > 0 - b->height ) { //move bullet until it is off top side of screen
+				&& b->worldRow + b->rdel <= SCREENHEIGHT-1 
+				&& b->worldRow + b->rdel > 0 - b->height ) { //move bullet until it is off top side of screen
 			
 			b->worldRow -= b->rdel;
 
@@ -387,26 +469,42 @@ void updateBubble(ANISPRITE * b) {
 
 
 	if (b->active && b->direction == 4 
-				&& b->screenRow + b->rdel <= SCREENHEIGHT + b->height //move bullet until it is off bottom side of screen
-				&& b->screenRow + b->rdel > 0 - b->height ) { 
+				&& b->worldRow + b->rdel <= SCREENHEIGHT + b->height //move bullet until it is off bottom side of screen
+				&& b->worldRow + b->rdel > 0 - b->height ) { 
 			
 			b->worldRow += b->rdel;
 
 		} else {
+			b->hide = 1;
 			b->active = 0;
-			b->hide = 1;			
+						
 		}
 
-		// if (b->active && (b->screenCol < 0 || b->screenCol > 256)) {
-		// 	b->active = 1;
-		// 	b->hide = 0;
-		// }
-
-	for (int i = 0; i < BUBBLECOUNT; i++) {
-	 	bubbles[i].screenRow = bubbles[i].worldRow - vOff;
-		bubbles[i].screenCol = bubbles[i].worldCol - bubbles[i].hoff;
+	// for (int i = 0; i < BUBBLECOUNT; i++) {
+	//  	bubbles[i].screenRow = bubbles[i].worldRow - vOff;
+	// 	bubbles[i].screenCol = bubbles[i].worldCol - bubbles[i].hoff;
 	
+	// }
+
+
+
+	b->screenRow = b->worldRow - vOff;
+	b->screenCol = b->worldCol - b->hoff;
+
+	if (b->active && (b->screenCol < 0 || b->screenCol > 256) && screenBlock < 30) { //sB<30 bc I had a bug where I couldn't shoot bubles past 512px
+		b->hide = 1;
+		b->active = 0;
+			
 	}
+
+
+
+	if (b->active && (b->worldCol < 1024-256 || b->worldCol > WORLDWIDTH) && screenBlock == 31) { //sB<30 bc I had a bug where I couldn't shoot bubles past 512px
+		b->hide = 1;
+		b->active = 0;
+			
+	}
+
 
 
 }
@@ -420,8 +518,9 @@ void throwLeft() {
 		if (!bubbles[i].active) {
 
 			// Take the bubble out of the pool
-			bubbles[i].active = 1;
 			bubbles[i].hide = 0;
+			bubbles[i].active = 1;
+			
 
 			//set the bubble direction
 			bubbles[i].direction = 1;
@@ -453,8 +552,9 @@ void throwRight() {
 			bubbles[i].worldCol = steven.worldCol + steven.width; //makes position look more realistic in spawning
 			
 			// Take the bubble out of the pool
-			bubbles[i].active = 1;
 			bubbles[i].hide = 0;
+			bubbles[i].active = 1;
+			
 
 
 			// Break out of the loop
@@ -477,8 +577,9 @@ void throwUp() {
 			bubbles[i].worldCol = steven.worldCol + (steven.width/2); //makes position look more realistic in spawning
 			
 			// Take the bubble out of the pool
-			bubbles[i].active = 1;
 			bubbles[i].hide = 0;
+			bubbles[i].active = 1;
+			
 
 
 			// Break out of the loop
@@ -503,8 +604,9 @@ void throwDown() {
 			bubbles[i].worldCol = steven.worldCol + 4; //makes position look more realistic in spawning
 			
 			// Take the bubble out of the pool
-			bubbles[i].active = 1;
 			bubbles[i].hide = 0;
+			bubbles[i].active = 1;
+			
 
 
 			// Break out of the loop
@@ -523,7 +625,7 @@ void throwBubble() {
 
 			// Take the bubble out of the pool
 			bubbles[i].active = 1;
-
+			bubbles[i].hide = 0;
 			// Break out of the loop
 			break;
 		}
@@ -687,7 +789,7 @@ void animateSteven() {
 		steven.direction = 1;	
 		steven.aniState = SPRITELEFT;
 
-		if(steven.worldCol > 0  && colmapBitmap[OFFSET(steven.worldRow, steven.worldCol - 1, WORLDWIDTH)]
+		if(steven.screenCol > 0  && colmapBitmap[OFFSET(steven.worldRow, steven.worldCol - 1, WORLDWIDTH)]
                 && colmapBitmap[OFFSET(steven.worldRow + steven.height - 1, steven.worldCol - 1, WORLDWIDTH)]) {
 
 
@@ -697,8 +799,10 @@ void animateSteven() {
 
 
 
+		//what I had prior: (steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3) - bugged out towards begging of screen tho
+		//trial 1 - worked for first 1/4th of screen: steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3) && steven.hoff < 240
 
-		if ((steven.hoff > 0 && steven.hoff < 1024 )/*|| (screenBlock >= 29 && steven.screenCol < 100 )*/) {
+		if ((steven.hoff > 0 && steven.hoff < 1024 && steven.screenCol > (SCREENWIDTH / 3)/*|| (screenBlock >= 29 && steven.screenCol < 100 )*/)) {
             hOff--;
             steven.hoff--;
 
@@ -794,12 +898,7 @@ void animateSteven() {
 				
 			}
         
-         } //else if (steven.worldCol > 960) {
-        // 	//steven.hoff++;
-        // 	//steven.screenCol++;
-        // 	steven.worldCol++;
-        // }
-
+         } 
 
 	
 	}
@@ -821,34 +920,58 @@ void animateSteven() {
 
 void updateSteven() {
 
-	//handles normal colls with steven and objects
-	enemyCollisions();
-	starCollisions();
 
+	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITELEFT) {
 
-
-	if (BUTTON_PRESSED(BUTTON_A)) {
-		
-	
-			if (steven.aniState == SPRITELEFT) {
-				throwLeft();
-			
-			} else
-			
-			if (steven.aniState == SPRITERIGHT) {
-				throwRight();
-			} else
-			
-			if (steven.aniState == SPRITEBACK) {
-				throwUp();
-			} else
-			
-			if (steven.aniState == SPRITEFRONT) {
-				throwDown();
-			}
+		throwLeft();
 
 		}
 
+
+	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITERIGHT) {
+		throwRight();
+		
+		}
+
+
+
+	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITEBACK) {
+		throwUp();
+		
+		}
+
+
+	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITEFRONT) {
+		throwDown();
+		
+		}
+
+
+	// if (BUTTON_PRESSED(BUTTON_A)) {
+		
+	
+	// 		if (steven.aniState == SPRITELEFT) {
+	// 			throwLeft();
+			
+	// 		} else
+			
+	// 		if (steven.aniState == SPRITERIGHT) {
+	// 			throwRight();
+	// 		} else
+			
+	// 		if (steven.aniState == SPRITEBACK) {
+	// 			throwUp();
+	// 		} else
+			
+	// 		if (steven.aniState == SPRITEFRONT) {
+	// 			throwDown();
+	// 		}
+
+	// 	}
+	
+	//handles normal colls with steven and objects
+	enemyCollisions();
+	starCollisions();
 
 	steven.screenRow = steven.worldRow;// - vOff;
     steven.screenCol = steven.worldCol - steven.hoff;
@@ -952,10 +1075,10 @@ void initEnemies() {
 		enemies[i]->width = 16;
 		enemies[i]->height = 16;
 		enemies[i]->tileRow = 20;
-		enemies[i]->tileCol = i * 2;//for now
+		enemies[i]->tileCol = i * 2;
 		enemies[i]->rdel = 2;
 		enemies[i]->cdel = 2;
-		enemies[i]->bubbled = 0;
+		enemies[i]->bubbled = 0; 
 	 	
 	}
 
@@ -1060,39 +1183,50 @@ void initStars() {
 	earth.cheatC = 3;
 
 	
-
+	zoo.initWorldRow = 70;
+	zoo.initWorldCol = 125 -10;
 	zoo.worldRow = 70;
-	zoo.worldCol = 125;
+	zoo.worldCol = 125 -10;
 	zoo.cheatR = 10;
 	zoo.cheatC = 4;
 
 
+	jungleBase.initWorldRow = 65;
+	jungleBase.initWorldCol = 420 -5;
 	jungleBase.worldRow = 65;
-	jungleBase.worldCol = 420;
+	jungleBase.worldCol = 420 -5;
 	jungleBase.cheatR = 10;
 	jungleBase.cheatC = 2;
 
 
+	garden.initWorldRow = 70;
+	garden.initWorldCol = 550-10;
 	garden.worldRow = 70;
-	garden.worldCol = 550;
+	garden.worldCol = 550-10;
 	garden.cheatR = 10;
 	garden.cheatC = 3;
 
 
-	island.worldRow = 60;
-	island.worldCol = 623;
+	island.initWorldRow = 60 + 10;
+	island.initWorldCol = 623 - 10; 
+	island.worldRow = 60 + 10;
+	island.worldCol = 623 - 10; 
 	island.cheatR = 8;
 	island.cheatC = 4;
 
 
+	kindergarten.initWorldRow = 95;
+	kindergarten.initWorldCol = 860 -20;
 	kindergarten.worldRow = 95;
-	kindergarten.worldCol = 860;
+	kindergarten.worldCol = 860 -10;
 	kindergarten.cheatR = 9;
 	kindergarten.cheatC = 4;
 
 
+	arena.initWorldRow = 38;
+	arena.initWorldCol = 940;
 	arena.worldRow = 38;
-	arena.worldCol = 935;
+	arena.worldCol = 940;
 	arena.cheatR = 9;
 	arena.cheatC = 5;
 
@@ -1138,6 +1272,12 @@ void updateStars() {
 
 
 //hover s1 and s7 10, change init row to be 5 less
+	hoverH(&zoo, zoo.initWorldCol,10);
+	hoverH(&jungleBase, jungleBase.initWorldCol, 20);
+	hoverV(&garden, garden.initWorldRow, 15);
+	hoverH(&island, island.initWorldCol, 20);
+	hoverH(&kindergarten, kindergarten.initWorldCol, 25);
+	hoverH(&arena, arena.initWorldCol, 40);
 	hoverV(&earth, earth.initWorldRow, 10);
 	hoverV(&desert, desert.initWorldRow, 10);
 
@@ -1382,8 +1522,8 @@ void enemyCollisions() {
     }
 
     if (enemies[7]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, enemies[7]->worldRow, enemies[7]->worldCol, enemies[7]->height, enemies[7]->width)) {
-        steven.worldRow = 70;
-        steven.worldCol = 765;
+        steven.worldRow = 95;
+        steven.worldCol = 870;
     
     }
 

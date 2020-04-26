@@ -1441,7 +1441,7 @@ extern const unsigned short losePal[256];
 # 29 "main.c" 2
 # 1 "help.h" 1
 # 22 "help.h"
-extern const unsigned short helpTiles[16928];
+extern const unsigned short helpTiles[16544];
 
 
 extern const unsigned short helpMap[1024];
@@ -1768,6 +1768,7 @@ int state;
 
 
 int lose;
+int helpFirst;
 
 
 extern OBJ_ATTR shadowOAM[128];
@@ -2166,7 +2167,7 @@ void fastState() {
 void initialize() {
 
 
-    initGame();
+
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
@@ -2185,6 +2186,9 @@ void initialize() {
 
 
 void goToStart() {
+
+    helpFirst = 0;
+
 
     (*(volatile unsigned short*)0x4000008) = (1<<7) | ((20)<<8) | ((0)<<2) | (0<<14);
 
@@ -2234,7 +2238,7 @@ void start() {
         initGame();
         goToGame();
         stopSound();
-        playSoundA(gameSong, 903052, 1);
+        playSoundA(gameSong, 903052 - 10, 1);
 
     }
 
@@ -2245,8 +2249,10 @@ void start() {
 
 
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
-
+        helpFirst = 1;
         goToHelpState();
+    } else {
+        helpFirst = 0;
     }
 
 
@@ -2334,8 +2340,8 @@ void game() {
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
-        steven.worldRow = stars[2]->worldRow;
-        steven.worldCol = stars[2]->worldCol -16;
+        steven.worldRow = 65;
+        steven.worldCol = 400;
         goToJdbState();
 
     }
@@ -2357,16 +2363,16 @@ void game() {
 
 
     if (stars[5]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[5]->worldRow, stars[5]->worldCol, stars[5]->height, stars[5]->width)) {
-        steven.worldRow = stars[5]->worldRow;
-        steven.worldCol = stars[5]->worldCol - 20;
+        steven.worldRow = 95;
+        steven.worldCol = 875;
         goToKindergartenState();
     }
 
 
     if (stars[6]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[6]->worldRow, stars[6]->worldCol, stars[6]->height, stars[6]->width)) {
-        steven.worldRow = 38;
+        steven.worldRow = 38+16;
 
-        steven.worldCol = 935 + 16;
+        steven.worldCol = 935;
         goToArenaState();
     }
 
@@ -2577,7 +2583,7 @@ void goToHelpState() {
 
 
     DMANow(3, &helpPal, ((unsigned short *)0x5000000), 512/2);
-    DMANow(3, helpTiles, &((charblock *)0x6000000)[0], 33856/2);
+    DMANow(3, helpTiles, &((charblock *)0x6000000)[0], 33088/2);
     DMANow(3, helpMap, &((screenblock *)0x6000000)[20], 2048/2);
 
 
@@ -2591,10 +2597,21 @@ void helpState() {
 
     waitForVBlank();
 
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))) && !helpFirst) {
         unpauseSound();
         goToGame();
     }
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))) && helpFirst) {
+        srand(seed);
+
+        initGame();
+        goToGame();
+        stopSound();
+        playSoundA(gameSong, 903052 - 10, 1);
+        helpFirst = 0;
+    }
+
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
         goToStart();
     }
