@@ -71,3 +71,45 @@ TODO for Sat:
     line 48:
 
 
+
+
+    //yellow diamond adlib
+    if (steven.worldCol == 60) {
+        playSoundB(ydSound, YDSOUNDLEN, 0);
+    }
+
+    //blue diamond adlib
+    if (steven.worldCol == 190) {
+        playSoundB(bdSound, BDSOUNDLEN, 0);
+    }
+
+    //white diamond adlib
+    // if (steven.worldCol == 310) {
+    //  //playSoundB(ydSound, YDSOUNDLEN, 0);
+    // }
+
+
+    // //spinel adlib
+    // if (steven.worldCol == 440) {
+    //  //playSoundB(ydSound, YDSOUNDLEN, 0);
+    // }
+
+    // //jasper adlib
+    // if (collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+    //       bonuses[0]->worldRow, bonuses[0]->worldCol, bonuses[0]->height, bonuses[0]->width)) {
+
+    // }
+
+    // //aqua adlib 
+    // if (collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+    //       37, 607, bonuses[0]->height, bonuses[0]->width)) {
+
+    // }
+
+    // //eyeball adlib
+    // if (collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+    //       70, 780, bonuses[0]->height, bonuses[0]->width)) {
+
+    // }
+
+

@@ -140,8 +140,12 @@ void setupInterrupts();
 void interruptHandler();
 
 void pauseSound();
+void pauseSoundA();
+void pauseSoundB();
 void unpauseSound();
 void stopSound();
+void stopSoundB();
+void stopSoundA();
 # 3 "sound.c" 2
 
 void setupSounds()
@@ -304,6 +308,18 @@ void pauseSound() {
     *(volatile unsigned short*)0x4000106 = 0;
 
 }
+
+
+void pauseSoundA() {
+    soundA.isPlaying = 0;
+    *(volatile unsigned short*)0x4000102 = 0;
+}
+
+void pauseSoundB() {
+    soundB.isPlaying = 0;
+    *(volatile unsigned short*)0x4000106 = 0;
+}
+
 
 void unpauseSound() {
 

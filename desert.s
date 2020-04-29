@@ -35,20 +35,20 @@ desertPal:
 	.short	21243
 	.short	0
 	.short	7535
-	.short	14044
+	.short	15068
 	.short	10773
-	.short	26494
-	.short	12953
-	.short	3239
-	.short	14708
+	.short	26526
+	.short	3238
+	.short	13911
+	.short	15765
 	.short	18239
 	.short	9627
+	.short	10642
+	.short	6413
+	.short	15711
 	.short	28671
-	.short	15678
-	.short	12625
-	.short	21114
-	.short	22301
-	.short	16822
+	.short	12954
+	.short	22334
 	.short	0
 	.short	0
 	.short	0

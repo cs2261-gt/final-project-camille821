@@ -170,6 +170,18 @@ void pauseSound() {
 
 }
 
+
+void pauseSoundA() {
+    soundA.isPlaying = 0;
+    REG_TM0CNT = 0;
+}
+
+void pauseSoundB() {
+    soundB.isPlaying = 0;
+    REG_TM1CNT = 0;
+}
+
+
 void unpauseSound() {
 
     soundA.isPlaying = 1;

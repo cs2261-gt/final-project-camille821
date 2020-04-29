@@ -11,5 +11,9 @@ void setupInterrupts();
 void interruptHandler();
 
 void pauseSound();
+void pauseSoundA();
+void pauseSoundB();
 void unpauseSound();
 void stopSound();
+void stopSoundB();
+void stopSoundA();

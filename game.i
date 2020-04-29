@@ -1017,8 +1017,12 @@ void setupInterrupts();
 void interruptHandler();
 
 void pauseSound();
+void pauseSoundA();
+void pauseSoundB();
 void unpauseSound();
 void stopSound();
+void stopSoundB();
+void stopSoundA();
 # 9 "game.c" 2
 
 
@@ -1040,7 +1044,78 @@ extern const unsigned short escapismbgMap[4096];
 
 extern const unsigned short escapismbgPal[256];
 # 14 "game.c" 2
-# 22 "game.c"
+
+
+
+# 1 "starSound2.h" 1
+
+
+
+
+extern const signed char starSound2[1133568];
+# 18 "game.c" 2
+# 1 "bubbleSound.h" 1
+
+
+
+
+extern const signed char bubbleSound[10849];
+# 19 "game.c" 2
+# 1 "ydSound.h" 1
+
+
+
+
+extern const signed char ydSound[58212];
+# 20 "game.c" 2
+# 1 "bdSound.h" 1
+
+
+
+
+extern const signed char bdSound[56202];
+# 21 "game.c" 2
+# 1 "wdSound.h" 1
+
+
+
+
+extern const signed char wdSound[33604];
+# 22 "game.c" 2
+# 1 "spinelSound.h" 1
+
+
+
+
+extern const signed char spinelSound[90229];
+# 23 "game.c" 2
+# 1 "jasperSound.h" 1
+
+
+
+
+extern const signed char jasperSound[38102];
+# 24 "game.c" 2
+# 1 "aquaSound.h" 1
+
+
+
+
+extern const signed char aquaSound[26208];
+# 25 "game.c" 2
+# 1 "eyeballSound.h" 1
+
+
+
+
+extern const signed char eyeballSound[62784];
+# 26 "game.c" 2
+
+
+
+
+
+
 ANISPRITE steven;
 int livesLeft;
 
@@ -1114,6 +1189,50 @@ void initGame() {
 
 
 void updateGame() {
+
+
+
+
+    if (steven.worldCol == 20) {
+        playSoundB(ydSound, 58212, 0);
+    }
+
+
+    if (steven.worldCol == 160) {
+        playSoundB(bdSound, 56202, 0);
+    }
+
+
+    if (steven.worldCol == 265) {
+        playSoundB(wdSound, 33604 -100, 0);
+    }
+
+
+
+    if (steven.worldCol == 335) {
+     playSoundB(spinelSound, 90229 - 200 , 0);
+    }
+
+
+    if (steven.worldCol == 485) {
+     playSoundB(jasperSound, 38102, 0);
+
+    }
+
+
+    if (collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+          60, 570, 20, 1)) {
+
+     playSoundB(aquaSound, 26208, 0);
+
+    }
+
+
+    if (steven.worldCol == 720) {
+     playSoundB(eyeballSound, 62784, 0);
+
+    }
+# 156 "game.c"
  updateBG();
  updateBonuses();
  animateSteven();
@@ -1300,7 +1419,10 @@ void updateBG() {
         hOff = 256;
         (*(volatile unsigned short*)0x4000008) = ((0)<<2) | ((screenBlock)<<8) | (1<<14) | (1<<7);
     }
-# 323 "game.c"
+
+
+
+
     if (steven.hoff > 512) {
      steven.hoff -= 512;
     }
@@ -1321,7 +1443,7 @@ void updateBG() {
     }
 
        for (int i = 0; i < 3; i++) {
-# 351 "game.c"
+
     }
 
 
@@ -1453,7 +1575,7 @@ void updateBubble(ANISPRITE * b) {
    b->active = 0;
 
   }
-# 491 "game.c"
+# 507 "game.c"
  b->screenRow = b->worldRow - vOff;
  b->screenCol = b->worldCol - b->hoff;
 
@@ -1888,13 +2010,14 @@ void updateSteven() {
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITELEFT) {
-
+  playSoundB(bubbleSound, 10849, 0);
   throwLeft();
 
   }
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITERIGHT) {
+  playSoundB(bubbleSound, 10849, 0);
   throwRight();
 
   }
@@ -1902,16 +2025,22 @@ void updateSteven() {
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITEBACK) {
+  playSoundB(bubbleSound, 10849, 0);
   throwUp();
 
   }
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITEFRONT) {
+  playSoundB(bubbleSound, 10849, 0);
   throwDown();
 
   }
-# 973 "game.c"
+
+
+
+
+
  enemyCollisions();
  starCollisions();
 
@@ -2064,7 +2193,7 @@ void updateEnemies() {
 
 
  hoverH(&eyeball, eyeball.initWorldCol, 160);
-# 1134 "game.c"
+# 1133 "game.c"
  for (int i = 0; i < 8; i++) {
    bubbling(enemies[i]);
    enemies[i]->screenRow = enemies[i]->worldRow - vOff;
@@ -2170,7 +2299,7 @@ void initStars() {
  desert.worldCol = 1000;
  desert.cheatR = 10;
  desert.cheatC = 5;
-# 1252 "game.c"
+# 1251 "game.c"
  for (int i = 0; i < 8; i++) {
   stars[i]->active = 1;
   stars[i]->hide = 0;
@@ -2453,6 +2582,7 @@ void enemyCollisions() {
 
 }
 void starCollisions() {
+
 
 }
 

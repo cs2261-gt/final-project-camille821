@@ -13,6 +13,16 @@
 #include "escapismbg.h"
 
 
+//sound elements
+#include "starSound2.h"
+#include "bubbleSound.h"
+#include "ydSound.h"
+#include "bdSound.h"
+#include "wdSound.h"
+#include "spinelSound.h"
+#include "jasperSound.h"
+#include "aquaSound.h"
+#include "eyeballSound.h"
 
 //TODO: upscale stars and enemies drawing logic
 
@@ -92,6 +102,57 @@ void initGame() {
 
 // Updates the game each frame
 void updateGame() {
+
+//game sounds
+
+    //yellow diamond adlib
+    if (steven.worldCol == 20) {
+        playSoundB(ydSound, YDSOUNDLEN, 0);
+    }
+
+    //blue diamond adlib
+    if (steven.worldCol == 160) {
+        playSoundB(bdSound, BDSOUNDLEN, 0);
+    }
+
+    //white diamond adlib
+    if (steven.worldCol == 265) {
+        playSoundB(wdSound, WDSOUNDLEN -100, 0);
+    }
+
+
+    // //spinel adlib
+    if (steven.worldCol == 335) {
+    	playSoundB(spinelSound, SPINELSOUNDLEN - 200 , 0);
+    }
+
+    // //jasper adlib
+    if (steven.worldCol == 485) {
+    	playSoundB(jasperSound, JASPERSOUNDLEN, 0);
+
+    }
+
+    // //aqua adlib 
+    if (collision(steven.worldRow, steven.worldCol, steven.height, steven.width,
+          60, 570, 20, 1)) {
+
+    	playSoundB(aquaSound, AQUASOUNDLEN, 0);
+
+    }
+
+    // //eyeball adlib
+    if (steven.worldCol ==  720) {
+    	playSoundB(eyeballSound, EYEBALLSOUNDLEN, 0);
+
+    }
+
+
+
+
+
+
+
+
 	updateBG();
 	updateBonuses();
 	animateSteven();
@@ -282,44 +343,6 @@ void updateBG() {
 
 
 
-
-
-
-
-
-	//OG moving right logic
-    // if (hOff > 256 && screenBlock < 31) { // trying to fix end of game bug
-    //     // change where BG0 now looks for maps!
-    //     screenBlock++;
-    //     hOff -= 256;
-    //     REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
-
-    //     if (steven.worldCol > 1024 - 256 && !steven.direction) {
-	   //  	screenBlock = 31;
-	   //  	REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
-    // 	}
-    // }
-
-
-
-
-
-    
-
-
-    // // OG moving left logic
-    //  if (steven.direction && hOff < 256 && screenBlock == 31) {
-    //     // change where BG0 now looks for maps!
-    //     screenBlock--;
-    //     hOff += 256; //just resets change back to init value
-    //     REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(screenBlock) | BG_SIZE_WIDE | BG_8BPP;
-    // }
-
-
-
-
-
-
     if (steven.hoff > 512) {
     	steven.hoff -= 512;
     }
@@ -341,13 +364,6 @@ void updateBG() {
 
        for (int i = 0; i < LIVES; i++) {	
 
-    	// if (bonuses[i]->hoff > 512 && hOff == 0) {
-    	// 	bonuses[i]->hoff -= 512;
-    	// }
-
-    	// if (bonuses[i]->hoff < -512 && hOff >= 512) {
-    	// 	bonuses[i]->hoff += 512;
-    	// }
     }
 
 
@@ -922,13 +938,14 @@ void updateSteven() {
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITELEFT) {
-
+		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
 		throwLeft();
 
 		}
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITERIGHT) {
+		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
 		throwRight();
 		
 		}
@@ -936,38 +953,20 @@ void updateSteven() {
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITEBACK) {
+		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
 		throwUp();
 		
 		}
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITEFRONT) {
+		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
 		throwDown();
 		
 		}
 
 
-	// if (BUTTON_PRESSED(BUTTON_A)) {
-		
-	
-	// 		if (steven.aniState == SPRITELEFT) {
-	// 			throwLeft();
-			
-	// 		} else
-			
-	// 		if (steven.aniState == SPRITERIGHT) {
-	// 			throwRight();
-	// 		} else
-			
-	// 		if (steven.aniState == SPRITEBACK) {
-	// 			throwUp();
-	// 		} else
-			
-	// 		if (steven.aniState == SPRITEFRONT) {
-	// 			throwDown();
-	// 		}
 
-	// 	}
 	
 	//handles normal colls with steven and objects
 	enemyCollisions();
@@ -1531,6 +1530,7 @@ void enemyCollisions() {
 
 }
 void starCollisions() {
+
 
 }
 
