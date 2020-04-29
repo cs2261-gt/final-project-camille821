@@ -23,6 +23,7 @@
 #include "jasperSound.h"
 #include "aquaSound.h"
 #include "eyeballSound.h"
+#include "cheatSound.h"
 
 //TODO: upscale stars and enemies drawing logic
 
@@ -144,6 +145,10 @@ void updateGame() {
     if (steven.worldCol ==  720) {
     	playSoundB(eyeballSound, EYEBALLSOUNDLEN, 0);
 
+    }
+
+    if (BUTTON_PRESSED(BUTTON_B)) {
+    	playSoundB(cheatSound, CHEATSOUNDLEN, 0);
     }
 
 
@@ -496,11 +501,6 @@ void updateBubble(ANISPRITE * b) {
 						
 		}
 
-	// for (int i = 0; i < BUBBLECOUNT; i++) {
-	//  	bubbles[i].screenRow = bubbles[i].worldRow - vOff;
-	// 	bubbles[i].screenCol = bubbles[i].worldCol - bubbles[i].hoff;
-	
-	// }
 
 
 
@@ -938,14 +938,14 @@ void updateSteven() {
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITELEFT) {
-		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
+		playSoundB(bubbleSound, BUBBLESOUNDLEN-200, 0);
 		throwLeft();
 
 		}
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITERIGHT) {
-		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
+		playSoundB(bubbleSound, BUBBLESOUNDLEN-200, 0);
 		throwRight();
 		
 		}
@@ -953,14 +953,14 @@ void updateSteven() {
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITEBACK) {
-		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
+		playSoundB(bubbleSound, BUBBLESOUNDLEN-200, 0);
 		throwUp();
 		
 		}
 
 
 	if (BUTTON_PRESSED(BUTTON_A) && steven.aniState == SPRITEFRONT) {
-		playSoundB(bubbleSound, BUBBLESOUNDLEN, 0);
+		playSoundB(bubbleSound, BUBBLESOUNDLEN-200, 0);
 		throwDown();
 		
 		}

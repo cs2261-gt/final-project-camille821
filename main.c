@@ -1,20 +1,3 @@
-//Whats  done so far:
-//All of the project requirements except playing two sounds at once
-
-//Things Left:
-//add diff sounds for ea star
-//add star warp to prison, win, and rest of star sounds
-
-
-
-//How to play:
-//you can either skip to the game state from the start screen or use left and right keys to go through the cut scene states
-//use up, down, left and right keys to move player
-//press A to shoot bubblees
-// press B to cheat and get a hint at what each star is
-
-
-
 
 
 #include <stdlib.h>
@@ -70,8 +53,12 @@
 #include "pauseSong.h"
 #include "loseSound.h"
 #include "winSound.h"
-
-
+#include "zooSound.h"
+#include "gardenSound.h"
+#include "kindergartenSound.h"
+#include "jungleSound.h"
+#include "islandSound.h"
+#include "desertSound.h"
 
 
 //XL Wide BG
@@ -490,14 +477,15 @@ void swimState() {
 void goToFast() {
 
     stopSound();
-    playSoundA(fastSound, FASTSOUNDLEN, 0);
+    playSoundB(fastSound, FASTSOUNDLEN, 0);
+    hideSprites();
 
     REG_BG0HOFF = 0;
     REG_BG0VOFF = 0;
 
 
     // hacky, but basically disables sprites for this state
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
 
 
 
@@ -515,8 +503,8 @@ void goToFast() {
 
     hair.width = 64;
     hair.height = 64;
-    hair.screenCol = 100;
-    hair.screenRow = 5;
+    hair.screenCol = 100-2;
+    hair.screenRow = 5+3;
     hair.aniCounter = 0;
     hair.curFrame = 0;
     hair.numFrames = 2;
@@ -533,6 +521,28 @@ void fastState() {
 
     // Lock the framerate to 60 fps
     waitForVBlank();
+
+
+
+    shadowOAM[0].attr0 = hair.screenRow | ATTR0_SQUARE;
+    shadowOAM[0].attr1 = hair.screenCol | ATTR1_LARGE; 
+    shadowOAM[0].attr2 = ATTR2_TILEID(((hair.curFrame*8) + 16), 12 );
+
+        //animation frame every 50 frames of gameplay
+    if(hair.aniCounter % 30 == 0) {
+        
+        hair.curFrame++;
+        if (hair.curFrame >= hair.numFrames) {
+            hair.curFrame = 0;
+                
+        } 
+
+
+    }
+
+    hair.aniCounter++;
+    waitForVBlank();      
+    DMANow(3, shadowOAM, OAM, 128*4);
 
     if(BUTTON_PRESSED(BUTTON_LEFT)) {
         goToSwim();
@@ -551,21 +561,7 @@ void fastState() {
     }
 
 
-    shadowOAM[0].attr0 = hair.screenRow | ATTR0_SQUARE;
-    shadowOAM[0].attr1 = hair.screenCol | ATTR1_LARGE; 
-    shadowOAM[0].attr2 = ATTR2_TILEID((hair.curFrame*8) + 16, 12 );
 
-        //animation frame every 50 frames of gameplay
-    if(hair.aniCounter % 30 == 0) {
-        
-        hair.curFrame++;
-        if (hair.curFrame >= hair.numFrames) {
-            hair.curFrame = 0;
-                
-        } 
-
-
-    }
 
 
 }
@@ -749,7 +745,7 @@ void game() {
         steven.worldCol = 125;
         goToZooState(); 
         pauseSoundA();
-        playSoundB(starSound2, STARSOUND2LEN - 200, 1);     
+        playSoundB(zooSound, ZOOSOUNDLEN - 200, 1);     
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
@@ -757,7 +753,7 @@ void game() {
         steven.worldCol = 400;
         goToJdbState();
         pauseSoundA();
-        playSoundB(starSound2, STARSOUND2LEN - 200, 1);  
+        playSoundB(kindergartenSound, KINDERGARTENSOUNDLEN - 200, 1);  
 
     }
 
@@ -767,7 +763,7 @@ void game() {
         steven.worldCol = 535;          
         goToGardenState();
         pauseSoundA();
-        playSoundB(starSound2, STARSOUND2LEN - 200, 1);  
+        playSoundB(gardenSound, GARDENSOUNDLEN - 200, 1);  
     
     }
 
@@ -777,7 +773,7 @@ void game() {
         steven.worldCol = 620 + 25;
         goToMIState(); 
         pauseSoundA();
-        playSoundB(starSound2, STARSOUND2LEN - 200, 1);       
+        playSoundB(islandSound, ISLANDSOUNDLEN - 200, 1);       
     }
 
 
@@ -786,7 +782,7 @@ void game() {
         steven.worldCol = 875;
         goToKindergartenState();
         pauseSoundA();
-        playSoundB(starSound2, STARSOUND2LEN - 200, 1);               
+        playSoundB(jungleSound, JUNGLESOUNDLEN - 200, 1);               
     }
 
 
@@ -804,7 +800,7 @@ void game() {
         steven.worldCol = 985;
         goToDesertState();
         pauseSoundA();
-        playSoundB(starSound2, STARSOUND2LEN - 200, 1);              
+        playSoundB(desertSound, DESERTSOUNDLEN - 200, 1);              
     }
 
 
@@ -1042,13 +1038,15 @@ void helpState() {
         
         initGame();
         goToGame();
-        stopSound();
+        stopSoundB();
         playSoundA(gameSong, GAMESONGLEN - 200, 1);
         helpFirst = 0;
     }
 
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        stopSoundB();
         goToStart();
+
     }
 }
 

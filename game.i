@@ -1110,6 +1110,13 @@ extern const signed char aquaSound[26208];
 
 extern const signed char eyeballSound[62784];
 # 26 "game.c" 2
+# 1 "cheatSound.h" 1
+
+
+
+
+extern const signed char cheatSound[1654];
+# 27 "game.c" 2
 
 
 
@@ -1232,7 +1239,11 @@ void updateGame() {
      playSoundB(eyeballSound, 62784, 0);
 
     }
-# 156 "game.c"
+
+    if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+     playSoundB(cheatSound, 1654, 0);
+    }
+# 161 "game.c"
  updateBG();
  updateBonuses();
  animateSteven();
@@ -1575,7 +1586,10 @@ void updateBubble(ANISPRITE * b) {
    b->active = 0;
 
   }
-# 507 "game.c"
+
+
+
+
  b->screenRow = b->worldRow - vOff;
  b->screenCol = b->worldCol - b->hoff;
 
@@ -2010,14 +2024,14 @@ void updateSteven() {
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITELEFT) {
-  playSoundB(bubbleSound, 10849, 0);
+  playSoundB(bubbleSound, 10849 -200, 0);
   throwLeft();
 
   }
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITERIGHT) {
-  playSoundB(bubbleSound, 10849, 0);
+  playSoundB(bubbleSound, 10849 -200, 0);
   throwRight();
 
   }
@@ -2025,14 +2039,14 @@ void updateSteven() {
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITEBACK) {
-  playSoundB(bubbleSound, 10849, 0);
+  playSoundB(bubbleSound, 10849 -200, 0);
   throwUp();
 
   }
 
 
  if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) && steven.aniState == SPRITEFRONT) {
-  playSoundB(bubbleSound, 10849, 0);
+  playSoundB(bubbleSound, 10849 -200, 0);
   throwDown();
 
   }

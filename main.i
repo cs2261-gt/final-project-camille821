@@ -1714,8 +1714,48 @@ extern const signed char loseSound[2505312];
 
 extern const signed char winSound[563904];
 # 73 "main.c" 2
+# 1 "zooSound.h" 1
 
 
+
+
+extern const signed char zooSound[989856];
+# 74 "main.c" 2
+# 1 "gardenSound.h" 1
+
+
+
+
+extern const signed char gardenSound[415008];
+# 75 "main.c" 2
+# 1 "kindergartenSound.h" 1
+
+
+
+
+extern const signed char kindergartenSound[834912];
+# 76 "main.c" 2
+# 1 "jungleSound.h" 1
+
+
+
+
+extern const signed char jungleSound[296640];
+# 77 "main.c" 2
+# 1 "islandSound.h" 1
+
+
+
+
+extern const signed char islandSound[714067];
+# 78 "main.c" 2
+# 1 "desertSound.h" 1
+
+
+
+
+extern const signed char desertSound[1267776];
+# 79 "main.c" 2
 
 
 
@@ -1728,7 +1768,7 @@ extern const unsigned short escapismbgMap[4096];
 
 
 extern const unsigned short escapismbgPal[256];
-# 79 "main.c" 2
+# 83 "main.c" 2
 
 
 
@@ -1742,7 +1782,7 @@ extern const unsigned short prisonMap[1024];
 
 
 extern const unsigned short prisonPal[256];
-# 84 "main.c" 2
+# 88 "main.c" 2
 # 1 "prison2.h" 1
 # 22 "prison2.h"
 extern const unsigned short prison2Tiles[4528];
@@ -1752,7 +1792,7 @@ extern const unsigned short prison2Map[1024];
 
 
 extern const unsigned short prison2Pal[256];
-# 85 "main.c" 2
+# 89 "main.c" 2
 # 1 "sleep.h" 1
 # 22 "sleep.h"
 extern const unsigned short sleepTiles[4048];
@@ -1762,7 +1802,7 @@ extern const unsigned short sleepMap[1024];
 
 
 extern const unsigned short sleepPal[256];
-# 86 "main.c" 2
+# 90 "main.c" 2
 # 1 "found.h" 1
 # 22 "found.h"
 extern const unsigned short foundTiles[5040];
@@ -1772,7 +1812,7 @@ extern const unsigned short foundMap[1024];
 
 
 extern const unsigned short foundPal[256];
-# 87 "main.c" 2
+# 91 "main.c" 2
 # 1 "swim.h" 1
 # 22 "swim.h"
 extern const unsigned short swimTiles[4864];
@@ -1782,7 +1822,7 @@ extern const unsigned short swimMap[1024];
 
 
 extern const unsigned short swimPal[256];
-# 88 "main.c" 2
+# 92 "main.c" 2
 # 1 "fast.h" 1
 # 22 "fast.h"
 extern const unsigned short fastTiles[4832];
@@ -1792,7 +1832,7 @@ extern const unsigned short fastMap[1024];
 
 
 extern const unsigned short fastPal[256];
-# 89 "main.c" 2
+# 93 "main.c" 2
 
 
 
@@ -2197,14 +2237,15 @@ void swimState() {
 void goToFast() {
 
     stopSound();
-    playSoundA(fastSound, 80352, 0);
+    playSoundB(fastSound, 80352, 0);
+    hideSprites();
 
     (*(volatile unsigned short *)0x04000010) = 0;
     (*(volatile unsigned short *)0x04000012) = 0;
 
 
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
 
 
 
@@ -2222,8 +2263,8 @@ void goToFast() {
 
     hair.width = 64;
     hair.height = 64;
-    hair.screenCol = 100;
-    hair.screenRow = 5;
+    hair.screenCol = 100-2;
+    hair.screenRow = 5+3;
     hair.aniCounter = 0;
     hair.curFrame = 0;
     hair.numFrames = 2;
@@ -2240,6 +2281,28 @@ void fastState() {
 
 
     waitForVBlank();
+
+
+
+    shadowOAM[0].attr0 = hair.screenRow | (0<<14);
+    shadowOAM[0].attr1 = hair.screenCol | (3<<14);
+    shadowOAM[0].attr2 = ((12)*32+(((hair.curFrame*8) + 16)));
+
+
+    if(hair.aniCounter % 30 == 0) {
+
+        hair.curFrame++;
+        if (hair.curFrame >= hair.numFrames) {
+            hair.curFrame = 0;
+
+        }
+
+
+    }
+
+    hair.aniCounter++;
+    waitForVBlank();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128*4);
 
     if((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
         goToSwim();
@@ -2258,21 +2321,7 @@ void fastState() {
     }
 
 
-    shadowOAM[0].attr0 = swim.screenRow | (0<<14);
-    shadowOAM[0].attr1 = swim.screenCol | (3<<14);
-    shadowOAM[0].attr2 = ((12)*32+((swim.curFrame*8) + 16));
 
-
-    if(swim.aniCounter % 30 == 0) {
-
-        swim.curFrame++;
-        if (swim.curFrame >= swim.numFrames) {
-            swim.curFrame = 0;
-
-        }
-
-
-    }
 
 
 }
@@ -2456,7 +2505,7 @@ void game() {
         steven.worldCol = 125;
         goToZooState();
         pauseSoundA();
-        playSoundB(starSound2, 1133568 - 200, 1);
+        playSoundB(zooSound, 989856 - 200, 1);
     }
 
     if (stars[2]->bubbled == 0 && collision(steven.worldRow, steven.worldCol, steven.height, steven.width, stars[2]->worldRow, stars[2]->worldCol, stars[2]->height, stars[2]->width)) {
@@ -2464,7 +2513,7 @@ void game() {
         steven.worldCol = 400;
         goToJdbState();
         pauseSoundA();
-        playSoundB(starSound2, 1133568 - 200, 1);
+        playSoundB(kindergartenSound, 834912 - 200, 1);
 
     }
 
@@ -2474,7 +2523,7 @@ void game() {
         steven.worldCol = 535;
         goToGardenState();
         pauseSoundA();
-        playSoundB(starSound2, 1133568 - 200, 1);
+        playSoundB(gardenSound, 415008 - 200, 1);
 
     }
 
@@ -2484,7 +2533,7 @@ void game() {
         steven.worldCol = 620 + 25;
         goToMIState();
         pauseSoundA();
-        playSoundB(starSound2, 1133568 - 200, 1);
+        playSoundB(islandSound, 714067 - 200, 1);
     }
 
 
@@ -2493,7 +2542,7 @@ void game() {
         steven.worldCol = 875;
         goToKindergartenState();
         pauseSoundA();
-        playSoundB(starSound2, 1133568 - 200, 1);
+        playSoundB(jungleSound, 296640 - 200, 1);
     }
 
 
@@ -2511,7 +2560,7 @@ void game() {
         steven.worldCol = 985;
         goToDesertState();
         pauseSoundA();
-        playSoundB(starSound2, 1133568 - 200, 1);
+        playSoundB(desertSound, 1267776 - 200, 1);
     }
 
 
@@ -2749,13 +2798,15 @@ void helpState() {
 
         initGame();
         goToGame();
-        stopSound();
+        stopSoundB();
         playSoundA(gameSong, 903052 - 200, 1);
         helpFirst = 0;
     }
 
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        stopSoundB();
         goToStart();
+
     }
 }
 

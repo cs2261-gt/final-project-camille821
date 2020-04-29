@@ -493,39 +493,43 @@ goToFast:
 	ldr	r3, .L51+12
 	mov	lr, pc
 	bx	r3
+	ldr	r3, .L51+16
+	mov	lr, pc
+	bx	r3
 	mov	r5, #67108864
 	mov	r4, #0
-	mov	r3, #256
+	mov	r3, #4352
 	strh	r4, [r5, #16]	@ movhi
-	ldr	r6, .L51+16
+	ldr	r6, .L51+20
 	strh	r3, [r5]	@ movhi
 	strh	r4, [r5, #18]	@ movhi
+	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L51+20
+	ldr	r1, .L51+24
 	mov	r0, #3
 	mov	lr, pc
 	bx	r6
-	ldr	r2, .L51+24
-	ldr	r3, .L51+28
+	ldr	r2, .L51+28
+	ldr	r3, .L51+32
 	strh	r2, [r5, #8]	@ movhi
-	ldr	r1, .L51+32
-	ldr	r2, .L51+36
+	ldr	r1, .L51+36
+	ldr	r2, .L51+40
 	mov	r0, #3
 	mov	lr, pc
 	bx	r6
 	mov	r3, #1024
-	ldr	r2, .L51+40
-	ldr	r1, .L51+44
+	ldr	r2, .L51+44
+	ldr	r1, .L51+48
 	mov	r0, #3
 	mov	lr, pc
 	bx	r6
-	mov	r5, #100
-	mov	lr, #5
+	mov	r5, #98
+	mov	lr, #8
 	mov	r2, #64
 	mov	ip, #2
 	mov	r0, #10
-	ldr	r3, .L51+48
-	ldr	r1, .L51+52
+	ldr	r3, .L51+52
+	ldr	r1, .L51+56
 	str	r4, [r3, #76]
 	str	r4, [r3, #88]
 	str	r5, [r3, #44]
@@ -542,7 +546,8 @@ goToFast:
 	.word	stopSound
 	.word	80352
 	.word	fastSound
-	.word	playSoundA
+	.word	playSoundB
+	.word	hideSprites
 	.word	DMANow
 	.word	fastPal
 	.word	6916
@@ -905,92 +910,105 @@ fastState:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, lr}
+	push	{r4, r5, r6, r7, r8, lr}
 	ldr	r4, .L111
 	ldr	r3, [r4]
 	ldr	r5, .L111+4
 	add	r3, r3, #1
-	ldr	r2, .L111+8
 	str	r3, [r4]
 	mov	lr, pc
-	bx	r2
-	ldrh	r3, [r5]
-	tst	r3, #32
-	beq	.L97
-	ldr	r2, .L111+12
-	ldrh	r2, [r2]
-	tst	r2, #32
-	beq	.L109
-.L97:
-	tst	r3, #8
-	beq	.L98
-	ldr	r3, .L111+12
-	ldrh	r3, [r3]
-	tst	r3, #8
-	beq	.L110
-.L98:
-	ldr	r1, .L111+16
+	bx	r5
+	ldr	r1, .L111+8
 	ldr	r0, [r1, #44]
 	mvn	r0, r0, lsl #18
 	mvn	r0, r0, lsr #18
 	ldr	r2, [r1, #76]
-	ldr	r3, .L111+20
-	smull	r4, r5, r2, r3
+	ldr	r3, .L111+12
+	smull	r6, r7, r2, r3
 	asr	r3, r2, #31
-	add	lr, r2, r5
+	add	lr, r2, r7
 	rsb	r3, r3, lr, asr #4
 	ldr	ip, [r1, #88]
+	ldr	lr, .L111+16
 	rsb	r3, r3, r3, lsl #4
-	ldr	lr, .L111+24
-	subs	r3, r2, r3, lsl #1
-	ldr	r4, [r1, #40]
-	add	r2, ip, #50
-	lsl	r2, r2, #3
+	ldr	r6, [r1, #40]
 	strh	r0, [lr, #2]	@ movhi
-	strh	r4, [lr]	@ movhi
-	strh	r2, [lr, #4]	@ movhi
-	bne	.L96
-	ldr	r2, [r1, #92]
+	add	r0, ip, #50
+	lsl	r0, r0, #3
+	subs	r3, r2, r3, lsl #1
+	strh	r6, [lr]	@ movhi
+	strh	r0, [lr, #4]	@ movhi
+	bne	.L98
+	ldr	r0, [r1, #92]
 	add	ip, ip, #1
-	cmp	ip, r2
+	cmp	ip, r0
 	str	ip, [r1, #88]
 	strge	r3, [r1, #88]
+.L98:
+	add	r2, r2, #1
+	ldr	r6, .L111+20
+	str	r2, [r1, #76]
+	mov	lr, pc
+	bx	r5
+	mov	r3, #512
+	mov	r2, #117440512
+	ldr	r1, .L111+16
+	mov	r0, #3
+	ldr	r5, .L111+24
+	mov	lr, pc
+	bx	r5
+	ldrh	r3, [r6]
+	tst	r3, #32
+	beq	.L100
+	ldr	r2, .L111+28
+	ldrh	r2, [r2]
+	tst	r2, #32
+	beq	.L109
+.L100:
+	tst	r3, #8
+	beq	.L96
+	ldr	r3, .L111+28
+	ldrh	r3, [r3]
+	tst	r3, #8
+	beq	.L110
 .L96:
-	pop	{r4, r5, r6, lr}
+	pop	{r4, r5, r6, r7, r8, lr}
 	bx	lr
 .L110:
 	ldr	r0, [r4]
-	ldr	r3, .L111+28
-	mov	lr, pc
-	bx	r3
 	ldr	r3, .L111+32
 	mov	lr, pc
 	bx	r3
-	bl	goToGame
 	ldr	r3, .L111+36
 	mov	lr, pc
 	bx	r3
-	mov	r2, #1
-	ldr	r1, .L111+40
-	ldr	r0, .L111+44
-	ldr	r3, .L111+48
+	bl	goToGame
+	ldr	r3, .L111+40
 	mov	lr, pc
 	bx	r3
-	b	.L98
+	mov	r2, #1
+	ldr	r1, .L111+44
+	ldr	r0, .L111+48
+	ldr	r3, .L111+52
+	mov	lr, pc
+	bx	r3
+	pop	{r4, r5, r6, r7, r8, lr}
+	bx	lr
 .L109:
 	bl	goToSwim
-	ldrh	r3, [r5]
-	b	.L97
+	ldrh	r3, [r6]
+	b	.L100
 .L112:
 	.align	2
 .L111:
 	.word	seed
-	.word	oldButtons
 	.word	waitForVBlank
-	.word	buttons
-	.word	swim
+	.word	hair
 	.word	-2004318071
 	.word	shadowOAM
+	.word	oldButtons
+	.word	DMANow
+	.word	buttons
 	.word	srand
 	.word	initGame
 	.word	stopSound
@@ -1618,6 +1636,9 @@ helpState:
 	pop	{r4, r5, r6, lr}
 	bx	lr
 .L212:
+	ldr	r3, .L213+16
+	mov	lr, pc
+	bx	r3
 	pop	{r4, r5, r6, lr}
 	b	goToStart
 .L210:
@@ -1645,13 +1666,13 @@ helpState:
 	mov	lr, pc
 	bx	r3
 	bl	goToGame
-	ldr	r3, .L213+36
+	ldr	r3, .L213+16
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r3, .L213+40
-	ldr	r1, .L213+44
-	ldr	r0, .L213+48
+	ldr	r3, .L213+36
+	ldr	r1, .L213+40
+	ldr	r0, .L213+44
 	mov	lr, pc
 	bx	r3
 	mov	r2, #0
@@ -1670,7 +1691,6 @@ helpState:
 	.word	seed
 	.word	srand
 	.word	initGame
-	.word	stopSound
 	.word	playSoundA
 	.word	902852
 	.word	gameSong
@@ -2331,8 +2351,8 @@ game:
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r1, .L311+40
-	ldr	r0, .L311+44
+	ldr	r1, .L311+56
+	ldr	r0, .L311+60
 	ldr	r3, .L311+48
 	mov	lr, pc
 	bx	r3
@@ -2357,7 +2377,7 @@ game:
 	cmp	r0, #0
 	beq	.L262
 	mov	r2, #95
-	ldr	r3, .L311+56
+	ldr	r3, .L311+64
 	str	r2, [r5, #48]
 	str	r3, [r5, #52]
 	bl	goToKindergartenState
@@ -2365,8 +2385,8 @@ game:
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r1, .L311+40
-	ldr	r0, .L311+44
+	ldr	r1, .L311+68
+	ldr	r0, .L311+72
 	ldr	r3, .L311+48
 	mov	lr, pc
 	bx	r3
@@ -2391,7 +2411,7 @@ game:
 	cmp	r0, #0
 	beq	.L259
 	mov	r2, #30
-	ldr	r3, .L311+60
+	ldr	r3, .L311+76
 	str	r2, [r5, #48]
 	str	r3, [r5, #52]
 	bl	goToMIState
@@ -2399,8 +2419,8 @@ game:
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r1, .L311+40
-	ldr	r0, .L311+44
+	ldr	r1, .L311+80
+	ldr	r0, .L311+84
 	ldr	r3, .L311+48
 	mov	lr, pc
 	bx	r3
@@ -2425,7 +2445,7 @@ game:
 	cmp	r0, #0
 	beq	.L256
 	mov	r2, #95
-	ldr	r3, .L311+64
+	ldr	r3, .L311+88
 	str	r2, [r5, #48]
 	str	r3, [r5, #52]
 	bl	goToGardenState
@@ -2433,8 +2453,8 @@ game:
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r1, .L311+40
-	ldr	r0, .L311+44
+	ldr	r1, .L311+92
+	ldr	r0, .L311+96
 	ldr	r3, .L311+48
 	mov	lr, pc
 	bx	r3
@@ -2467,8 +2487,8 @@ game:
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r1, .L311+40
-	ldr	r0, .L311+44
+	ldr	r1, .L311+100
+	ldr	r0, .L311+104
 	ldr	r3, .L311+48
 	mov	lr, pc
 	bx	r3
@@ -2501,8 +2521,8 @@ game:
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r1, .L311+40
-	ldr	r0, .L311+44
+	ldr	r1, .L311+108
+	ldr	r0, .L311+112
 	ldr	r3, .L311+48
 	mov	lr, pc
 	bx	r3
@@ -2548,13 +2568,25 @@ game:
 	.word	collision
 	.word	985
 	.word	pauseSoundA
-	.word	1133368
-	.word	starSound2
+	.word	1267576
+	.word	desertSound
 	.word	playSoundB
 	.word	935
+	.word	1133368
+	.word	starSound2
 	.word	875
+	.word	296440
+	.word	jungleSound
 	.word	645
+	.word	713867
+	.word	islandSound
 	.word	535
+	.word	414808
+	.word	gardenSound
+	.word	834712
+	.word	kindergartenSound
+	.word	989656
+	.word	zooSound
 	.size	game, .-game
 	.section	.text.startup,"ax",%progbits
 	.align	2

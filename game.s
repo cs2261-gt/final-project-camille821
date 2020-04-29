@@ -2952,7 +2952,7 @@ updateSteven:
 	.word	oldButtons
 	.word	steven
 	.word	buttons
-	.word	10849
+	.word	10649
 	.word	playSoundB
 	.word	bubbleSound
 	.word	bubbles
@@ -3229,26 +3229,26 @@ updateGame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, lr}
-	ldr	r4, .L581
+	ldr	r4, .L586
 	ldr	r1, [r4, #52]
 	cmp	r1, #20
 	sub	sp, sp, #20
-	beq	.L574
+	beq	.L578
 .L561:
 	cmp	r1, #160
-	beq	.L575
+	beq	.L579
 .L562:
-	ldr	r3, .L581+4
+	ldr	r3, .L586+4
 	cmp	r1, r3
-	beq	.L576
+	beq	.L580
 .L563:
-	ldr	r3, .L581+8
+	ldr	r3, .L586+8
 	cmp	r1, r3
-	beq	.L577
+	beq	.L581
 .L564:
-	ldr	r3, .L581+12
+	ldr	r3, .L586+12
 	cmp	r1, r3
-	beq	.L578
+	beq	.L582
 .L565:
 	mov	r0, #1
 	mov	ip, #20
@@ -3258,18 +3258,27 @@ updateGame:
 	str	r0, [sp, #12]
 	ldr	r0, [r4, #48]
 	str	ip, [sp, #8]
-	ldr	ip, .L581+16
+	ldr	ip, .L586+16
 	str	lr, [sp]
 	str	ip, [sp, #4]
-	ldr	r5, .L581+20
+	ldr	r5, .L586+20
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #0
-	bne	.L579
+	bne	.L583
 	ldr	r3, [r4, #52]
 	cmp	r3, #720
-	beq	.L580
+	beq	.L584
 .L567:
+	ldr	r3, .L586+24
+	ldrh	r3, [r3]
+	tst	r3, #2
+	beq	.L568
+	ldr	r3, .L586+28
+	ldrh	r2, [r3]
+	ands	r2, r2, #2
+	beq	.L585
+.L568:
 	bl	updateBG
 	bl	updateBonuses
 	bl	animateSteven
@@ -3277,91 +3286,100 @@ updateGame:
 	bl	updateStars
 	bl	updateEnemies
 	bl	updateLives
-	ldr	r4, .L581+24
+	ldr	r4, .L586+32
 	add	r5, r4, #1072
 	add	r5, r5, #8
-.L568:
+.L569:
 	mov	r0, r4
 	add	r4, r4, #108
 	bl	updateBubble
-	cmp	r5, r4
-	bne	.L568
+	cmp	r4, r5
+	bne	.L569
 	add	sp, sp, #20
 	@ sp needed
 	pop	{r4, r5, lr}
 	bx	lr
-.L579:
-	ldr	r3, .L581+28
+.L583:
+	ldr	r3, .L586+36
 	mov	r2, #0
-	ldr	r1, .L581+32
-	ldr	r0, .L581+36
+	ldr	r1, .L586+40
+	ldr	r0, .L586+44
 	mov	lr, pc
 	bx	r3
 	ldr	r3, [r4, #52]
 	cmp	r3, #720
 	bne	.L567
-.L580:
+.L584:
 	mov	r2, #0
-	ldr	r1, .L581+40
-	ldr	r0, .L581+44
-	ldr	r3, .L581+28
+	ldr	r1, .L586+48
+	ldr	r0, .L586+52
+	ldr	r3, .L586+36
 	mov	lr, pc
 	bx	r3
 	b	.L567
-.L578:
-	ldr	r1, .L581+48
+.L582:
+	ldr	r1, .L586+56
 	mov	r2, #0
-	ldr	r0, .L581+52
-	ldr	r3, .L581+28
+	ldr	r0, .L586+60
+	ldr	r3, .L586+36
 	mov	lr, pc
 	bx	r3
 	ldr	r1, [r4, #52]
 	b	.L565
-.L577:
-	ldr	r1, .L581+56
+.L581:
+	ldr	r1, .L586+64
 	mov	r2, #0
-	ldr	r0, .L581+60
-	ldr	r3, .L581+28
+	ldr	r0, .L586+68
+	ldr	r3, .L586+36
 	mov	lr, pc
 	bx	r3
 	ldr	r1, [r4, #52]
 	b	.L564
-.L576:
-	ldr	r1, .L581+64
+.L580:
+	ldr	r1, .L586+72
 	mov	r2, #0
-	ldr	r0, .L581+68
-	ldr	r3, .L581+28
+	ldr	r0, .L586+76
+	ldr	r3, .L586+36
 	mov	lr, pc
 	bx	r3
 	ldr	r1, [r4, #52]
 	b	.L563
-.L575:
-	ldr	r1, .L581+72
+.L579:
+	ldr	r1, .L586+80
 	mov	r2, #0
-	ldr	r0, .L581+76
-	ldr	r3, .L581+28
+	ldr	r0, .L586+84
+	ldr	r3, .L586+36
 	mov	lr, pc
 	bx	r3
 	ldr	r1, [r4, #52]
 	b	.L562
-.L574:
-	ldr	r1, .L581+80
+.L578:
+	ldr	r1, .L586+88
 	mov	r2, #0
-	ldr	r0, .L581+84
-	ldr	r3, .L581+28
+	ldr	r0, .L586+92
+	ldr	r3, .L586+36
 	mov	lr, pc
 	bx	r3
 	ldr	r1, [r4, #52]
 	b	.L561
-.L582:
+.L585:
+	ldr	r1, .L586+96
+	ldr	r0, .L586+100
+	ldr	r3, .L586+36
+	mov	lr, pc
+	bx	r3
+	b	.L568
+.L587:
 	.align	2
-.L581:
+.L586:
 	.word	steven
 	.word	265
 	.word	335
 	.word	485
 	.word	570
 	.word	collision
+	.word	oldButtons
+	.word	buttons
 	.word	bubbles
 	.word	playSoundB
 	.word	26208
@@ -3378,6 +3396,8 @@ updateGame:
 	.word	bdSound
 	.word	58212
 	.word	ydSound
+	.word	1654
+	.word	cheatSound
 	.size	updateGame, .-updateGame
 	.comm	shadowOAM,1024,4
 	.comm	bubbles,1080,4
