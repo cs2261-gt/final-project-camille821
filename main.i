@@ -2,7 +2,8 @@
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "main.c"
-# 20 "main.c"
+
+
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 1 3
 # 10 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/machine/ieeefp.h" 1 3
@@ -796,7 +797,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 333 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdlib.h" 3
 
-# 21 "main.c" 2
+# 4 "main.c" 2
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 1 3
 # 36 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 # 1 "/Users/Camille821/cs 2261/devkitARM 2/lib/gcc/arm-none-eabi/7.1.0/include/stddef.h" 1 3 4
@@ -1189,7 +1190,7 @@ static __inline__ int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
 }
 # 767 "/Users/Camille821/cs 2261/devkitARM 2/arm-none-eabi/include/stdio.h" 3
 
-# 22 "main.c" 2
+# 5 "main.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1315,7 +1316,7 @@ typedef struct{
 
 
 int collision(int rowA, int colA, int heightA, int widthA, int rowB, int colB, int heightB, int widthB);
-# 23 "main.c" 2
+# 6 "main.c" 2
 # 1 "game.h" 1
 # 17 "game.h"
 extern ANISPRITE steven;
@@ -1386,7 +1387,7 @@ void throwRight();
 void throwUp();
 void throwDown();
 void bubbling(ANISPRITE * a);
-# 24 "main.c" 2
+# 7 "main.c" 2
 
 
 # 1 "start.h" 1
@@ -1398,7 +1399,7 @@ extern const unsigned short startMap[1024];
 
 
 extern const unsigned short startPal[256];
-# 27 "main.c" 2
+# 10 "main.c" 2
 # 1 "gameSplash1.h" 1
 # 22 "gameSplash1.h"
 extern const unsigned short gameSplash1Tiles[21888];
@@ -1408,7 +1409,7 @@ extern const unsigned short gameSplash1Map[2048];
 
 
 extern const unsigned short gameSplash1Pal[256];
-# 28 "main.c" 2
+# 11 "main.c" 2
 # 1 "pauseswim.h" 1
 # 22 "pauseswim.h"
 extern const unsigned short pauseswimTiles[10336];
@@ -1418,7 +1419,7 @@ extern const unsigned short pauseswimMap[1024];
 
 
 extern const unsigned short pauseswimPal[256];
-# 29 "main.c" 2
+# 12 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
 extern const unsigned short winTiles[16320];
@@ -1428,7 +1429,7 @@ extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 30 "main.c" 2
+# 13 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
 extern const unsigned short loseTiles[16000];
@@ -1438,7 +1439,7 @@ extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 31 "main.c" 2
+# 14 "main.c" 2
 # 1 "help.h" 1
 # 22 "help.h"
 extern const unsigned short helpTiles[16544];
@@ -1448,7 +1449,7 @@ extern const unsigned short helpMap[1024];
 
 
 extern const unsigned short helpPal[256];
-# 32 "main.c" 2
+# 15 "main.c" 2
 
 
 
@@ -1465,7 +1466,7 @@ extern const unsigned short jungleMap[1024];
 
 
 extern const unsigned short junglePal[256];
-# 40 "main.c" 2
+# 23 "main.c" 2
 # 1 "jungle3.h" 1
 # 22 "jungle3.h"
 extern const unsigned short jungle3Tiles[3616];
@@ -1475,7 +1476,7 @@ extern const unsigned short jungle3Map[1024];
 
 
 extern const unsigned short jungle3Pal[256];
-# 41 "main.c" 2
+# 24 "main.c" 2
 # 1 "island.h" 1
 # 22 "island.h"
 extern const unsigned short islandTiles[7056];
@@ -1485,7 +1486,7 @@ extern const unsigned short islandMap[1024];
 
 
 extern const unsigned short islandPal[256];
-# 42 "main.c" 2
+# 25 "main.c" 2
 # 1 "island3.h" 1
 # 22 "island3.h"
 extern const unsigned short island3Tiles[3904];
@@ -1495,7 +1496,7 @@ extern const unsigned short island3Map[1024];
 
 
 extern const unsigned short island3Pal[256];
-# 43 "main.c" 2
+# 26 "main.c" 2
 # 1 "zoo.h" 1
 # 22 "zoo.h"
 extern const unsigned short zooTiles[5168];
@@ -1505,7 +1506,7 @@ extern const unsigned short zooMap[1024];
 
 
 extern const unsigned short zooPal[256];
-# 44 "main.c" 2
+# 27 "main.c" 2
 # 1 "zoo3.h" 1
 # 22 "zoo3.h"
 extern const unsigned short zoo3Tiles[3872];
@@ -1515,7 +1516,7 @@ extern const unsigned short zoo3Map[1024];
 
 
 extern const unsigned short zoo3Pal[256];
-# 45 "main.c" 2
+# 28 "main.c" 2
 # 1 "garden.h" 1
 # 22 "garden.h"
 extern const unsigned short gardenTiles[6448];
@@ -1525,7 +1526,7 @@ extern const unsigned short gardenMap[1024];
 
 
 extern const unsigned short gardenPal[256];
-# 46 "main.c" 2
+# 29 "main.c" 2
 # 1 "garden3.h" 1
 # 22 "garden3.h"
 extern const unsigned short garden3Tiles[3792];
@@ -1535,7 +1536,7 @@ extern const unsigned short garden3Map[1024];
 
 
 extern const unsigned short garden3Pal[256];
-# 47 "main.c" 2
+# 30 "main.c" 2
 # 1 "kindergarten.h" 1
 # 22 "kindergarten.h"
 extern const unsigned short kindergartenTiles[14528];
@@ -1545,7 +1546,7 @@ extern const unsigned short kindergartenMap[1024];
 
 
 extern const unsigned short kindergartenPal[256];
-# 48 "main.c" 2
+# 31 "main.c" 2
 # 1 "kindergarten3.h" 1
 # 22 "kindergarten3.h"
 extern const unsigned short kindergarten3Tiles[3744];
@@ -1555,7 +1556,7 @@ extern const unsigned short kindergarten3Map[1024];
 
 
 extern const unsigned short kindergarten3Pal[256];
-# 49 "main.c" 2
+# 32 "main.c" 2
 # 1 "arena.h" 1
 # 22 "arena.h"
 extern const unsigned short arenaTiles[6496];
@@ -1565,7 +1566,7 @@ extern const unsigned short arenaMap[1024];
 
 
 extern const unsigned short arenaPal[256];
-# 50 "main.c" 2
+# 33 "main.c" 2
 # 1 "arena3.h" 1
 # 22 "arena3.h"
 extern const unsigned short arena3Tiles[3904];
@@ -1575,7 +1576,7 @@ extern const unsigned short arena3Map[1024];
 
 
 extern const unsigned short arena3Pal[256];
-# 51 "main.c" 2
+# 34 "main.c" 2
 # 1 "desert.h" 1
 # 22 "desert.h"
 extern const unsigned short desertTiles[6976];
@@ -1585,7 +1586,7 @@ extern const unsigned short desertMap[1024];
 
 
 extern const unsigned short desertPal[256];
-# 52 "main.c" 2
+# 35 "main.c" 2
 # 1 "desert3.h" 1
 # 22 "desert3.h"
 extern const unsigned short desert3Tiles[2672];
@@ -1595,7 +1596,7 @@ extern const unsigned short desert3Map[1024];
 
 
 extern const unsigned short desert3Pal[256];
-# 53 "main.c" 2
+# 36 "main.c" 2
 
 
 
@@ -1606,7 +1607,7 @@ extern const unsigned short spritesheet1Tiles[16384];
 
 
 extern const unsigned short spritesheet1Pal[256];
-# 58 "main.c" 2
+# 41 "main.c" 2
 
 
 # 1 "sound.h" 1
@@ -1629,133 +1630,133 @@ void unpauseSound();
 void stopSound();
 void stopSoundB();
 void stopSoundA();
-# 61 "main.c" 2
+# 44 "main.c" 2
 # 1 "spacedOutBeats.h" 1
 
 
 
 
 extern const signed char spacedOutBeats[1177056];
-# 62 "main.c" 2
+# 45 "main.c" 2
 # 1 "gameSong.h" 1
 
 
 
 
 extern const signed char gameSong[903052];
-# 63 "main.c" 2
+# 46 "main.c" 2
 # 1 "prisonSound.h" 1
 
 
 
 
 extern const signed char prisonSound[274292];
-# 64 "main.c" 2
+# 47 "main.c" 2
 # 1 "sleepSound.h" 1
 
 
 
 
 extern const signed char sleepSound[154944];
-# 65 "main.c" 2
+# 48 "main.c" 2
 # 1 "foundSound.h" 1
 
 
 
 
 extern const signed char foundSound[113184];
-# 66 "main.c" 2
+# 49 "main.c" 2
 # 1 "swimSound.h" 1
 
 
 
 
 extern const signed char swimSound[116352];
-# 67 "main.c" 2
+# 50 "main.c" 2
 # 1 "fastSound.h" 1
 
 
 
 
 extern const signed char fastSound[80352];
-# 68 "main.c" 2
+# 51 "main.c" 2
 # 1 "starSound2.h" 1
 
 
 
 
 extern const signed char starSound2[1133568];
-# 69 "main.c" 2
+# 52 "main.c" 2
 # 1 "helpSound.h" 1
 
 
 
 
 extern const signed char helpSound[567052];
-# 70 "main.c" 2
+# 53 "main.c" 2
 # 1 "pauseSong.h" 1
 
 
 
 
 extern const signed char pauseSong[634689];
-# 71 "main.c" 2
+# 54 "main.c" 2
 # 1 "loseSound.h" 1
 
 
 
 
 extern const signed char loseSound[2505312];
-# 72 "main.c" 2
+# 55 "main.c" 2
 # 1 "winSound.h" 1
 
 
 
 
 extern const signed char winSound[563904];
-# 73 "main.c" 2
+# 56 "main.c" 2
 # 1 "zooSound.h" 1
 
 
 
 
 extern const signed char zooSound[989856];
-# 74 "main.c" 2
+# 57 "main.c" 2
 # 1 "gardenSound.h" 1
 
 
 
 
 extern const signed char gardenSound[415008];
-# 75 "main.c" 2
+# 58 "main.c" 2
 # 1 "kindergartenSound.h" 1
 
 
 
 
 extern const signed char kindergartenSound[834912];
-# 76 "main.c" 2
+# 59 "main.c" 2
 # 1 "jungleSound.h" 1
 
 
 
 
 extern const signed char jungleSound[296640];
-# 77 "main.c" 2
+# 60 "main.c" 2
 # 1 "islandSound.h" 1
 
 
 
 
 extern const signed char islandSound[714067];
-# 78 "main.c" 2
+# 61 "main.c" 2
 # 1 "desertSound.h" 1
 
 
 
 
 extern const signed char desertSound[1267776];
-# 79 "main.c" 2
+# 62 "main.c" 2
 
 
 
@@ -1768,7 +1769,7 @@ extern const unsigned short escapismbgMap[4096];
 
 
 extern const unsigned short escapismbgPal[256];
-# 83 "main.c" 2
+# 66 "main.c" 2
 
 
 
@@ -1782,7 +1783,7 @@ extern const unsigned short prisonMap[1024];
 
 
 extern const unsigned short prisonPal[256];
-# 88 "main.c" 2
+# 71 "main.c" 2
 # 1 "prison2.h" 1
 # 22 "prison2.h"
 extern const unsigned short prison2Tiles[4528];
@@ -1792,7 +1793,7 @@ extern const unsigned short prison2Map[1024];
 
 
 extern const unsigned short prison2Pal[256];
-# 89 "main.c" 2
+# 72 "main.c" 2
 # 1 "sleep.h" 1
 # 22 "sleep.h"
 extern const unsigned short sleepTiles[4048];
@@ -1802,7 +1803,7 @@ extern const unsigned short sleepMap[1024];
 
 
 extern const unsigned short sleepPal[256];
-# 90 "main.c" 2
+# 73 "main.c" 2
 # 1 "found.h" 1
 # 22 "found.h"
 extern const unsigned short foundTiles[5040];
@@ -1812,7 +1813,7 @@ extern const unsigned short foundMap[1024];
 
 
 extern const unsigned short foundPal[256];
-# 91 "main.c" 2
+# 74 "main.c" 2
 # 1 "swim.h" 1
 # 22 "swim.h"
 extern const unsigned short swimTiles[4864];
@@ -1822,7 +1823,7 @@ extern const unsigned short swimMap[1024];
 
 
 extern const unsigned short swimPal[256];
-# 92 "main.c" 2
+# 75 "main.c" 2
 # 1 "fast.h" 1
 # 22 "fast.h"
 extern const unsigned short fastTiles[4832];
@@ -1832,7 +1833,7 @@ extern const unsigned short fastMap[1024];
 
 
 extern const unsigned short fastPal[256];
-# 93 "main.c" 2
+# 76 "main.c" 2
 
 
 
